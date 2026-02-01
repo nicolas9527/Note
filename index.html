@@ -1,0 +1,804 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="theme-color" content="#1976d2" />
+  <title>Ghi chú • Copy nhanh</title>
+
+  <style>
+    :root{
+      --primary:#1976d2;
+      --bg:#f3f6fb;
+      --text:#0f172a;
+      --muted:#64748b;
+      --border:#e2e8f0;
+      --danger:#dc2626;
+      --shadow: 0 10px 30px rgba(2,6,23,.08);
+      --radius:14px;
+
+      /* animation */
+      --dur: 180ms;
+      --ease: cubic-bezier(.2,.8,.2,1);
+    }
+
+    *{box-sizing:border-box}
+    html{ -webkit-text-size-adjust:100%; }
+    body{
+      margin:0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      background: linear-gradient(180deg, #eaf3ff, var(--bg));
+      color:var(--text);
+    }
+
+    header{
+      position: sticky;
+      top:0;
+      z-index:10;
+      backdrop-filter: blur(10px);
+      background: rgba(243,246,251,.75);
+      border-bottom:1px solid rgba(226,232,240,.8);
+    }
+    .wrap{
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 14px 14px 30px;
+    }
+    .titleRow{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding: 10px 0 6px;
+    }
+    .brand{
+      display:flex;align-items:center;gap:10px;
+      font-weight:800;
+      letter-spacing:.2px;
+    }
+    .dot{
+      width:34px;height:34px;border-radius:10px;
+      background: radial-gradient(circle at 30% 30%, #90caf9, #1976d2);
+      box-shadow: 0 8px 18px rgba(25,118,210,.35);
+    }
+    .sub{font-size:12px;color:var(--muted);font-weight:600;margin-top:2px}
+
+    .btn{
+      border:1px solid var(--border);
+      background:#fff;
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-weight:700;
+      cursor:pointer;
+      box-shadow: 0 2px 10px rgba(2,6,23,.06);
+      transition: transform 120ms var(--ease), background 120ms var(--ease), border-color 120ms var(--ease);
+      -webkit-tap-highlight-color: transparent;
+      user-select:none;
+      white-space:nowrap;
+    }
+    .btn:active{transform:scale(.98)}
+    .btn.primary{
+      background: linear-gradient(180deg, #1f7ae0, var(--primary));
+      border-color: rgba(25,118,210,.35);
+      color:#fff;
+      box-shadow: 0 10px 20px rgba(25,118,210,.28);
+    }
+    .btn.danger{
+      background:#fff;
+      border-color: rgba(220,38,38,.35);
+      color: var(--danger);
+    }
+    .btn.ghost{ background: rgba(255,255,255,.6); }
+    .mini{
+      padding: 8px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin-top: 10px;
+    }
+
+    .card{
+      background: rgba(255,255,255,.9);
+      border: 1px solid rgba(226,232,240,.85);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      contain: layout paint style; /* giảm ảnh hưởng reflow */
+    }
+    .cardHeader{
+      padding: 12px 14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      border-bottom:1px solid rgba(226,232,240,.8);
+      background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,255,255,.78));
+    }
+    .cardHeader h3{
+      margin:0;
+      font-size: 14px;
+      letter-spacing:.2px;
+    }
+    .cardBody{padding: 12px 14px}
+
+    .field{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      margin-bottom: 10px;
+    }
+    label{
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 700;
+    }
+    input[type="text"], textarea{
+      width:100%;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-size: 14px;
+      outline:none;
+      background:#fff;
+    }
+    textarea{
+      min-height: 170px;
+      resize: vertical;
+      line-height: 1.45;
+    }
+    input:focus, textarea:focus{
+      border-color: rgba(25,118,210,.55);
+      box-shadow: 0 0 0 3px rgba(25,118,210,.14);
+    }
+    .row{
+      display:flex; gap:10px; flex-wrap:wrap;
+      align-items:center;
+    }
+    .hint{
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 8px;
+      line-height:1.35;
+    }
+    .mutedSmall{font-size:12px;color:var(--muted);font-weight:700}
+
+    /* ===== Collapsible editor (GPU-friendly) =====
+       Không dùng max-height để tránh layout thrash.
+       Ta dùng grid rows + transform/opacity.
+    */
+    .editorPanel{
+      display:grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows var(--dur) var(--ease);
+    }
+    .editorOpen .editorPanel{
+      grid-template-rows: 1fr;
+    }
+
+    .editorInner{
+      overflow:hidden;
+    }
+
+    /* Phần content sẽ fade/slide nhẹ, dùng transform (GPU) */
+    .editorMotion{
+      transform: translate3d(0,-6px,0);
+      opacity: 0;
+      will-change: transform, opacity;
+      transition: transform var(--dur) var(--ease), opacity var(--dur) var(--ease);
+      content-visibility: auto;
+      contain-intrinsic-size: 280px;
+    }
+    .editorOpen .editorMotion{
+      transform: translate3d(0,0,0);
+      opacity: 1;
+    }
+
+    /* Header có thể bấm */
+    .editorHeaderClickable{
+      cursor:pointer;
+      user-select:none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .toggleBtn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width: 40px;
+      height: 34px;
+      border-radius: 12px;
+      border:1px solid var(--border);
+      background:#fff;
+      font-weight: 1000;
+      cursor:pointer;
+      box-shadow: 0 2px 10px rgba(2,6,23,.06);
+      -webkit-tap-highlight-color: transparent;
+      user-select:none;
+      transition: transform 120ms var(--ease);
+      flex: 0 0 auto;
+    }
+    .toggleBtn:active{transform:scale(.98)}
+    .toggleIcon{
+      font-size: 18px;
+      line-height: 1;
+      transform: translateY(-1px);
+    }
+
+    /* List */
+    .toolbar{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      width:100%;
+    }
+    .search{
+      flex: 1 1 220px;
+      min-width: 220px;
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
+    .search input{flex:1}
+
+    .list{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      padding: 12px 14px 14px;
+    }
+    .item{
+      border:1px solid rgba(226,232,240,.9);
+      border-radius: 14px;
+      background: rgba(255,255,255,.92);
+      box-shadow: 0 8px 18px rgba(2,6,23,.05);
+      overflow:hidden;
+    }
+    .itemTop{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:10px;
+      padding: 10px 12px;
+    }
+    .itemTitle{
+      font-weight:900;
+      font-size: 14px;
+      margin:0;
+      line-height:1.25;
+      word-break:break-word;
+    }
+    .meta{
+      font-size: 11px;
+      color: var(--muted);
+      margin-top:4px;
+      font-weight:600;
+    }
+    .badgePin{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      font-size:11px;
+      font-weight:800;
+      color:#0b4aa2;
+      background: rgba(100,181,246,.25);
+      border:1px solid rgba(100,181,246,.45);
+      padding: 4px 8px;
+      border-radius:999px;
+      white-space:nowrap;
+    }
+    .itemBtns{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+    .itemPreview{
+      padding: 0 12px 12px;
+      color: #111827;
+      opacity:.92;
+      font-size: 13px;
+      line-height:1.35;
+      white-space: pre-wrap;
+      word-break:break-word;
+    }
+    .empty{
+      padding: 22px 14px;
+      text-align:center;
+      color: var(--muted);
+      font-weight: 800;
+    }
+
+    /* Toast */
+    .toast{
+      position: fixed;
+      left: 50%;
+      bottom: calc(18px + env(safe-area-inset-bottom));
+      transform: translate3d(-50%,0,0);
+      background: rgba(15,23,42,.92);
+      color:#fff;
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 800;
+      box-shadow: 0 18px 40px rgba(0,0,0,.25);
+      opacity:0;
+      pointer-events:none;
+      transition: opacity 140ms var(--ease), transform 140ms var(--ease);
+      z-index:9999;
+      will-change: transform, opacity;
+    }
+    .toast.show{
+      opacity:1;
+      transform: translate3d(-50%,-2px,0);
+    }
+
+    /* Reduce motion */
+    @media (prefers-reduced-motion: reduce){
+      :root{ --dur: 1ms; }
+      .editorPanel, .editorMotion, .toast, .btn { transition: none !important; }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="wrap">
+      <div class="titleRow">
+        <div>
+          <div class="brand">
+            <span class="dot"></span>
+            <div>
+              <div>GHI CHÚ • COPY NHANH</div>
+              <div class="sub">Tự lưu • Tìm kiếm • Ghim • Copy 1 chạm</div>
+            </div>
+          </div>
+        </div>
+        <button class="btn ghost" id="btnExport" title="Xuất dữ liệu ra file .json">Xuất JSON</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="grid">
+
+      <!-- SOẠN GHI CHÚ (bấm cả thanh để mở/đóng) -->
+      <section class="card" id="editorCard">
+        <div class="cardHeader editorHeaderClickable" id="editorHeader" role="button" aria-label="Mở/Thu nhỏ soạn ghi chú" tabindex="0">
+          <h3>Soạn ghi chú</h3>
+
+          <div class="row" style="gap:8px;">
+            <div class="mutedSmall" id="status">—</div>
+            <!-- nút riêng vẫn hoạt động -->
+            <button class="toggleBtn" id="btnToggleEditor" aria-expanded="false" title="Mở/Thu nhỏ">
+              <span class="toggleIcon" id="toggleIcon">+</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="editorPanel" id="editorPanel">
+          <div class="editorInner">
+            <div class="editorMotion" id="editorMotion">
+              <div class="cardBody">
+                <div class="field">
+                  <label for="title">Tiêu đề</label>
+                  <input id="title" type="text" placeholder="VD: Mã WiFi, Nội dung cần copy, ..." />
+                </div>
+
+                <div class="field">
+                  <label for="content">Nội dung</label>
+                  <textarea id="content" placeholder="Nhập ghi chú ở đây..."></textarea>
+                </div>
+
+                <div class="row">
+                  <button class="btn primary" id="btnSave">Lưu / Cập nhật</button>
+                  <button class="btn" id="btnCopy">Copy nội dung</button>
+                  <button class="btn" id="btnNew">Tạo mới</button>
+                  <button class="btn danger" id="btnDelete" disabled>Xóa</button>
+                </div>
+
+                <div class="hint">
+                  Bấm <b>+</b> để mở, <b>–</b> để thu nhỏ. Ghi chú tự lưu trong máy.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- DANH SÁCH -->
+      <section class="card">
+        <div class="cardHeader">
+          <h3>Danh sách ghi chú</h3>
+          <div class="toolbar">
+            <div class="search">
+              <input id="search" type="text" placeholder="Tìm theo tiêu đề / nội dung..." />
+              <button class="btn mini" id="btnCopyAll" title="Copy tất cả ghi chú">Copy all</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="list" id="list"></div>
+        <div class="empty" id="empty" style="display:none">
+          Chưa có ghi chú nào.<br/>Bấm <b>Soạn ghi chú</b> để mở và tạo.
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <div class="toast" id="toast">Đã copy</div>
+
+<script>
+(() => {
+  const $ = (id) => document.getElementById(id);
+
+  const els = {
+    editorCard: $("editorCard"),
+    editorHeader: $("editorHeader"),
+    editorPanel: $("editorPanel"),
+    editorMotion: $("editorMotion"),
+    btnToggleEditor: $("btnToggleEditor"),
+    toggleIcon: $("toggleIcon"),
+
+    title: $("title"),
+    content: $("content"),
+    btnSave: $("btnSave"),
+    btnCopy: $("btnCopy"),
+    btnNew: $("btnNew"),
+    btnDelete: $("btnDelete"),
+    status: $("status"),
+
+    list: $("list"),
+    empty: $("empty"),
+    search: $("search"),
+    btnCopyAll: $("btnCopyAll"),
+    toast: $("toast"),
+    btnExport: $("btnExport"),
+  };
+
+  const STORAGE_KEY = "quick_notes_v1";
+  const UI_KEY = "quick_notes_ui_editor_open_v2";
+
+  let notes = [];
+  let selectedId = null;
+  let toastTimer = null;
+
+  const nowISO = () => new Date().toISOString();
+  const fmtTime = (iso) => {
+    try {
+      const d = new Date(iso);
+      return d.toLocaleString("vi-VN", { hour12:false });
+    } catch { return ""; }
+  };
+  const uid = () => (crypto?.randomUUID?.() || ("id_" + Math.random().toString(16).slice(2) + Date.now()));
+  const normalize = (s) => (s || "").toString().toLowerCase();
+
+  const load = () => {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      notes = raw ? JSON.parse(raw) : [];
+      if (!Array.isArray(notes)) notes = [];
+    } catch { notes = []; }
+  };
+  const saveStore = () => localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
+
+  const showToast = (msg) => {
+    els.toast.textContent = msg;
+    els.toast.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => els.toast.classList.remove("show"), 1200);
+  };
+  const setStatus = (msg) => els.status.textContent = msg || "—";
+
+  // ===== Editor open/close (toggle) =====
+  const setEditorOpen = (open, focus = true) => {
+    const isOpen = els.editorCard.classList.contains("editorOpen");
+    if (open === isOpen) return;
+
+    if (open){
+      els.editorCard.classList.add("editorOpen");
+      els.toggleIcon.textContent = "–";
+      els.btnToggleEditor.setAttribute("aria-expanded", "true");
+      localStorage.setItem(UI_KEY, "1");
+
+      if (focus){
+        requestAnimationFrame(() => {
+          // focus sau 1 frame để layout ổn định
+          setTimeout(() => (els.title.value ? els.content.focus() : els.title.focus()), 60);
+        });
+      }
+    } else {
+      els.editorCard.classList.remove("editorOpen");
+      els.toggleIcon.textContent = "+";
+      els.btnToggleEditor.setAttribute("aria-expanded", "false");
+      localStorage.setItem(UI_KEY, "0");
+    }
+  };
+
+  const toggleEditor = (focus = true) => {
+    const isOpen = els.editorCard.classList.contains("editorOpen");
+    setEditorOpen(!isOpen, focus);
+  };
+
+  const getEditorOpen = () => localStorage.getItem(UI_KEY) === "1";
+
+  // ===== Notes filtering/sorting =====
+  const filteredNotes = () => {
+    const q = normalize(els.search.value).trim();
+    let arr = [...notes];
+
+    arr.sort((a,b) => {
+      if (!!b.pinned !== !!a.pinned) return (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0);
+      return (b.updatedAt || "").localeCompare(a.updatedAt || "");
+    }).reverse();
+
+    if (!q) return arr;
+    return arr.filter(n => normalize(n.title).includes(q) || normalize(n.content).includes(q));
+  };
+
+  const render = () => {
+    const arr = filteredNotes();
+    els.list.innerHTML = "";
+    els.empty.style.display = arr.length ? "none" : "block";
+
+    arr.forEach(n => {
+      const item = document.createElement("div");
+      item.className = "item";
+
+      const top = document.createElement("div");
+      top.className = "itemTop";
+
+      const left = document.createElement("div");
+      left.style.minWidth = "0";
+      left.style.flex = "1";
+
+      const title = document.createElement("div");
+      title.className = "itemTitle";
+      title.textContent = n.title || "(Không tiêu đề)";
+
+      const meta = document.createElement("div");
+      meta.className = "meta";
+      meta.innerHTML = `${fmtTime(n.updatedAt || n.createdAt)}${n.pinned ? ' • <span class="badgePin">📌 Ghim</span>' : ""}`;
+
+      left.appendChild(title);
+      left.appendChild(meta);
+
+      const btns = document.createElement("div");
+      btns.className = "itemBtns";
+
+      const bOpen = document.createElement("button");
+      bOpen.className = "btn mini";
+      bOpen.textContent = "Mở";
+      bOpen.onclick = () => selectNote(n.id);
+
+      const bCopy = document.createElement("button");
+      bCopy.className = "btn mini primary";
+      bCopy.textContent = "Copy";
+      bCopy.onclick = async () => {
+        await copyText(n.content || "");
+        showToast("Đã copy ghi chú");
+      };
+
+      const bPin = document.createElement("button");
+      bPin.className = "btn mini";
+      bPin.textContent = n.pinned ? "Bỏ ghim" : "Ghim";
+      bPin.onclick = () => {
+        n.pinned = !n.pinned;
+        n.updatedAt = nowISO();
+        saveStore();
+        render();
+      };
+
+      const bDel = document.createElement("button");
+      bDel.className = "btn mini danger";
+      bDel.textContent = "Xóa";
+      bDel.onclick = () => deleteNote(n.id);
+
+      btns.appendChild(bOpen);
+      btns.appendChild(bCopy);
+      btns.appendChild(bPin);
+      btns.appendChild(bDel);
+
+      top.appendChild(left);
+      top.appendChild(btns);
+
+      const preview = document.createElement("div");
+      preview.className = "itemPreview";
+      preview.textContent = (n.content || "").slice(0, 260) + ((n.content || "").length > 260 ? "…" : "");
+
+      if (n.id === selectedId){
+        item.style.borderColor = "rgba(25,118,210,.55)";
+        item.style.boxShadow = "0 10px 26px rgba(25,118,210,.14)";
+      }
+
+      item.appendChild(top);
+      item.appendChild(preview);
+      els.list.appendChild(item);
+    });
+  };
+
+  const clearEditor = () => {
+    selectedId = null;
+    els.title.value = "";
+    els.content.value = "";
+    els.btnDelete.disabled = true;
+    setStatus("Tạo mới");
+  };
+
+  const selectNote = (id) => {
+    const n = notes.find(x => x.id === id);
+    if (!n) return;
+    selectedId = id;
+    els.title.value = n.title || "";
+    els.content.value = n.content || "";
+    els.btnDelete.disabled = false;
+    setStatus("Đang sửa");
+    render();
+    setEditorOpen(true, true);
+  };
+
+  const upsert = () => {
+    const title = (els.title.value || "").trim();
+    const content = (els.content.value || "").trim();
+
+    if (!title && !content){
+      showToast("Nhập tiêu đề hoặc nội dung trước nhé");
+      return;
+    }
+
+    if (selectedId){
+      const n = notes.find(x => x.id === selectedId);
+      if (!n) return;
+      n.title = title;
+      n.content = content;
+      n.updatedAt = nowISO();
+      saveStore();
+      showToast("Đã cập nhật");
+      setStatus("Đã cập nhật");
+    } else {
+      const n = {
+        id: uid(),
+        title,
+        content,
+        pinned: false,
+        createdAt: nowISO(),
+        updatedAt: nowISO()
+      };
+      notes.push(n);
+      selectedId = n.id;
+      saveStore();
+      showToast("Đã lưu");
+      setStatus("Đã lưu");
+      els.btnDelete.disabled = false;
+    }
+    render();
+  };
+
+  const deleteNote = (id) => {
+    const n = notes.find(x => x.id === id);
+    if (!n) return;
+    const ok = confirm(`Xóa ghi chú: "${n.title || "(Không tiêu đề)"}" ?`);
+    if (!ok) return;
+    notes = notes.filter(x => x.id !== id);
+    if (selectedId === id) clearEditor();
+    saveStore();
+    render();
+    showToast("Đã xóa");
+  };
+
+  const copyText = async (text) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } catch (e) {
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.setAttribute("readonly", "");
+      ta.style.position = "fixed";
+      ta.style.left = "-9999px";
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand("copy"); } catch {}
+      document.body.removeChild(ta);
+      return true;
+    }
+  };
+
+  const copyCurrent = async () => {
+    const text = (els.content.value || "").trim();
+    if (!text){
+      showToast("Chưa có nội dung để copy");
+      return;
+    }
+    await copyText(text);
+    showToast("Đã copy nội dung");
+  };
+
+  const copyAll = async () => {
+    if (!notes.length){
+      showToast("Không có ghi chú nào");
+      return;
+    }
+    const arr = filteredNotes();
+    const joined = arr.map((n) => {
+      const t = n.title ? `# ${n.title}` : `# (Không tiêu đề)`;
+      const c = (n.content || "");
+      return `${t}\n${c}\n`;
+    }).join("\n");
+    await copyText(joined.trim());
+    showToast("Đã copy tất cả");
+  };
+
+  const exportJSON = () => {
+    const data = JSON.stringify(notes, null, 2);
+    const blob = new Blob([data], {type:"application/json"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "ghi-chu-backup.json";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1500);
+    showToast("Đã xuất JSON");
+  };
+
+  // ===== Events =====
+  els.btnSave.addEventListener("click", upsert);
+  els.btnCopy.addEventListener("click", copyCurrent);
+  els.btnNew.addEventListener("click", () => { clearEditor(); render(); setEditorOpen(true, true); });
+  els.btnDelete.addEventListener("click", () => { if (selectedId) deleteNote(selectedId); });
+
+  els.search.addEventListener("input", render);
+  els.btnCopyAll.addEventListener("click", copyAll);
+  els.btnExport.addEventListener("click", exportJSON);
+
+  // 1) Bấm nút +/-
+  els.btnToggleEditor.addEventListener("click", (e) => {
+    e.stopPropagation(); // tránh trigger header
+    toggleEditor(true);
+  });
+
+  // 2) Bấm cả thanh header (trừ khi bấm vào nút)
+  els.editorHeader.addEventListener("click", () => toggleEditor(true));
+
+  // 3) Keyboard accessibility (Enter/Space trên header)
+  els.editorHeader.addEventListener("keydown", (e) => {
+    const k = (e.key || "").toLowerCase();
+    if (k === "enter" || k === " "){
+      e.preventDefault();
+      toggleEditor(true);
+    }
+  });
+
+  // Ctrl/Cmd+S to save, Esc to close
+  window.addEventListener("keydown", (e) => {
+    const key = (e.key || "").toLowerCase();
+    if ((e.ctrlKey || e.metaKey) && key === "s"){
+      e.preventDefault();
+      upsert();
+    }
+    if (key === "escape"){
+      setEditorOpen(false, false);
+    }
+  }, {passive:false});
+
+  // Init
+  load();
+  clearEditor();
+  render();
+  setEditorOpen(getEditorOpen(), false);
+})();
+</script>
+</body>
+</html>
