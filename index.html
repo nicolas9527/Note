@@ -19,7 +19,6 @@
       --shadow: 0 10px 30px rgba(2,6,23,.08);
       --radius:14px;
 
-      /* animation */
       --dur: 180ms;
       --ease: cubic-bezier(.2,.8,.2,1);
     }
@@ -112,7 +111,7 @@
       border-radius: var(--radius);
       box-shadow: var(--shadow);
       overflow:hidden;
-      contain: layout paint style; /* giảm ảnh hưởng reflow */
+      contain: layout paint style;
     }
     .cardHeader{
       padding: 12px 14px;
@@ -130,35 +129,6 @@
     }
     .cardBody{padding: 12px 14px}
 
-    .field{
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-      margin-bottom: 10px;
-    }
-    label{
-      font-size: 12px;
-      color: var(--muted);
-      font-weight: 700;
-    }
-    input[type="text"], textarea{
-      width:100%;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 10px 12px;
-      font-size: 14px;
-      outline:none;
-      background:#fff;
-    }
-    textarea{
-      min-height: 170px;
-      resize: vertical;
-      line-height: 1.45;
-    }
-    input:focus, textarea:focus{
-      border-color: rgba(25,118,210,.55);
-      box-shadow: 0 0 0 3px rgba(25,118,210,.14);
-    }
     .row{
       display:flex; gap:10px; flex-wrap:wrap;
       align-items:center;
@@ -171,24 +141,15 @@
     }
     .mutedSmall{font-size:12px;color:var(--muted);font-weight:700}
 
-    /* ===== Collapsible editor (GPU-friendly) =====
-       Không dùng max-height để tránh layout thrash.
-       Ta dùng grid rows + transform/opacity.
-    */
+    /* ===== Collapsible editor ===== */
     .editorPanel{
       display:grid;
       grid-template-rows: 0fr;
       transition: grid-template-rows var(--dur) var(--ease);
     }
-    .editorOpen .editorPanel{
-      grid-template-rows: 1fr;
-    }
+    .editorOpen .editorPanel{ grid-template-rows: 1fr; }
+    .editorInner{ overflow:hidden; }
 
-    .editorInner{
-      overflow:hidden;
-    }
-
-    /* Phần content sẽ fade/slide nhẹ, dùng transform (GPU) */
     .editorMotion{
       transform: translate3d(0,-6px,0);
       opacity: 0;
@@ -202,7 +163,6 @@
       opacity: 1;
     }
 
-    /* Header có thể bấm */
     .editorHeaderClickable{
       cursor:pointer;
       user-select:none;
@@ -233,7 +193,70 @@
       transform: translateY(-1px);
     }
 
-    /* List */
+    /* ===== Fields with clear (X) ===== */
+    .field{ display:flex; flex-direction:column; gap:6px; margin-bottom:10px; }
+    label{ font-size: 12px; color: var(--muted); font-weight: 700; }
+    .inputWrap{
+      position: relative;
+    }
+    input[type="text"], textarea{
+      width:100%;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-size: 14px;
+      outline:none;
+      background:#fff;
+    }
+    /* chừa chỗ cho nút X */
+    input[type="text"]{ padding-right: 42px; }
+    textarea{
+      min-height: 170px;
+      resize: vertical;
+      line-height: 1.45;
+      padding-right: 42px;
+    }
+    input:focus, textarea:focus{
+      border-color: rgba(25,118,210,.55);
+      box-shadow: 0 0 0 3px rgba(25,118,210,.14);
+    }
+
+    .clearBtn{
+      position:absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      border: 1px solid rgba(226,232,240,.9);
+      background: rgba(255,255,255,.95);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight: 900;
+      color: #64748b;
+      cursor:pointer;
+      -webkit-tap-highlight-color: transparent;
+      box-shadow: 0 6px 16px rgba(2,6,23,.08);
+      opacity: 0;
+      pointer-events:none;
+      transition: opacity 120ms var(--ease), transform 120ms var(--ease);
+    }
+    .clearBtn.show{
+      opacity: 1;
+      pointer-events:auto;
+    }
+    .clearBtn:active{ transform: translateY(-50%) scale(.96); }
+
+    /* textarea: nút X nằm góc phải trên */
+    .clearBtn.textarea{
+      top: 12px;
+      transform: none;
+    }
+    .clearBtn.textarea:active{ transform: scale(.96); }
+
+    /* ===== List toolbar ===== */
     .toolbar{
       display:flex;
       gap:10px;
@@ -248,8 +271,9 @@
       gap:10px;
       align-items:center;
     }
-    .search input{flex:1}
+    .search input{flex:1; padding-right:12px;}
 
+    /* ===== List items ===== */
     .list{
       display:flex;
       flex-direction:column;
@@ -302,15 +326,38 @@
       flex-wrap:wrap;
       justify-content:flex-end;
     }
+
+    /* Preview clamp + “Xem thêm” */
     .itemPreview{
       padding: 0 12px 12px;
-      color: #111827;
+      color:#111827;
       opacity:.92;
       font-size: 13px;
       line-height:1.35;
       white-space: pre-wrap;
-      word-break:break-word;
+      word-break: break-word;
     }
+    .clamp{
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 4; /* hiển thị khoảng nhiêu đó thôi */
+      overflow: hidden;
+    }
+    .moreRow{
+      padding: 0 12px 12px;
+      margin-top: -6px;
+    }
+    .moreBtn{
+      border:none;
+      background: transparent;
+      color: var(--primary); /* xanh dương */
+      font-weight: 900;
+      cursor:pointer;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .moreBtn:active{ opacity:.75; }
+
     .empty{
       padding: 22px 14px;
       text-align:center;
@@ -342,10 +389,9 @@
       transform: translate3d(-50%,-2px,0);
     }
 
-    /* Reduce motion */
     @media (prefers-reduced-motion: reduce){
       :root{ --dur: 1ms; }
-      .editorPanel, .editorMotion, .toast, .btn { transition: none !important; }
+      .editorPanel, .editorMotion, .toast, .btn, .clearBtn { transition: none !important; }
     }
   </style>
 </head>
@@ -371,14 +417,13 @@
   <main class="wrap">
     <div class="grid">
 
-      <!-- SOẠN GHI CHÚ (bấm cả thanh để mở/đóng) -->
+      <!-- SOẠN GHI CHÚ -->
       <section class="card" id="editorCard">
         <div class="cardHeader editorHeaderClickable" id="editorHeader" role="button" aria-label="Mở/Thu nhỏ soạn ghi chú" tabindex="0">
           <h3>Soạn ghi chú</h3>
 
           <div class="row" style="gap:8px;">
             <div class="mutedSmall" id="status">—</div>
-            <!-- nút riêng vẫn hoạt động -->
             <button class="toggleBtn" id="btnToggleEditor" aria-expanded="false" title="Mở/Thu nhỏ">
               <span class="toggleIcon" id="toggleIcon">+</span>
             </button>
@@ -389,14 +434,21 @@
           <div class="editorInner">
             <div class="editorMotion" id="editorMotion">
               <div class="cardBody">
+
                 <div class="field">
                   <label for="title">Tiêu đề</label>
-                  <input id="title" type="text" placeholder="VD: Mã WiFi, Nội dung cần copy, ..." />
+                  <div class="inputWrap">
+                    <input id="title" type="text" placeholder="VD: Mã WiFi, Nội dung cần copy, ..." />
+                    <button class="clearBtn" id="clearTitle" type="button" aria-label="Xoá tiêu đề">✕</button>
+                  </div>
                 </div>
 
                 <div class="field">
                   <label for="content">Nội dung</label>
-                  <textarea id="content" placeholder="Nhập ghi chú ở đây..."></textarea>
+                  <div class="inputWrap">
+                    <textarea id="content" placeholder="Nhập ghi chú ở đây..."></textarea>
+                    <button class="clearBtn textarea" id="clearContent" type="button" aria-label="Xoá nội dung">✕</button>
+                  </div>
                 </div>
 
                 <div class="row">
@@ -407,8 +459,9 @@
                 </div>
 
                 <div class="hint">
-                  Bấm <b>+</b> để mở, <b>–</b> để thu nhỏ. Ghi chú tự lưu trong máy.
+                  Có nút <b>✕</b> để xoá nhanh. Danh sách hiển thị ngắn + <b>… Xem thêm</b>.
                 </div>
+
               </div>
             </div>
           </div>
@@ -445,13 +498,14 @@
   const els = {
     editorCard: $("editorCard"),
     editorHeader: $("editorHeader"),
-    editorPanel: $("editorPanel"),
-    editorMotion: $("editorMotion"),
     btnToggleEditor: $("btnToggleEditor"),
     toggleIcon: $("toggleIcon"),
 
     title: $("title"),
     content: $("content"),
+    clearTitle: $("clearTitle"),
+    clearContent: $("clearContent"),
+
     btnSave: $("btnSave"),
     btnCopy: $("btnCopy"),
     btnNew: $("btnNew"),
@@ -467,11 +521,23 @@
   };
 
   const STORAGE_KEY = "quick_notes_v1";
-  const UI_KEY = "quick_notes_ui_editor_open_v2";
+  const UI_KEY = "quick_notes_ui_editor_open_v3";
+  const EXPAND_KEY = "quick_notes_expanded_ids_v1";
 
   let notes = [];
   let selectedId = null;
   let toastTimer = null;
+
+  // lưu trạng thái “xem thêm” theo id (Set)
+  let expanded = new Set();
+  try {
+    const raw = localStorage.getItem(EXPAND_KEY);
+    if (raw) expanded = new Set(JSON.parse(raw));
+  } catch {}
+
+  const persistExpanded = () => {
+    try { localStorage.setItem(EXPAND_KEY, JSON.stringify([...expanded])); } catch {}
+  };
 
   const nowISO = () => new Date().toISOString();
   const fmtTime = (iso) => {
@@ -500,7 +566,7 @@
   };
   const setStatus = (msg) => els.status.textContent = msg || "—";
 
-  // ===== Editor open/close (toggle) =====
+  // ===== Editor toggle =====
   const setEditorOpen = (open, focus = true) => {
     const isOpen = els.editorCard.classList.contains("editorOpen");
     if (open === isOpen) return;
@@ -513,7 +579,6 @@
 
       if (focus){
         requestAnimationFrame(() => {
-          // focus sau 1 frame để layout ổn định
           setTimeout(() => (els.title.value ? els.content.focus() : els.title.focus()), 60);
         });
       }
@@ -532,6 +597,12 @@
 
   const getEditorOpen = () => localStorage.getItem(UI_KEY) === "1";
 
+  // ===== Clear X button visibility =====
+  const updateClearBtns = () => {
+    els.clearTitle.classList.toggle("show", (els.title.value || "").length > 0);
+    els.clearContent.classList.toggle("show", (els.content.value || "").length > 0);
+  };
+
   // ===== Notes filtering/sorting =====
   const filteredNotes = () => {
     const q = normalize(els.search.value).trim();
@@ -544,6 +615,11 @@
 
     if (!q) return arr;
     return arr.filter(n => normalize(n.title).includes(q) || normalize(n.content).includes(q));
+  };
+
+  const shouldShowMore = (text) => {
+    // ngưỡng “hiển thị ngắn thôi”
+    return (text || "").length > 260 || (text || "").split("\n").length > 6;
   };
 
   const render = () => {
@@ -614,7 +690,9 @@
 
       const preview = document.createElement("div");
       preview.className = "itemPreview";
-      preview.textContent = (n.content || "").slice(0, 260) + ((n.content || "").length > 260 ? "…" : "");
+      const isExpanded = expanded.has(n.id);
+      preview.classList.toggle("clamp", !isExpanded);
+      preview.textContent = (n.content || "");
 
       if (n.id === selectedId){
         item.style.borderColor = "rgba(25,118,210,.55)";
@@ -623,6 +701,28 @@
 
       item.appendChild(top);
       item.appendChild(preview);
+
+      // ... Xem thêm
+      const needMore = shouldShowMore(n.content || "");
+      if (needMore){
+        const moreRow = document.createElement("div");
+        moreRow.className = "moreRow";
+
+        const moreBtn = document.createElement("button");
+        moreBtn.className = "moreBtn";
+        moreBtn.type = "button";
+        moreBtn.textContent = isExpanded ? "Thu gọn" : "… Xem thêm";
+        moreBtn.onclick = () => {
+          if (expanded.has(n.id)) expanded.delete(n.id);
+          else expanded.add(n.id);
+          persistExpanded();
+          render();
+        };
+
+        moreRow.appendChild(moreBtn);
+        item.appendChild(moreRow);
+      }
+
       els.list.appendChild(item);
     });
   };
@@ -633,6 +733,7 @@
     els.content.value = "";
     els.btnDelete.disabled = true;
     setStatus("Tạo mới");
+    updateClearBtns();
   };
 
   const selectNote = (id) => {
@@ -643,6 +744,7 @@
     els.content.value = n.content || "";
     els.btnDelete.disabled = false;
     setStatus("Đang sửa");
+    updateClearBtns();
     render();
     setEditorOpen(true, true);
   };
@@ -681,6 +783,7 @@
       setStatus("Đã lưu");
       els.btnDelete.disabled = false;
     }
+    updateClearBtns();
     render();
   };
 
@@ -689,7 +792,11 @@
     if (!n) return;
     const ok = confirm(`Xóa ghi chú: "${n.title || "(Không tiêu đề)"}" ?`);
     if (!ok) return;
+
     notes = notes.filter(x => x.id !== id);
+    expanded.delete(id);
+    persistExpanded();
+
     if (selectedId === id) clearEditor();
     saveStore();
     render();
@@ -763,16 +870,14 @@
   els.btnCopyAll.addEventListener("click", copyAll);
   els.btnExport.addEventListener("click", exportJSON);
 
-  // 1) Bấm nút +/-
+  // Bấm nút +/-
   els.btnToggleEditor.addEventListener("click", (e) => {
-    e.stopPropagation(); // tránh trigger header
+    e.stopPropagation();
     toggleEditor(true);
   });
 
-  // 2) Bấm cả thanh header (trừ khi bấm vào nút)
+  // Bấm cả thanh header
   els.editorHeader.addEventListener("click", () => toggleEditor(true));
-
-  // 3) Keyboard accessibility (Enter/Space trên header)
   els.editorHeader.addEventListener("keydown", (e) => {
     const k = (e.key || "").toLowerCase();
     if (k === "enter" || k === " "){
@@ -781,24 +886,5 @@
     }
   });
 
-  // Ctrl/Cmd+S to save, Esc to close
-  window.addEventListener("keydown", (e) => {
-    const key = (e.key || "").toLowerCase();
-    if ((e.ctrlKey || e.metaKey) && key === "s"){
-      e.preventDefault();
-      upsert();
-    }
-    if (key === "escape"){
-      setEditorOpen(false, false);
-    }
-  }, {passive:false});
-
-  // Init
-  load();
-  clearEditor();
-  render();
-  setEditorOpen(getEditorOpen(), false);
-})();
-</script>
-</body>
-</html>
+  // Clear buttons
+  els
