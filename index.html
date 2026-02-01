@@ -196,9 +196,7 @@
     /* ===== Fields with clear (X) ===== */
     .field{ display:flex; flex-direction:column; gap:6px; margin-bottom:10px; }
     label{ font-size: 12px; color: var(--muted); font-weight: 700; }
-    .inputWrap{
-      position: relative;
-    }
+    .inputWrap{ position: relative; }
     input[type="text"], textarea{
       width:100%;
       border: 1px solid var(--border);
@@ -208,7 +206,6 @@
       outline:none;
       background:#fff;
     }
-    /* chừa chỗ cho nút X */
     input[type="text"]{ padding-right: 42px; }
     textarea{
       min-height: 170px;
@@ -220,7 +217,6 @@
       border-color: rgba(25,118,210,.55);
       box-shadow: 0 0 0 3px rgba(25,118,210,.14);
     }
-
     .clearBtn{
       position:absolute;
       right: 8px;
@@ -243,13 +239,9 @@
       pointer-events:none;
       transition: opacity 120ms var(--ease), transform 120ms var(--ease);
     }
-    .clearBtn.show{
-      opacity: 1;
-      pointer-events:auto;
-    }
+    .clearBtn.show{ opacity: 1; pointer-events:auto; }
     .clearBtn:active{ transform: translateY(-50%) scale(.96); }
 
-    /* textarea: nút X nằm góc phải trên */
     .clearBtn.textarea{
       top: 12px;
       transform: none;
@@ -265,7 +257,7 @@
       width:100%;
     }
     .search{
-      flex: 1 1 220px;
+      flex: 1 1 220144;
       min-width: 220px;
       display:flex;
       gap:10px;
@@ -340,7 +332,7 @@
     .clamp{
       display: -webkit-box;
       -webkit-box-orient: vertical;
-      -webkit-line-clamp: 4; /* hiển thị khoảng nhiêu đó thôi */
+      -webkit-line-clamp: 4;
       overflow: hidden;
     }
     .moreRow{
@@ -350,7 +342,7 @@
     .moreBtn{
       border:none;
       background: transparent;
-      color: var(--primary); /* xanh dương */
+      color: var(--primary);
       font-weight: 900;
       cursor:pointer;
       padding: 0;
@@ -421,7 +413,6 @@
       <section class="card" id="editorCard">
         <div class="cardHeader editorHeaderClickable" id="editorHeader" role="button" aria-label="Mở/Thu nhỏ soạn ghi chú" tabindex="0">
           <h3>Soạn ghi chú</h3>
-
           <div class="row" style="gap:8px;">
             <div class="mutedSmall" id="status">—</div>
             <button class="toggleBtn" id="btnToggleEditor" aria-expanded="false" title="Mở/Thu nhỏ">
@@ -430,9 +421,9 @@
           </div>
         </div>
 
-        <div class="editorPanel" id="editorPanel">
+        <div class="editorPanel">
           <div class="editorInner">
-            <div class="editorMotion" id="editorMotion">
+            <div class="editorMotion">
               <div class="cardBody">
 
                 <div class="field">
@@ -528,7 +519,7 @@
   let selectedId = null;
   let toastTimer = null;
 
-  // lưu trạng thái “xem thêm” theo id (Set)
+  // “xem thêm” theo id
   let expanded = new Set();
   try {
     const raw = localStorage.getItem(EXPAND_KEY);
@@ -564,9 +555,10 @@
     clearTimeout(toastTimer);
     toastTimer = setTimeout(() => els.toast.classList.remove("show"), 1200);
   };
+
   const setStatus = (msg) => els.status.textContent = msg || "—";
 
-  // ===== Editor toggle =====
+  // ===== Editor open/close =====
   const setEditorOpen = (open, focus = true) => {
     const isOpen = els.editorCard.classList.contains("editorOpen");
     if (open === isOpen) return;
@@ -595,19 +587,18 @@
     setEditorOpen(!isOpen, focus);
   };
 
-  const getEditorOpen = () => localStorage.getItem(UI_KEY) === "1";
-
-  // ===== Clear X button visibility =====
+  // ===== Nút X hiển thị/ẩn =====
   const updateClearBtns = () => {
     els.clearTitle.classList.toggle("show", (els.title.value || "").length > 0);
     els.clearContent.classList.toggle("show", (els.content.value || "").length > 0);
   };
 
-  // ===== Notes filtering/sorting =====
+  // ===== Filter/sort =====
   const filteredNotes = () => {
     const q = normalize(els.search.value).trim();
     let arr = [...notes];
 
+    // pinned first + updated desc
     arr.sort((a,b) => {
       if (!!b.pinned !== !!a.pinned) return (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0);
       return (b.updatedAt || "").localeCompare(a.updatedAt || "");
@@ -618,7 +609,6 @@
   };
 
   const shouldShowMore = (text) => {
-    // ngưỡng “hiển thị ngắn thôi”
     return (text || "").length > 260 || (text || "").split("\n").length > 6;
   };
 
@@ -702,9 +692,7 @@
       item.appendChild(top);
       item.appendChild(preview);
 
-      // ... Xem thêm
-      const needMore = shouldShowMore(n.content || "");
-      if (needMore){
+      if (shouldShowMore(n.content || "")){
         const moreRow = document.createElement("div");
         moreRow.className = "moreRow";
 
@@ -783,6 +771,7 @@
       setStatus("Đã lưu");
       els.btnDelete.disabled = false;
     }
+
     updateClearBtns();
     render();
   };
@@ -870,7 +859,7 @@
   els.btnCopyAll.addEventListener("click", copyAll);
   els.btnExport.addEventListener("click", exportJSON);
 
-  // Bấm nút +/-
+  // Toggle +/-
   els.btnToggleEditor.addEventListener("click", (e) => {
     e.stopPropagation();
     toggleEditor(true);
@@ -887,4 +876,42 @@
   });
 
   // Clear buttons
-  els
+  els.title.addEventListener("input", updateClearBtns);
+  els.content.addEventListener("input", updateClearBtns);
+
+  els.clearTitle.addEventListener("click", (e) => {
+    e.stopPropagation();
+    els.title.value = "";
+    updateClearBtns();
+    els.title.focus();
+  });
+
+  els.clearContent.addEventListener("click", (e) => {
+    e.stopPropagation();
+    els.content.value = "";
+    updateClearBtns();
+    els.content.focus();
+  });
+
+  // Keyboard shortcuts
+  window.addEventListener("keydown", (e) => {
+    const key = (e.key || "").toLowerCase();
+    if ((e.ctrlKey || e.metaKey) && key === "s"){
+      e.preventDefault();
+      upsert();
+    }
+    if (key === "escape"){
+      setEditorOpen(false, false);
+    }
+  }, {passive:false});
+
+  // Init
+  load();
+  clearEditor();
+  render();
+  updateClearBtns();
+  setEditorOpen(localStorage.getItem(UI_KEY) === "1", false);
+})();
+</script>
+</body>
+</html>
