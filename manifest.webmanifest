@@ -1,0 +1,17 @@
+{
+  "name": "Ghi chú • Copy nhanh",
+  "short_name": "Ghi chú",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f3f6fb",
+  "theme_color": "#1976d2",
+  "icons": [
+    {
+      "src": "icon.PNG",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
