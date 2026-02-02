@@ -5,8 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Ghi chú" />
   <meta name="theme-color" content="#1976d2" />
   <title>Ghi chú • Copy nhanh</title>
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.PNG" type="image/png">
+  <link rel="apple-touch-icon" href="icon.PNG">
 
   <style>
     :root{
@@ -241,7 +247,6 @@
     }
     .clearBtn.show{ opacity: 1; pointer-events:auto; }
     .clearBtn:active{ transform: translateY(-50%) scale(.96); }
-
     .clearBtn.textarea{
       top: 12px;
       transform: none;
@@ -257,7 +262,7 @@
       width:100%;
     }
     .search{
-      flex: 1 1 220144;
+      flex: 1 1 220px;
       min-width: 220px;
       display:flex;
       gap:10px;
@@ -295,7 +300,7 @@
     }
     .meta{
       font-size: 11px;
-      color: var(--muted);
+      color:var(--muted);
       margin-top:4px;
       font-weight:600;
     }
@@ -353,8 +358,8 @@
     .empty{
       padding: 22px 14px;
       text-align:center;
-      color: var(--muted);
-      font-weight: 800;
+      color:var(--muted);
+      font-weight:800;
     }
 
     /* Toast */
@@ -519,7 +524,6 @@
   let selectedId = null;
   let toastTimer = null;
 
-  // “xem thêm” theo id
   let expanded = new Set();
   try {
     const raw = localStorage.getItem(EXPAND_KEY);
@@ -558,7 +562,6 @@
 
   const setStatus = (msg) => els.status.textContent = msg || "—";
 
-  // ===== Editor open/close =====
   const setEditorOpen = (open, focus = true) => {
     const isOpen = els.editorCard.classList.contains("editorOpen");
     if (open === isOpen) return;
@@ -568,7 +571,6 @@
       els.toggleIcon.textContent = "–";
       els.btnToggleEditor.setAttribute("aria-expanded", "true");
       localStorage.setItem(UI_KEY, "1");
-
       if (focus){
         requestAnimationFrame(() => {
           setTimeout(() => (els.title.value ? els.content.focus() : els.title.focus()), 60);
@@ -587,21 +589,18 @@
     setEditorOpen(!isOpen, focus);
   };
 
-  // ===== Nút X hiển thị/ẩn =====
   const updateClearBtns = () => {
     els.clearTitle.classList.toggle("show", (els.title.value || "").length > 0);
     els.clearContent.classList.toggle("show", (els.content.value || "").length > 0);
   };
 
-  // ===== Filter/sort =====
   const filteredNotes = () => {
     const q = normalize(els.search.value).trim();
     let arr = [...notes];
 
-    // pinned first + updated desc
     arr.sort((a,b) => {
       if (!!b.pinned !== !!a.pinned) return (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0);
-      return (b.updatedAt || "").localeCompare(a.updatedAt || "");
+      return (b.updatedAt || "").localeCompare(b.updatedAt || "");
     }).reverse();
 
     if (!q) return arr;
@@ -796,7 +795,7 @@
     try {
       await navigator.clipboard.writeText(text);
       return true;
-    } catch (e) {
+    } catch {
       const ta = document.createElement("textarea");
       ta.value = text;
       ta.setAttribute("readonly", "");
@@ -859,13 +858,11 @@
   els.btnCopyAll.addEventListener("click", copyAll);
   els.btnExport.addEventListener("click", exportJSON);
 
-  // Toggle +/-
   els.btnToggleEditor.addEventListener("click", (e) => {
     e.stopPropagation();
     toggleEditor(true);
   });
 
-  // Bấm cả thanh header
   els.editorHeader.addEventListener("click", () => toggleEditor(true));
   els.editorHeader.addEventListener("keydown", (e) => {
     const k = (e.key || "").toLowerCase();
@@ -875,7 +872,6 @@
     }
   });
 
-  // Clear buttons
   els.title.addEventListener("input", updateClearBtns);
   els.content.addEventListener("input", updateClearBtns);
 
@@ -893,7 +889,6 @@
     els.content.focus();
   });
 
-  // Keyboard shortcuts
   window.addEventListener("keydown", (e) => {
     const key = (e.key || "").toLowerCase();
     if ((e.ctrlKey || e.metaKey) && key === "s"){
@@ -911,6 +906,13 @@
   render();
   updateClearBtns();
   setEditorOpen(localStorage.getItem(UI_KEY) === "1", false);
+
+  // PWA: register service worker
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("./sw.js").catch(() => {});
+    });
+  }
 })();
 </script>
 </body>
