@@ -442,7 +442,8 @@
                 <div class="field">
                   <label for="content">Nội dung</label>
                   <div class="inputWrap">
-                    <textarea id="content" placeholder="Nhập ghi chú ở đây..."></textarea>
+                    <textarea id="content" placeholder="Nhập ghi chú ở đây...
+Lệnh: {{date}} {{time}} {{datetime}} (thay khi lưu), {{now}} (tự cập nhật khi xem)"></textarea>
                     <button class="clearBtn textarea" id="clearContent" type="button" aria-label="Xoá nội dung">✕</button>
                   </div>
                 </div>
@@ -455,7 +456,9 @@
                 </div>
 
                 <div class="hint">
-                  Có nút <b>✕</b> để xoá nhanh. Danh sách hiển thị ngắn + <b>… Xem thêm</b>.
+                  Lệnh ngày/giờ:
+                  <b>{{date}}</b>, <b>{{time}}</b>, <b>{{datetime}}</b> (được thay khi Lưu) •
+                  <b>{{now}}</b> (tự cập nhật khi xem). Danh sách có <b>… Xem thêm</b>.
                 </div>
 
               </div>
@@ -524,6 +527,7 @@
   let selectedId = null;
   let toastTimer = null;
 
+  // “xem thêm” theo id
   let expanded = new Set();
   try {
     const raw = localStorage.getItem(EXPAND_KEY);
@@ -535,12 +539,35 @@
   };
 
   const nowISO = () => new Date().toISOString();
+
+  // ===== Date helpers (dd/mm/yyyy hh:mm) =====
+  const pad2 = (n) => String(n).padStart(2, "0");
+  const fmtVN = (d) => `${pad2(d.getDate())}/${pad2(d.getMonth()+1)}/${d.getFullYear()} ${pad2(d.getHours())}:${pad2(d.getMinutes())}`;
+  const fmtDateVN = (d) => `${pad2(d.getDate())}/${pad2(d.getMonth()+1)}/${d.getFullYear()}`;
+  const fmtTimeVN = (d) => `${pad2(d.getHours())}:${pad2(d.getMinutes())}`;
+
+  // Replace commands when saving (fixed at save-time)
+  const applyCommandsOnSave = (text) => {
+    const d = new Date();
+    return (text || "")
+      .replaceAll("{{date}}", fmtDateVN(d))
+      .replaceAll("{{time}}", fmtTimeVN(d))
+      .replaceAll("{{datetime}}", fmtVN(d));
+  };
+
+  // Render dynamic token when viewing (always current)
+  const renderDynamicTokens = (text) => {
+    const d = new Date();
+    return (text || "").replaceAll("{{now}}", fmtVN(d));
+  };
+
   const fmtTime = (iso) => {
     try {
       const d = new Date(iso);
       return d.toLocaleString("vi-VN", { hour12:false });
     } catch { return ""; }
   };
+
   const uid = () => (crypto?.randomUUID?.() || ("id_" + Math.random().toString(16).slice(2) + Date.now()));
   const normalize = (s) => (s || "").toString().toLowerCase();
 
@@ -562,6 +589,7 @@
 
   const setStatus = (msg) => els.status.textContent = msg || "—";
 
+  // ===== Editor open/close =====
   const setEditorOpen = (open, focus = true) => {
     const isOpen = els.editorCard.classList.contains("editorOpen");
     if (open === isOpen) return;
@@ -589,31 +617,31 @@
     setEditorOpen(!isOpen, focus);
   };
 
+  // ===== Clear buttons =====
   const updateClearBtns = () => {
     els.clearTitle.classList.toggle("show", (els.title.value || "").length > 0);
     els.clearContent.classList.toggle("show", (els.content.value || "").length > 0);
   };
 
+  // ===== Filter/sort (PINNED TOP) =====
   const filteredNotes = () => {
-  const q = normalize(els.search.value).trim();
-  let arr = [...notes];
+    const q = normalize(els.search.value).trim();
+    let arr = [...notes];
 
-  // Ghim lên đầu, rồi updatedAt mới nhất lên trước
-  arr.sort((a, b) => {
-    const ap = a.pinned ? 1 : 0;
-    const bp = b.pinned ? 1 : 0;
-    if (bp !== ap) return bp - ap; // pinned desc
+    // pinned first, then newest updatedAt
+    arr.sort((a, b) => {
+      const ap = a.pinned ? 1 : 0;
+      const bp = b.pinned ? 1 : 0;
+      if (bp !== ap) return bp - ap;
 
-    const at = a.updatedAt || a.createdAt || "";
-    const bt = b.updatedAt || b.createdAt || "";
-    return bt.localeCompare(at); // time desc
-  });
+      const at = a.updatedAt || a.createdAt || "";
+      const bt = b.updatedAt || b.createdAt || "";
+      return bt.localeCompare(at);
+    });
 
-  if (!q) return arr;
-  return arr.filter(n =>
-    normalize(n.title).includes(q) || normalize(n.content).includes(q)
-  );
-};
+    if (!q) return arr;
+    return arr.filter(n => normalize(n.title).includes(q) || normalize(n.content).includes(q));
+  };
 
   const shouldShowMore = (text) => {
     return (text || "").length > 260 || (text || "").split("\n").length > 6;
@@ -658,7 +686,7 @@
       bCopy.className = "btn mini primary";
       bCopy.textContent = "Copy";
       bCopy.onclick = async () => {
-        await copyText(n.content || "");
+        await copyText(renderDynamicTokens(n.content || ""));
         showToast("Đã copy ghi chú");
       };
 
@@ -689,7 +717,7 @@
       preview.className = "itemPreview";
       const isExpanded = expanded.has(n.id);
       preview.classList.toggle("clamp", !isExpanded);
-      preview.textContent = (n.content || "");
+      preview.textContent = renderDynamicTokens(n.content || "");
 
       if (n.id === selectedId){
         item.style.borderColor = "rgba(25,118,210,.55)";
@@ -736,7 +764,8 @@
     if (!n) return;
     selectedId = id;
     els.title.value = n.title || "";
-    els.content.value = n.content || "";
+    // hiển thị token {{now}} theo thời gian hiện tại
+    els.content.value = renderDynamicTokens(n.content || "");
     els.btnDelete.disabled = false;
     setStatus("Đang sửa");
     updateClearBtns();
@@ -746,7 +775,10 @@
 
   const upsert = () => {
     const title = (els.title.value || "").trim();
-    const content = (els.content.value || "").trim();
+
+    let content = (els.content.value || "").trim();
+    // thay token khi LƯU (date/time/datetime)
+    content = applyCommandsOnSave(content);
 
     if (!title && !content){
       showToast("Nhập tiêu đề hoặc nội dung trước nhé");
@@ -835,7 +867,7 @@
     const arr = filteredNotes();
     const joined = arr.map((n) => {
       const t = n.title ? `# ${n.title}` : `# (Không tiêu đề)`;
-      const c = (n.content || "");
+      const c = renderDynamicTokens(n.content || "");
       return `${t}\n${c}\n`;
     }).join("\n");
     await copyText(joined.trim());
@@ -921,6 +953,9 @@
       navigator.serviceWorker.register("./sw.js").catch(() => {});
     });
   }
+
+  // (Tuỳ chọn) nếu bạn muốn {{now}} tự đổi mỗi phút trên danh sách:
+  // setInterval(render, 60000);
 })();
 </script>
 </body>
