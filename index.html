@@ -595,17 +595,25 @@
   };
 
   const filteredNotes = () => {
-    const q = normalize(els.search.value).trim();
-    let arr = [...notes];
+  const q = normalize(els.search.value).trim();
+  let arr = [...notes];
 
-    arr.sort((a,b) => {
-      if (!!b.pinned !== !!a.pinned) return (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0);
-      return (b.updatedAt || "").localeCompare(b.updatedAt || "");
-    }).reverse();
+  // Ghim lên đầu, rồi updatedAt mới nhất lên trước
+  arr.sort((a, b) => {
+    const ap = a.pinned ? 1 : 0;
+    const bp = b.pinned ? 1 : 0;
+    if (bp !== ap) return bp - ap; // pinned desc
 
-    if (!q) return arr;
-    return arr.filter(n => normalize(n.title).includes(q) || normalize(n.content).includes(q));
-  };
+    const at = a.updatedAt || a.createdAt || "";
+    const bt = b.updatedAt || b.createdAt || "";
+    return bt.localeCompare(at); // time desc
+  });
+
+  if (!q) return arr;
+  return arr.filter(n =>
+    normalize(n.title).includes(q) || normalize(n.content).includes(q)
+  );
+};
 
   const shouldShowMore = (text) => {
     return (text || "").length > 260 || (text || "").split("\n").length > 6;
