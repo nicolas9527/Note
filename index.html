@@ -546,7 +546,7 @@ Lệnh: {{date}} {{time}} {{datetime}} (thay khi lưu), {{now}} (tự cập nh�
   // ===== Date helpers (dd/mm/yyyy hh:mm) =====
   const pad2 = (n) => String(n).padStart(2, "0");
   const fmtVN = (d) => `${pad2(d.getDate())}/${pad2(d.getMonth()+1)}/${d.getFullYear()} ${pad2(d.getHours())}:${pad2(d.getMinutes())}`;
-  const fmtDateVN = (d) => `${pad2(d.getDate())}/${pad2(d.getMonth()+1)}/${d.getFullYear()}`;
+  const fmtDateVN = (d) => `${pad2(d.getDate())}/${pad2(d.getMonth()+1)}`;
   const fmtTimeVN = (d) => `${pad2(d.getHours())}:${pad2(d.getMinutes())}`;
 
   // Replace commands when saving (fixed at save-time)  ✅ FIX REGEX
