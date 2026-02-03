@@ -386,9 +386,31 @@
       transform: translate3d(-50%,-2px,0);
     }
 
+    /* ===== Suggest (gợi ý lệnh khi soạn) ===== */
+    .suggest{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-top:10px;
+    }
+    .chip{
+      border:1px solid rgba(25,118,210,.25);
+      background: rgba(25,118,210,.08);
+      color:#0b4aa2;
+      padding: 7px 10px;
+      border-radius: 999px;
+      font-weight: 900;
+      font-size: 12px;
+      cursor:pointer;
+      -webkit-tap-highlight-color: transparent;
+      user-select:none;
+      transition: transform 120ms var(--ease), opacity 120ms var(--ease);
+    }
+    .chip:active{ transform: scale(.98); opacity:.85; }
+
     @media (prefers-reduced-motion: reduce){
       :root{ --dur: 1ms; }
-      .editorPanel, .editorMotion, .toast, .btn, .clearBtn { transition: none !important; }
+      .editorPanel, .editorMotion, .toast, .btn, .clearBtn, .chip { transition: none !important; }
     }
   </style>
 </head>
@@ -402,7 +424,7 @@
             <span class="dot"></span>
             <div>
               <div>GHI CHÚ • COPY NHANH</div>
-              <div class="sub">Tự lưu • Tìm kiếm • Ghim • Copy 1 chạm • v3.2</div>
+              <div class="sub">Tự lưu • Tìm kiếm • Ghim • Copy 1 chạm • v3.4</div>
             </div>
           </div>
         </div>
@@ -443,13 +465,13 @@
                   <label for="content">Nội dung</label>
                   <div class="inputWrap">
                     <textarea id="content" placeholder="Nhập ghi chú ở đây...
-Lệnh:
-- {{date}} (dd/mm, thay khi lưu)
-- {{time}} (hh:mm, thay khi lưu)
-- {{datetime}} (dd/mm hh:mm, thay khi lưu)
-- {{now}} (dd/mm hh:mm, tự cập nhật khi xem)
-- {{today}} (dd/mm, tự cập nhật khi xem)"></textarea>
+Gợi ý lệnh: gõ {{today}} để tự hiện dd/mm theo ngày hiện tại"></textarea>
                     <button class="clearBtn textarea" id="clearContent" type="button" aria-label="Xoá nội dung">✕</button>
+                  </div>
+
+                  <!-- Gợi ý khi soạn -->
+                  <div class="suggest">
+                    <button class="chip" id="chipToday" type="button">Chèn {{today}}</button>
                   </div>
                 </div>
 
@@ -461,9 +483,7 @@ Lệnh:
                 </div>
 
                 <div class="hint">
-                  Lệnh ngày/giờ:
-                  <b>{{date}}</b>, <b>{{time}}</b>, <b>{{datetime}}</b> (thay khi Lưu) •
-                  <b>{{now}}</b>, <b>{{today}}</b> (tự cập nhật khi xem).
+                  Dùng <b>{{today}}</b> để tự hiện <b>dd/mm</b> theo ngày hiện tại (tự đổi mỗi ngày).
                 </div>
 
               </div>
@@ -497,7 +517,7 @@ Lệnh:
 
 <script>
 (() => {
-  const APP_VERSION = "v3.2-today";
+  const APP_VERSION = "v3.4-only-today";
   console.log("APP", APP_VERSION);
 
   const $ = (id) => document.getElementById(id);
@@ -512,6 +532,8 @@ Lệnh:
     content: $("content"),
     clearTitle: $("clearTitle"),
     clearContent: $("clearContent"),
+
+    chipToday: $("chipToday"),
 
     btnSave: $("btnSave"),
     btnCopy: $("btnCopy"),
@@ -550,33 +572,14 @@ Lệnh:
 
   // ===== Date helpers =====
   const pad2 = (n) => String(n).padStart(2, "0");
-  const fmtVN = (d) => `${pad2(d.getDate())}/${pad2(d.getMonth()+1)}/${d.getFullYear()} ${pad2(d.getHours())}:${pad2(d.getMinutes())}`;
-  // {{date}} -> dd/mm (theo yêu cầu)
-  const fmtDateVN = (d) => `${pad2(d.getDate())}/${pad2(d.getMonth()+1)}`;
-  // {{today}} -> dd/mm (động)
-  const fmtDM = (d) => `${pad2(d.getDate())}/${pad2(d.getMonth()+1)}`;
-  const fmtTimeVN = (d) => `${pad2(d.getHours())}:${pad2(d.getMinutes())}`;
-  const fmtDateTimeNoYear = (d) => `${fmtDateVN(d)} ${fmtTimeVN(d)}`; // dd/mm hh:mm
-
-  // Replace commands when saving (fixed at save-time)
-  const applyCommandsOnSave = (text) => {
-    const d = new Date();
-    const da = fmtDateVN(d);           // dd/mm
-    const ti = fmtTimeVN(d);           // hh:mm
-    const dt = fmtDateTimeNoYear(d);   // dd/mm hh:mm
-
-    return (text || "")
-      .replace(/\{\{\s*date\s*\}\}/gi, da)
-      .replace(/\{\{\s*time\s*\}\}/gi, ti)
-      .replace(/\{\{\s*datetime\s*\}\}/gi, dt);
-  };
+  // ✅ {{today}} -> dd/mm (KHÔNG thời gian)
+  const fmtToday = (d) => `${pad2(d.getDate())}/${pad2(d.getMonth()+1)}`;
 
   // Render dynamic token when viewing (always current)
   const renderDynamicTokens = (text) => {
     const d = new Date();
     return (text || "")
-      .replace(/\{\{\s*now\s*\}\}/gi, fmtDateTimeNoYear(d)) // dd/mm hh:mm
-      .replace(/\{\{\s*today\s*\}\}/gi, fmtDM(d));         // dd/mm
+      .replace(/\{\{\s*today\s*\}\}/gi, fmtToday(d));
   };
 
   const fmtTime = (iso) => {
@@ -792,9 +795,7 @@ Lệnh:
 
   const upsert = () => {
     const title = (els.title.value || "").trim();
-
-    let content = (els.content.value || "").trim();
-    content = applyCommandsOnSave(content);
+    const content = (els.content.value || "").trim();
 
     if (!title && !content){
       showToast("Nhập tiêu đề hoặc nội dung trước nhé");
@@ -805,7 +806,7 @@ Lệnh:
       const n = notes.find(x => x.id === selectedId);
       if (!n) return;
       n.title = title;
-      n.content = content;
+      n.content = content; // ✅ giữ token {{today}} để render động
       n.updatedAt = nowISO();
       saveStore();
       showToast("Đã cập nhật");
@@ -814,7 +815,7 @@ Lệnh:
       const n = {
         id: uid(),
         title,
-        content,
+        content, // ✅ giữ nguyên token {{today}}
         pinned: false,
         createdAt: nowISO(),
         updatedAt: nowISO()
@@ -904,6 +905,19 @@ Lệnh:
     showToast("Đã xuất JSON");
   };
 
+  // ===== Insert token at cursor (gợi ý) =====
+  const insertAtCursor = (textarea, text) => {
+    textarea.focus();
+    const start = textarea.selectionStart ?? textarea.value.length;
+    const end = textarea.selectionEnd ?? textarea.value.length;
+    const before = textarea.value.slice(0, start);
+    const after = textarea.value.slice(end);
+    textarea.value = before + text + after;
+    const pos = start + text.length;
+    textarea.setSelectionRange(pos, pos);
+    updateClearBtns();
+  };
+
   // ===== Events =====
   els.btnSave.addEventListener("click", upsert);
   els.btnCopy.addEventListener("click", copyCurrent);
@@ -945,6 +959,12 @@ Lệnh:
     els.content.focus();
   });
 
+  // chip gợi ý {{today}}
+  els.chipToday.addEventListener("click", (e) => {
+    e.stopPropagation();
+    insertAtCursor(els.content, "{{today}}");
+  });
+
   window.addEventListener("keydown", (e) => {
     const key = (e.key || "").toLowerCase();
     if ((e.ctrlKey || e.metaKey) && key === "s"){
@@ -966,11 +986,11 @@ Lệnh:
   // PWA: register service worker (force update)
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
-      navigator.serviceWorker.register("./sw.js?v=32").catch(() => {});
+      navigator.serviceWorker.register("./sw.js?v=34").catch(() => {});
     });
   }
 
-  // ✅ Tự refresh mỗi phút để {{now}} / {{today}} đổi theo thời gian
+  // ✅ Tự refresh mỗi phút để {{today}} đổi theo ngày (dd/mm)
   setInterval(render, 60000);
 })();
 </script>
