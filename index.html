@@ -402,7 +402,7 @@
             <span class="dot"></span>
             <div>
               <div>GHI CHÚ • COPY NHANH</div>
-              <div class="sub">Tự lưu • Tìm kiếm • Ghim • Copy 1 chạm • v3.1</div>
+              <div class="sub">Tự lưu • Tìm kiếm • Ghim • Copy 1 chạm • v3.2</div>
             </div>
           </div>
         </div>
@@ -443,7 +443,12 @@
                   <label for="content">Nội dung</label>
                   <div class="inputWrap">
                     <textarea id="content" placeholder="Nhập ghi chú ở đây...
-Lệnh: {{date}} {{time}} {{datetime}} (thay khi lưu), {{now}} (tự cập nhật khi xem)"></textarea>
+Lệnh:
+- {{date}} (dd/mm, thay khi lưu)
+- {{time}} (hh:mm, thay khi lưu)
+- {{datetime}} (dd/mm hh:mm, thay khi lưu)
+- {{now}} (dd/mm hh:mm, tự cập nhật khi xem)
+- {{today}} (dd/mm, tự cập nhật khi xem)"></textarea>
                     <button class="clearBtn textarea" id="clearContent" type="button" aria-label="Xoá nội dung">✕</button>
                   </div>
                 </div>
@@ -457,8 +462,8 @@ Lệnh: {{date}} {{time}} {{datetime}} (thay khi lưu), {{now}} (tự cập nh�
 
                 <div class="hint">
                   Lệnh ngày/giờ:
-                  <b>{{date}}</b>, <b>{{time}}</b>, <b>{{datetime}}</b> (được thay khi Lưu) •
-                  <b>{{now}}</b> (tự cập nhật khi xem). Danh sách có <b>… Xem thêm</b>.
+                  <b>{{date}}</b>, <b>{{time}}</b>, <b>{{datetime}}</b> (thay khi Lưu) •
+                  <b>{{now}}</b>, <b>{{today}}</b> (tự cập nhật khi xem).
                 </div>
 
               </div>
@@ -492,7 +497,7 @@ Lệnh: {{date}} {{time}} {{datetime}} (thay khi lưu), {{now}} (tự cập nh�
 
 <script>
 (() => {
-  const APP_VERSION = "v3.1-datefix";
+  const APP_VERSION = "v3.2-today";
   console.log("APP", APP_VERSION);
 
   const $ = (id) => document.getElementById(id);
@@ -543,18 +548,22 @@ Lệnh: {{date}} {{time}} {{datetime}} (thay khi lưu), {{now}} (tự cập nh�
 
   const nowISO = () => new Date().toISOString();
 
-  // ===== Date helpers (dd/mm/yyyy hh:mm) =====
+  // ===== Date helpers =====
   const pad2 = (n) => String(n).padStart(2, "0");
   const fmtVN = (d) => `${pad2(d.getDate())}/${pad2(d.getMonth()+1)}/${d.getFullYear()} ${pad2(d.getHours())}:${pad2(d.getMinutes())}`;
+  // {{date}} -> dd/mm (theo yêu cầu)
   const fmtDateVN = (d) => `${pad2(d.getDate())}/${pad2(d.getMonth()+1)}`;
+  // {{today}} -> dd/mm (động)
+  const fmtDM = (d) => `${pad2(d.getDate())}/${pad2(d.getMonth()+1)}`;
   const fmtTimeVN = (d) => `${pad2(d.getHours())}:${pad2(d.getMinutes())}`;
+  const fmtDateTimeNoYear = (d) => `${fmtDateVN(d)} ${fmtTimeVN(d)}`; // dd/mm hh:mm
 
-  // Replace commands when saving (fixed at save-time)  ✅ FIX REGEX
+  // Replace commands when saving (fixed at save-time)
   const applyCommandsOnSave = (text) => {
     const d = new Date();
-    const dt = fmtVN(d);
-    const da = fmtDateVN(d);
-    const ti = fmtTimeVN(d);
+    const da = fmtDateVN(d);           // dd/mm
+    const ti = fmtTimeVN(d);           // hh:mm
+    const dt = fmtDateTimeNoYear(d);   // dd/mm hh:mm
 
     return (text || "")
       .replace(/\{\{\s*date\s*\}\}/gi, da)
@@ -562,10 +571,12 @@ Lệnh: {{date}} {{time}} {{datetime}} (thay khi lưu), {{now}} (tự cập nh�
       .replace(/\{\{\s*datetime\s*\}\}/gi, dt);
   };
 
-  // Render dynamic token when viewing (always current) ✅ FIX REGEX
+  // Render dynamic token when viewing (always current)
   const renderDynamicTokens = (text) => {
     const d = new Date();
-    return (text || "").replace(/\{\{\s*now\s*\}\}/gi, fmtVN(d));
+    return (text || "")
+      .replace(/\{\{\s*now\s*\}\}/gi, fmtDateTimeNoYear(d)) // dd/mm hh:mm
+      .replace(/\{\{\s*today\s*\}\}/gi, fmtDM(d));         // dd/mm
   };
 
   const fmtTime = (iso) => {
@@ -955,12 +966,12 @@ Lệnh: {{date}} {{time}} {{datetime}} (thay khi lưu), {{now}} (tự cập nh�
   // PWA: register service worker (force update)
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
-      navigator.serviceWorker.register("./sw.js?v=31").catch(() => {});
+      navigator.serviceWorker.register("./sw.js?v=32").catch(() => {});
     });
   }
 
-  // (Tuỳ chọn) {{now}} tự đổi mỗi phút:
-  // setInterval(render, 60000);
+  // ✅ Tự refresh mỗi phút để {{now}} / {{today}} đổi theo thời gian
+  setInterval(render, 60000);
 })();
 </script>
 </body>
