@@ -950,7 +950,7 @@ Lệnh: {{date}} {{time}} {{datetime}} (thay khi lưu), {{now}} (tự cập nh�
   // PWA: register service worker
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
-      navigator.serviceWorker.register("./sw.js").catch(() => {});
+      navigator.serviceWorker.register("./sw.js?v=3").catch(() => {});
     });
   }
 
