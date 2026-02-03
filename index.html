@@ -420,9 +420,83 @@
     }
     .chip:active{ transform: scale(.98); opacity:.85; }
 
+    /* ===== Backup bottom-sheet ===== */
+    .sheetOverlay{
+      position: fixed;
+      inset: 0;
+      background: rgba(2,6,23,.35);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 160ms var(--ease);
+      z-index: 9998;
+    }
+    .sheetOverlay.show{
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .sheet{
+      position: fixed;
+      left: 50%;
+      bottom: calc(10px + env(safe-area-inset-bottom));
+      transform: translate3d(-50%, 18px, 0);
+      width: min(520px, calc(100% - 24px));
+      background: rgba(255,255,255,.96);
+      border: 1px solid rgba(226,232,240,.9);
+      border-radius: 18px;
+      box-shadow: 0 24px 60px rgba(2,6,23,.25);
+      padding: 12px;
+      opacity: 0;
+      pointer-events:none;
+      transition: transform 180ms var(--ease), opacity 180ms var(--ease);
+      z-index: 9999;
+      backdrop-filter: blur(10px);
+    }
+    .sheet.show{
+      opacity: 1;
+      transform: translate3d(-50%, 0, 0);
+      pointer-events:auto;
+    }
+    .sheetTop{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding: 6px 6px 10px;
+    }
+    .sheetTitle{
+      font-weight: 900;
+      font-size: 14px;
+      letter-spacing:.2px;
+    }
+    .sheetClose{
+      width: 38px;
+      height: 34px;
+      border-radius: 12px;
+      border:1px solid var(--border);
+      background:#fff;
+      cursor:pointer;
+      font-weight: 900;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .sheetClose:active{transform:scale(.98)}
+    .sheetActions{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      padding: 0 6px 10px;
+    }
+    .sheetHint{
+      padding: 0 6px 6px;
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 700;
+      line-height:1.35;
+    }
+
     @media (prefers-reduced-motion: reduce){
       :root{ --dur: 1ms; }
-      .editorPanel, .editorMotion, .toast, .btn, .clearBtn, .chip { transition: none !important; }
+      .editorPanel, .editorMotion, .toast, .btn, .clearBtn, .chip,
+      .sheet, .sheetOverlay { transition: none !important; }
     }
   </style>
 </head>
@@ -441,7 +515,7 @@
             </div>
           </div>
         </div>
-        <button class="btn ghost" id="btnExport" title="Xuất dữ liệu ra file .json">Xuất JSON</button>
+        <button class="btn ghost" id="btnBackup" title="Sao lưu / Khôi phục">Backup</button>
       </div>
     </div>
   </header>
@@ -482,7 +556,6 @@ Gợi ý lệnh: gõ {{today}} để tự hiện dd/mm theo ngày hiện tại">
                     <button class="clearBtn textarea" id="clearContent" type="button" aria-label="Xoá nội dung">✕</button>
                   </div>
 
-                  <!-- Gợi ý khi soạn -->
                   <div class="suggest">
                     <button class="chip" id="chipToday" type="button">Chèn {{today}}</button>
                   </div>
@@ -526,11 +599,30 @@ Gợi ý lệnh: gõ {{today}} để tự hiện dd/mm theo ngày hiện tại">
     </div>
   </main>
 
+  <!-- Bottom-sheet Backup -->
+  <div class="sheetOverlay" id="sheetOverlay"></div>
+  <div class="sheet" id="backupSheet" role="dialog" aria-modal="true" aria-label="Backup">
+    <div class="sheetTop">
+      <div class="sheetTitle">Backup</div>
+      <button class="sheetClose" id="sheetClose" type="button" aria-label="Đóng">✕</button>
+    </div>
+    <div class="sheetActions">
+      <button class="btn primary" id="sheetExport" type="button">Xuất JSON</button>
+      <button class="btn" id="sheetImport" type="button">Nhập JSON</button>
+    </div>
+    <div class="sheetHint">
+      <b>Nhập JSON</b> sẽ <u>ghi đè toàn bộ</u> ghi chú hiện có (có hỏi lại trước khi nhập).
+    </div>
+  </div>
+
   <div class="toast" id="toast">Đã copy</div>
+
+  <!-- Import file input (hidden) -->
+  <input id="fileImport" type="file" accept="application/json,.json" style="display:none" />
 
 <script>
 (() => {
-  const APP_VERSION = "made-by-an";
+  const APP_VERSION = "backup-sheet-madebyan";
   console.log("APP", APP_VERSION);
 
   const $ = (id) => document.getElementById(id);
@@ -559,7 +651,15 @@ Gợi ý lệnh: gõ {{today}} để tự hiện dd/mm theo ngày hiện tại">
     search: $("search"),
     btnCopyAll: $("btnCopyAll"),
     toast: $("toast"),
-    btnExport: $("btnExport"),
+
+    btnBackup: $("btnBackup"),
+    sheetOverlay: $("sheetOverlay"),
+    backupSheet: $("backupSheet"),
+    sheetClose: $("sheetClose"),
+    sheetExport: $("sheetExport"),
+    sheetImport: $("sheetImport"),
+
+    fileImport: $("fileImport"),
   };
 
   const STORAGE_KEY = "quick_notes_v1";
@@ -819,7 +919,7 @@ Gợi ý lệnh: gõ {{today}} để tự hiện dd/mm theo ngày hiện tại">
       const n = notes.find(x => x.id === selectedId);
       if (!n) return;
       n.title = title;
-      n.content = content; // giữ token {{today}} để render động
+      n.content = content; // giữ token {{today}}
       n.updatedAt = nowISO();
       saveStore();
       showToast("Đã cập nhật");
@@ -918,6 +1018,58 @@ Gợi ý lệnh: gõ {{today}} để tự hiện dd/mm theo ngày hiện tại">
     showToast("Đã xuất JSON");
   };
 
+  const importJSONText = async (text) => {
+    let incoming;
+    try {
+      incoming = JSON.parse(text);
+    } catch {
+      showToast("File JSON lỗi");
+      return;
+    }
+    if (!Array.isArray(incoming)) {
+      showToast("Backup không đúng định dạng");
+      return;
+    }
+
+    const ok = confirm("Nhập backup sẽ GHI ĐÈ toàn bộ ghi chú hiện có. Tiếp tục?");
+    if (!ok) return;
+
+    const cleaned = incoming.map(n => ({
+      id: n.id || uid(),
+      title: (n.title ?? "").toString(),
+      content: (n.content ?? "").toString(),
+      pinned: !!n.pinned,
+      createdAt: n.createdAt || nowISO(),
+      updatedAt: n.updatedAt || n.createdAt || nowISO(),
+    }));
+
+    notes = cleaned;
+    selectedId = null;
+
+    expanded = new Set();
+    persistExpanded();
+
+    saveStore();
+    clearEditor();
+    render();
+    showToast("Đã nhập backup");
+  };
+
+  const openImportPicker = () => {
+    els.fileImport.value = "";
+    els.fileImport.click();
+  };
+
+  // ===== Bottom sheet controls =====
+  const openSheet = () => {
+    els.sheetOverlay.classList.add("show");
+    els.backupSheet.classList.add("show");
+  };
+  const closeSheet = () => {
+    els.backupSheet.classList.remove("show");
+    els.sheetOverlay.classList.remove("show");
+  };
+
   // Insert token at cursor
   const insertAtCursor = (textarea, text) => {
     textarea.focus();
@@ -939,7 +1091,32 @@ Gợi ý lệnh: gõ {{today}} để tự hiện dd/mm theo ngày hiện tại">
 
   els.search.addEventListener("input", render);
   els.btnCopyAll.addEventListener("click", copyAll);
-  els.btnExport.addEventListener("click", exportJSON);
+
+  // Backup (1 nút -> mở bottom sheet)
+  els.btnBackup.addEventListener("click", openSheet);
+  els.sheetOverlay.addEventListener("click", closeSheet);
+  els.sheetClose.addEventListener("click", closeSheet);
+
+  els.sheetExport.addEventListener("click", () => {
+    closeSheet();
+    exportJSON();
+  });
+
+  els.sheetImport.addEventListener("click", () => {
+    closeSheet();
+    openImportPicker();
+  });
+
+  els.fileImport.addEventListener("change", async (e) => {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    try {
+      const text = await file.text();
+      await importJSONText(text);
+    } catch {
+      showToast("Không đọc được file");
+    }
+  });
 
   els.btnToggleEditor.addEventListener("click", (e) => {
     e.stopPropagation();
@@ -984,6 +1161,7 @@ Gợi ý lệnh: gõ {{today}} để tự hiện dd/mm theo ngày hiện tại">
       upsert();
     }
     if (key === "escape"){
+      closeSheet();
       setEditorOpen(false, false);
     }
   }, {passive:false});
@@ -998,7 +1176,7 @@ Gợi ý lệnh: gõ {{today}} để tự hiện dd/mm theo ngày hiện tại">
   // PWA register (force update)
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
-      navigator.serviceWorker.register("./sw.js?v=35").catch(() => {});
+      navigator.serviceWorker.register("./sw.js?v=36").catch(() => {});
     });
   }
 
