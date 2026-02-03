@@ -402,7 +402,7 @@
             <span class="dot"></span>
             <div>
               <div>GHI CHÚ • COPY NHANH</div>
-              <div class="sub">Tự lưu • Tìm kiếm • Ghim • Copy 1 chạm</div>
+              <div class="sub">Tự lưu • Tìm kiếm • Ghim • Copy 1 chạm • v3.1</div>
             </div>
           </div>
         </div>
@@ -492,6 +492,9 @@ Lệnh: {{date}} {{time}} {{datetime}} (thay khi lưu), {{now}} (tự cập nh�
 
 <script>
 (() => {
+  const APP_VERSION = "v3.1-datefix";
+  console.log("APP", APP_VERSION);
+
   const $ = (id) => document.getElementById(id);
 
   const els = {
@@ -546,19 +549,23 @@ Lệnh: {{date}} {{time}} {{datetime}} (thay khi lưu), {{now}} (tự cập nh�
   const fmtDateVN = (d) => `${pad2(d.getDate())}/${pad2(d.getMonth()+1)}/${d.getFullYear()}`;
   const fmtTimeVN = (d) => `${pad2(d.getHours())}:${pad2(d.getMinutes())}`;
 
-  // Replace commands when saving (fixed at save-time)
+  // Replace commands when saving (fixed at save-time)  ✅ FIX REGEX
   const applyCommandsOnSave = (text) => {
     const d = new Date();
+    const dt = fmtVN(d);
+    const da = fmtDateVN(d);
+    const ti = fmtTimeVN(d);
+
     return (text || "")
-      .replaceAll("{{date}}", fmtDateVN(d))
-      .replaceAll("{{time}}", fmtTimeVN(d))
-      .replaceAll("{{datetime}}", fmtVN(d));
+      .replace(/\{\{\s*date\s*\}\}/gi, da)
+      .replace(/\{\{\s*time\s*\}\}/gi, ti)
+      .replace(/\{\{\s*datetime\s*\}\}/gi, dt);
   };
 
-  // Render dynamic token when viewing (always current)
+  // Render dynamic token when viewing (always current) ✅ FIX REGEX
   const renderDynamicTokens = (text) => {
     const d = new Date();
-    return (text || "").replaceAll("{{now}}", fmtVN(d));
+    return (text || "").replace(/\{\{\s*now\s*\}\}/gi, fmtVN(d));
   };
 
   const fmtTime = (iso) => {
@@ -764,7 +771,6 @@ Lệnh: {{date}} {{time}} {{datetime}} (thay khi lưu), {{now}} (tự cập nh�
     if (!n) return;
     selectedId = id;
     els.title.value = n.title || "";
-    // hiển thị token {{now}} theo thời gian hiện tại
     els.content.value = renderDynamicTokens(n.content || "");
     els.btnDelete.disabled = false;
     setStatus("Đang sửa");
@@ -777,7 +783,6 @@ Lệnh: {{date}} {{time}} {{datetime}} (thay khi lưu), {{now}} (tự cập nh�
     const title = (els.title.value || "").trim();
 
     let content = (els.content.value || "").trim();
-    // thay token khi LƯU (date/time/datetime)
     content = applyCommandsOnSave(content);
 
     if (!title && !content){
@@ -947,14 +952,14 @@ Lệnh: {{date}} {{time}} {{datetime}} (thay khi lưu), {{now}} (tự cập nh�
   updateClearBtns();
   setEditorOpen(localStorage.getItem(UI_KEY) === "1", false);
 
-  // PWA: register service worker
+  // PWA: register service worker (force update)
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
-      navigator.serviceWorker.register("./sw.js?v=3").catch(() => {});
+      navigator.serviceWorker.register("./sw.js?v=31").catch(() => {});
     });
   }
 
-  // (Tuỳ chọn) nếu bạn muốn {{now}} tự đổi mỗi phút trên danh sách:
+  // (Tuỳ chọn) {{now}} tự đổi mỗi phút:
   // setInterval(render, 60000);
 })();
 </script>
