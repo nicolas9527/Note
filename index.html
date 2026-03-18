@@ -1,12 +1,10 @@
-<!doctype html>
-<html lang="vi">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="Ghi chú" />
-  <meta name="theme-color" content="#1976d2" />
+<html lang="vi"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Ghi chú">
+  <meta name="theme-color" content="#2f6df6">
   <title>Ghi chú • Copy nhanh</title>
 
   <link rel="manifest" href="manifest.webmanifest">
@@ -15,880 +13,536 @@
 
   <style>
     :root{
-      --primary:#1976d2;
-      --primary-2:#42a5f5;
+      --primary:#2f6df6;
+      --primary-2:#6aa8ff;
       --bg:#eef4ff;
+      --bg-2:#f9fbff;
       --text:#0f172a;
       --muted:#64748b;
-      --border:rgba(226,232,240,.78);
+      --line:#dbe5f3;
       --danger:#dc2626;
-
-      --glass: rgba(255,255,255,.72);
-      --glass-2: rgba(255,255,255,.84);
-
-      --shadow-xs: 0 4px 14px rgba(15,23,42,.06);
-      --shadow-sm: 0 10px 24px rgba(15,23,42,.08);
-      --shadow-md: 0 16px 38px rgba(15,23,42,.10);
-      --shadow-lg: 0 24px 70px rgba(15,23,42,.16);
-
-      --radius:18px;
-      --dur:220ms;
-      --dur-slow:420ms;
+      --radius:20px;
+      --radius-lg:24px;
       --ease:cubic-bezier(.2,.8,.2,1);
       --ease-soft:cubic-bezier(.22,1,.36,1);
+      --shadow-xs:0 6px 18px rgba(15,23,42,.05);
+      --shadow-sm:0 10px 24px rgba(15,23,42,.08);
+      --shadow-md:0 18px 44px rgba(15,23,42,.10);
+      --shadow-lg:0 34px 90px rgba(2,6,23,.18);
+      --shadow-blue:0 16px 34px rgba(47,109,246,.20);
     }
 
     *{ box-sizing:border-box; }
     html{ -webkit-text-size-adjust:100%; }
-
     body{
       margin:0;
+      min-height:100vh;
       font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
       color:var(--text);
       background:
-        radial-gradient(circle at 10% 8%, rgba(66,165,245,.18), transparent 24%),
-        radial-gradient(circle at 88% 18%, rgba(25,118,210,.14), transparent 22%),
-        linear-gradient(180deg, #eaf3ff 0%, #eef4ff 50%, #f7fbff 100%);
-      min-height:100vh;
+        radial-gradient(circle at 12% 10%, rgba(106,168,255,.24), transparent 24%),
+        radial-gradient(circle at 88% 18%, rgba(47,109,246,.14), transparent 24%),
+        linear-gradient(180deg, #eaf2ff 0%, var(--bg) 48%, var(--bg-2) 100%);
       overflow-x:hidden;
     }
 
-    .pageEnter{
-      animation: pageEnter .55s var(--ease-soft) both;
-    }
+    .pageEnter{ position:relative; z-index:1; animation:pageEnter .45s var(--ease-soft) both; }
 
     header{
-      position: sticky;
-      top:0;
-      z-index:30;
-      backdrop-filter: blur(16px) saturate(145%);
-      -webkit-backdrop-filter: blur(16px) saturate(145%);
-      background: linear-gradient(180deg, rgba(243,246,251,.72), rgba(243,246,251,.50));
-      border-bottom:1px solid rgba(255,255,255,.45);
-      box-shadow: 0 10px 28px rgba(15,23,42,.05);
-    }
-
-    .wrap{
-      max-width:980px;
-      margin:0 auto;
-      padding:14px 14px 30px;
-    }
-
-    .titleRow{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      padding:10px 0 6px;
-    }
-
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      font-weight:800;
-      letter-spacing:.2px;
-    }
-
-    .dot{
-      width:34px;
-      height:34px;
-      border-radius:11px;
-      background: radial-gradient(circle at 30% 30%, #bbdefb 0%, #64b5f6 34%, #1976d2 72%, #115293 100%);
-      box-shadow:
-        0 10px 22px rgba(25,118,210,.35),
-        0 0 24px rgba(66,165,245,.22);
-      flex:0 0 auto;
-    }
-
-    .sub{
-      font-size:12px;
-      color:var(--muted);
-      font-weight:600;
-      margin-top:2px;
-    }
-
-    .credit{
-      display:inline-block;
-      margin-top:6px;
-      font-size:12px;
-      font-weight:900;
-      color:rgba(100,116,139,.95);
-      background:rgba(255,255,255,.7);
-      border:1px solid rgba(255,255,255,.7);
-      padding:3px 8px;
-      border-radius:999px;
-      box-shadow:var(--shadow-xs);
-      backdrop-filter: blur(10px);
-    }
-
-    .btn{
-      border:1px solid var(--border);
-      background:rgba(255,255,255,.8);
-      color:var(--text);
-      padding:10px 12px;
-      border-radius:14px;
-      font-weight:800;
-      cursor:pointer;
-      box-shadow:var(--shadow-xs);
-      transition:
-        transform 140ms var(--ease),
-        box-shadow 180ms var(--ease),
-        background 140ms var(--ease),
-        border-color 140ms var(--ease),
-        opacity 140ms var(--ease);
-      -webkit-tap-highlight-color:transparent;
-      user-select:none;
-      white-space:nowrap;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-    }
-    .btn:hover{ box-shadow:var(--shadow-sm); }
-    .btn:active{ transform:scale(.965); }
-    .btn:disabled{
-      opacity:.55;
-      cursor:not-allowed;
+      position:relative;
+      z-index:5;
+      backdrop-filter:none;
+      -webkit-backdrop-filter:none;
+      background:linear-gradient(180deg, rgba(255,255,255,.94), rgba(255,255,255,.88));
+      border-bottom:1px solid rgba(255,255,255,.78);
       box-shadow:none;
     }
 
-    .btn.primary{
-      background:linear-gradient(180deg, #2690ff, var(--primary));
-      border-color:rgba(25,118,210,.34);
-      color:#fff;
-      box-shadow:
-        0 12px 24px rgba(25,118,210,.22),
-        0 0 20px rgba(66,165,245,.14);
+    .wrap{ max-width:980px; margin:0 auto; }
+    .headerWrap{ padding:4px 14px 4px; }
+    .mainWrap{ padding:6px 14px 86px; }
+    .titleRow{ display:flex; align-items:center; justify-content:space-between; gap:10px; padding:0; min-height:38px; }
+    .brand{ display:flex; align-items:center; gap:8px; min-width:0; flex:1 1 auto; }
+    .dot{
+      width:24px; height:24px; border-radius:9px; flex:0 0 auto;
+      background:radial-gradient(circle at 30% 28%, #dbeafe 0%, #93c5fd 28%, #6aa8ff 58%, #2f6df6 82%, #1d4ed8 100%);
+      box-shadow:0 12px 22px rgba(47,109,246,.28), 0 0 26px rgba(106,168,255,.24);
+    }
+    .brandTitle{ font-size:12.5px; line-height:1; font-weight:900; letter-spacing:.02px; }
+    .sub{ margin-top:2px; font-size:11px; line-height:1.22; font-weight:700; color:var(--muted); max-width:240px; }
+    .credit{
+      display:inline-flex; align-items:center; margin-top:1px; padding:1px 6px;
+      border-radius:999px; background:rgba(255,255,255,.74); border:1px solid rgba(255,255,255,.82);
+      box-shadow:none; font-size:9px; font-weight:900; color:#475569;
     }
 
-    .btn.danger{
-      background:rgba(255,255,255,.86);
-      border-color:rgba(220,38,38,.24);
-      color:var(--danger);
-    }
-
-    .btn.ghost{
-      background:rgba(255,255,255,.56);
-    }
-
-    .mini{
-      padding:8px 10px;
-      border-radius:12px;
-      font-size:12px;
-      font-weight:900;
-    }
-
-    .grid{
-      display:grid;
-      grid-template-columns:1fr;
-      gap:14px;
-      margin-top:10px;
-    }
-
+    .grid{ display:grid; grid-template-columns:1fr; gap:12px; margin-top:6px; }
     .card{
-      background:linear-gradient(180deg, rgba(255,255,255,.78), rgba(255,255,255,.62));
-      border:1px solid rgba(255,255,255,.56);
-      border-radius:var(--radius);
+      position:relative; overflow:hidden; border-radius:var(--radius);
+      border:1px solid rgba(255,255,255,.76);
+      background:linear-gradient(180deg, rgba(255,255,255,.82), rgba(255,255,255,.68));
+      backdrop-filter:blur(16px) saturate(150%); -webkit-backdrop-filter:blur(16px) saturate(150%);
       box-shadow:var(--shadow-md);
-      overflow:hidden;
-      backdrop-filter: blur(14px) saturate(135%);
-      -webkit-backdrop-filter: blur(14px) saturate(135%);
     }
-
     .cardHeader{
-      padding:14px;
-      border-bottom:1px solid rgba(255,255,255,.42);
-      background:linear-gradient(180deg, rgba(255,255,255,.42), rgba(255,255,255,.18));
+      padding:15px; border-bottom:1px solid rgba(255,255,255,.58);
+      background:linear-gradient(180deg, rgba(255,255,255,.38), rgba(255,255,255,.18));
+    }
+    .cardBody{ padding:12px 15px; }
+    .sectionTitle{ margin:0; font-size:15px; font-weight:900; letter-spacing:.1px; line-height:1.15; }
+    .sectionSub{ margin-top:4px; font-size:12px; color:var(--muted); font-weight:700; }
+    .row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+
+    .btn{
+      appearance:none; border:1px solid var(--line); background:rgba(255,255,255,.84); color:var(--text);
+      padding:9px 12px; border-radius:15px; font-weight:800; font-size:14px; cursor:pointer;
+      box-shadow:var(--shadow-xs); transition:transform 140ms var(--ease), box-shadow 180ms var(--ease), background 160ms var(--ease), border-color 160ms var(--ease), opacity 140ms var(--ease);
+      -webkit-tap-highlight-color:transparent; user-select:none; white-space:nowrap;
+    }
+    .btn:hover{ box-shadow:var(--shadow-sm); border-color:rgba(106,168,255,.55); }
+    .btn:active{ transform:scale(.965); }
+    .btn:disabled{ opacity:.55; cursor:not-allowed; box-shadow:none; }
+    .btn.primary{
+      color:#fff; border-color:rgba(47,109,246,.22);
+      background:linear-gradient(180deg, var(--primary-2), var(--primary));
+      box-shadow:var(--shadow-blue);
+    }
+    .btn.ghost{ background:rgba(255,255,255,.62); }
+    .btn.danger{ color:var(--danger); background:rgba(255,255,255,.88); border-color:rgba(220,38,38,.16); }
+    .mini{ padding:8px 10px; border-radius:13px; font-size:12px; font-weight:900; }
+
+    .statusPill{
+      display:inline-flex; align-items:center; min-height:32px; padding:5px 10px;
+      border-radius:999px; background:rgba(255,255,255,.70); border:1px solid rgba(255,255,255,.84);
+      box-shadow:var(--shadow-xs); color:var(--muted); font-size:11px; font-weight:900;
     }
 
-    .cardBody{
-      padding:14px;
-    }
-
-    .row{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
-    }
-
-    .mutedSmall{
-      font-size:12px;
-      color:var(--muted);
-      font-weight:800;
-      padding:6px 10px;
-      border-radius:999px;
-      background:rgba(255,255,255,.62);
-      border:1px solid rgba(255,255,255,.66);
-      box-shadow:var(--shadow-xs);
-      animation:valuePop .28s var(--ease-soft);
-    }
-
-    .hint{
-      font-size:12px;
-      color:var(--muted);
-      margin-top:8px;
-      line-height:1.4;
-    }
-
-    .editorLaunch{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-    }
-
-    .editorLaunchLeft h3{
-      margin:0;
-      font-size:14px;
-      letter-spacing:.2px;
-    }
-
-    .editorLaunchRight{
-      display:flex;
-      gap:8px;
-      align-items:center;
-      flex-wrap:wrap;
-    }
-
+    .hero{ display:flex; align-items:center; justify-content:space-between; gap:12px; min-height:52px; }
+    .heroRight{ display:flex; align-items:center; gap:8px; justify-content:flex-end; }
     .fabOpen{
-      width:44px;
-      height:38px;
-      border-radius:14px;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      font-size:26px;
-      line-height:1;
-      padding:0;
+      width:46px; height:40px; padding:0; border-radius:15px; font-size:26px; line-height:1;
+      display:inline-flex; align-items:center; justify-content:center;
     }
 
-    .field{
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-      margin-bottom:10px;
+    .listHeader{ display:flex; flex-direction:column; gap:12px; }
+    .listStats{ display:flex; gap:8px; flex-wrap:wrap; }
+    .statPill{
+      display:inline-flex; align-items:center; gap:6px; padding:7px 10px; border-radius:999px;
+      background:rgba(255,255,255,.68); border:1px solid rgba(255,255,255,.84); box-shadow:var(--shadow-xs);
+      font-size:12px; font-weight:900; color:#475569;
     }
 
-    label{
-      font-size:12px;
-      color:var(--muted);
-      font-weight:800;
-    }
-
-    .inputWrap{ position:relative; }
-
-    input[type="text"], textarea{
-      width:100%;
-      border:1px solid rgba(255,255,255,.8);
-      border-radius:14px;
-      padding:11px 13px;
-      font-size:14px;
-      outline:none;
-      color:var(--text);
-      background:linear-gradient(180deg, rgba(255,255,255,.84), rgba(255,255,255,.70));
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.45), var(--shadow-xs);
-      transition:
-        border-color 160ms var(--ease),
-        box-shadow 180ms var(--ease),
-        background 160ms var(--ease);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-    }
-
-    input[type="text"]{ padding-right:42px; }
-
-    textarea{
-      min-height:190px;
-      resize:vertical;
-      line-height:1.45;
-      padding-right:42px;
-    }
-
-    input:focus, textarea:focus{
-      border-color:rgba(25,118,210,.38);
-      box-shadow:
-        0 0 0 4px rgba(25,118,210,.11),
-        0 14px 30px rgba(25,118,210,.08);
-      background:rgba(255,255,255,.92);
-    }
-
-    .clearBtn{
-      position:absolute;
-      right:8px;
-      top:50%;
-      transform:translateY(-50%) scale(.94);
-      width:28px;
-      height:28px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.86);
-      background:rgba(255,255,255,.94);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-weight:900;
-      color:#64748b;
-      cursor:pointer;
-      box-shadow:0 8px 18px rgba(2,6,23,.08);
-      opacity:0;
-      pointer-events:none;
-      transition: opacity 160ms var(--ease), transform 160ms var(--ease);
-    }
-    .clearBtn.show{
-      opacity:1;
-      pointer-events:auto;
-      transform:translateY(-50%) scale(1);
-    }
-    .clearBtn:active{ transform:translateY(-50%) scale(.94); }
-    .clearBtn.textarea{
-      top:12px;
-      transform:scale(.94);
-    }
-    .clearBtn.textarea.show{ transform:scale(1); }
-    .clearBtn.textarea:active{ transform:scale(.94); }
-
-    .suggest{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-      margin-top:10px;
-    }
-
-    .chip{
-      border:1px solid rgba(25,118,210,.18);
-      background:rgba(25,118,210,.08);
-      color:#0b4aa2;
-      padding:8px 11px;
-      border-radius:999px;
-      font-weight:900;
-      font-size:12px;
-      cursor:pointer;
-      user-select:none;
-      transition: transform 140ms var(--ease), opacity 140ms var(--ease);
-      -webkit-tap-highlight-color:transparent;
-    }
-    .chip:active{
-      transform:scale(.97);
-      opacity:.88;
-    }
-
-    .listTop{
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-    }
-
-    .listTitle{
-      font-size:14px;
-      font-weight:800;
-      margin:0;
+    .toolbar2{
+      display:grid; grid-template-columns:1fr auto; gap:10px; align-items:stretch;
     }
 
     .segmented{
-      position:relative;
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:4px;
-      padding:4px;
-      width:min(340px,100%);
-      border-radius:16px;
-      background:rgba(255,255,255,.55);
-      border:1px solid rgba(255,255,255,.64);
-      box-shadow:var(--shadow-xs);
-      overflow:hidden;
-      backdrop-filter: blur(10px);
+      position:relative; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:4px; width:100%;
+      padding:4px; border-radius:17px; background:rgba(255,255,255,.58);
+      border:1px solid rgba(255,255,255,.82); box-shadow:var(--shadow-xs); overflow:hidden;
     }
-
     .segIndicator{
-      position:absolute;
-      top:4px;
-      left:4px;
-      width:calc(50% - 4px);
-      height:calc(100% - 8px);
-      border-radius:12px;
-      background:linear-gradient(180deg, rgba(255,255,255,.94), rgba(255,255,255,.76));
-      box-shadow:0 8px 18px rgba(15,23,42,.08);
-      transition: transform 320ms var(--ease-soft);
-      pointer-events:none;
+      position:absolute; top:4px; left:4px; width:calc((100% - 12px)/2); height:calc(100% - 8px);
+      border-radius:13px; background:linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,255,255,.82));
+      box-shadow:0 10px 22px rgba(15,23,42,.08); transition:transform 320ms var(--ease-soft); pointer-events:none;
     }
-
-    .segmented[data-tab="all"] .segIndicator{ transform:translateX(0%); }
-    .segmented[data-tab="pinned"] .segIndicator{ transform:translateX(100%); }
-
+    .segmented[data-tab="all"] .segIndicator{ transform:translateX(0); }
+    .segmented[data-tab="pinned"] .segIndicator{ transform:translateX(calc(100% + 4px)); }
     .segBtn{
-      position:relative;
-      z-index:1;
-      border:none;
-      background:transparent;
-      padding:10px 12px;
-      border-radius:12px;
-      font-weight:900;
-      color:var(--muted);
-      cursor:pointer;
-      transition: transform 140ms var(--ease), color 160ms var(--ease);
-      -webkit-tap-highlight-color:transparent;
+      position:relative; z-index:1; border:none; background:transparent; border-radius:13px;
+      min-height:46px; padding:10px 12px; font-weight:900; font-size:13px; color:var(--muted); cursor:pointer;
+      display:flex; align-items:center; justify-content:center; text-align:center;
+      transition:transform 140ms var(--ease), color 160ms var(--ease); -webkit-tap-highlight-color:transparent;
     }
-
-    .segBtn.active{ color:var(--text); }
+    .segBtn.active{ color:var(--text); font-weight:950; }
     .segBtn:active{ transform:scale(.97); }
 
-    .searchRow{
-      display:block;
+    .searchWrap{ position:relative; min-width:0; }
+    #categoryFilter{ min-width:150px; }
+    input[type="text"], textarea, select{
+      width:100%; border:1px solid var(--line); border-radius:16px; padding:11px 13px; font-size:14px;
+      outline:none; color:var(--text); background:linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.78));
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.45), var(--shadow-xs);
+      transition:border-color 160ms var(--ease), box-shadow 180ms var(--ease), background 160ms var(--ease);
+      appearance:none;
+    }
+    .searchWrap input{ padding-left:42px; }
+    .searchIcon{
+      position:absolute; left:14px; top:50%; transform:translateY(-50%);
+      font-size:14px; opacity:.56; pointer-events:none;
+    }
+    input[type="text"]:focus, textarea:focus, select:focus{
+      border-color:rgba(47,109,246,.34);
+      box-shadow:0 0 0 4px rgba(47,109,246,.10), 0 14px 30px rgba(47,109,246,.08);
+      background:rgba(255,255,255,.97);
     }
 
-    .searchWrap{
-      position:relative;
-      min-width:0;
+    .field{ display:flex; flex-direction:column; gap:7px; margin-bottom:12px; }
+    label{ font-size:12px; font-weight:800; color:var(--muted); }
+    .inputWrap{ position:relative; }
+    textarea{ min-height:210px; resize:vertical; line-height:1.5; padding-right:42px; }
+    .clearBtn{
+      position:absolute; right:8px; top:50%; transform:translateY(-50%) scale(.94);
+      width:28px; height:28px; border-radius:999px; border:1px solid rgba(255,255,255,.85);
+      background:rgba(255,255,255,.96); display:flex; align-items:center; justify-content:center;
+      font-weight:900; color:#64748b; cursor:pointer; box-shadow:0 8px 18px rgba(2,6,23,.08);
+      opacity:0; pointer-events:none; transition:opacity 160ms var(--ease), transform 160ms var(--ease);
     }
+    .clearBtn.show{ opacity:1; pointer-events:auto; transform:translateY(-50%) scale(1); }
+    .clearBtn.textarea{ top:12px; transform:scale(.94); }
+    .clearBtn.textarea.show{ transform:scale(1); }
 
-    .searchWrap input{
-      width:100%;
-      padding-right:12px;
-    }
-
-    .list{
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-      padding:14px;
-    }
-
-    .item{
-      border:1px solid rgba(255,255,255,.72);
-      border-radius:18px;
-      background:linear-gradient(180deg, rgba(255,255,255,.84), rgba(255,255,255,.70));
-      box-shadow:var(--shadow-sm);
-      overflow:hidden;
-      backdrop-filter: blur(12px);
-      transition:
-        transform 180ms var(--ease),
-        box-shadow 220ms var(--ease),
-        border-color 180ms var(--ease);
-      animation:itemEnter .42s var(--ease-soft) both;
-      animation-delay:calc(var(--i, 0) * 24ms);
-    }
-
-    .item:active{ transform:scale(.992); }
-
-    .itemTop{
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      padding:12px;
-    }
-
-    .itemMain{
-      min-width:0;
-    }
-
-    .itemTitle{
-      font-weight:900;
-      font-size:14px;
-      line-height:1.28;
-      word-break:break-word;
-      margin:0;
-    }
-
-    .meta{
-      font-size:11px;
-      color:var(--muted);
-      margin-top:4px;
-      font-weight:700;
-      display:flex;
-      flex-wrap:wrap;
-      gap:6px;
-      align-items:center;
-    }
-
-    .badgePin{
-      display:inline-flex;
-      align-items:center;
-      gap:6px;
-      font-size:11px;
-      font-weight:900;
-      color:#0b4aa2;
-      background:rgba(100,181,246,.18);
-      border:1px solid rgba(100,181,246,.34);
-      padding:4px 8px;
-      border-radius:999px;
-      box-shadow:0 6px 14px rgba(66,165,245,.10);
-      animation:valuePop .28s var(--ease-soft);
-    }
-
-    .itemBtns{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-    }
-
-    .itemPreview{
-      padding:0 12px 12px;
-      color:#111827;
-      opacity:.92;
-      font-size:13px;
-      line-height:1.42;
-      white-space:pre-wrap;
-      word-break:break-word;
-    }
-
-    .clamp{
-      display:-webkit-box;
-      -webkit-box-orient:vertical;
-      -webkit-line-clamp:4;
-      overflow:hidden;
-    }
-
-    .moreRow{
-      padding:0 12px 12px;
-      margin-top:-4px;
-    }
-
-    .moreBtn{
-      border:none;
-      background:transparent;
-      color:var(--primary);
-      font-weight:900;
-      cursor:pointer;
-      padding:0;
+    .suggest{ display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+    .chip{
+      border:1px solid rgba(47,109,246,.14); background:rgba(47,109,246,.08); color:#1d4ed8;
+      padding:8px 11px; border-radius:999px; font-weight:900; font-size:12px; cursor:pointer;
+      user-select:none; transition:transform 140ms var(--ease), opacity 140ms var(--ease); box-shadow:var(--shadow-xs);
       -webkit-tap-highlight-color:transparent;
     }
+    .chip:active{ transform:scale(.97); opacity:.88; }
 
-    .empty{
-      padding:26px 14px;
-      text-align:center;
-      color:var(--muted);
-      font-weight:800;
+    .editorActions{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:4px; }
+    .editorMeta{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:12px; }
+    .infoBox{
+      padding:12px 13px; border-radius:16px; border:1px solid rgba(255,255,255,.78);
+      background:rgba(255,255,255,.58); box-shadow:var(--shadow-xs);
     }
+    .infoTitle{ font-size:12px; font-weight:900; color:#334155; margin-bottom:4px; }
+    .infoText{ font-size:12px; line-height:1.4; color:var(--muted); font-weight:700; }
 
-    .modalOverlay{
-      position:fixed;
-      inset:0;
-      background:rgba(2,6,23,.34);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      opacity:0;
-      pointer-events:none;
-      transition: opacity 220ms var(--ease);
-      z-index:9997;
+    .list{ display:flex; flex-direction:column; gap:12px; padding:14px; }
+    .item{
+      border:1px solid rgba(255,255,255,.82); border-radius:20px;
+      background:linear-gradient(180deg, rgba(255,255,255,.90), rgba(255,255,255,.74));
+      box-shadow:var(--shadow-sm); overflow:hidden; transition:transform 180ms var(--ease), box-shadow 220ms var(--ease), border-color 180ms var(--ease);
+      animation:itemEnter .30s var(--ease-soft) both; animation-delay:calc(var(--i, 0) * 18ms);
     }
-    .modalOverlay.show{
-      opacity:1;
-      pointer-events:auto;
+    .item:active{ transform:scale(.992); }
+    .itemTop{ display:flex; flex-direction:column; gap:8px; padding:12px 12px 8px; }
+    .itemMain{ min-width:0; }
+    .itemTitle{ font-weight:900; font-size:14px; line-height:1.24; word-break:break-word; margin:0; }
+    .meta{
+      display:flex; align-items:center; flex-wrap:wrap; gap:6px; margin-top:2px;
+      font-size:11px; font-weight:800; color:var(--muted);
     }
+    .badgePin{
+      display:inline-flex; align-items:center; gap:6px; padding:4px 8px; border-radius:999px;
+      background:rgba(106,168,255,.16); border:1px solid rgba(106,168,255,.32); color:#1d4ed8;
+      font-weight:900; box-shadow:0 6px 14px rgba(106,168,255,.10);
+    }
+    .catBadge{
+      display:inline-flex; align-items:center; gap:6px; padding:4px 8px; border-radius:999px;
+      font-weight:900; font-size:11px; border:1px solid transparent;
+    }
+    .cat-all{ background:#f1f5f9; color:#475569; border-color:#e2e8f0; }
+    .cat-work{ background:#dbeafe; color:#1d4ed8; border-color:#bfdbfe; }
+    .cat-personal{ background:#fce7f3; color:#be185d; border-color:#fbcfe8; }
+    .cat-link{ background:#dcfce7; color:#15803d; border-color:#bbf7d0; }
+    .cat-code{ background:#fef3c7; color:#b45309; border-color:#fde68a; }
 
-    .editorModal{
-      position:fixed;
-      left:50%;
-      top:50%;
-      width:min(720px, calc(100% - 20px));
-      max-height:min(86vh, 920px);
-      transform:translate3d(-50%, calc(-50% + 26px), 0) scale(.965);
-      opacity:0;
-      pointer-events:none;
-      border-radius:24px;
-      border:1px solid rgba(255,255,255,.70);
-      background:linear-gradient(180deg, rgba(255,255,255,.88), rgba(255,255,255,.76));
-      box-shadow:0 34px 90px rgba(2,6,23,.22);
-      backdrop-filter: blur(20px) saturate(145%);
-      -webkit-backdrop-filter: blur(20px) saturate(145%);
-      transition:
-        transform 420ms var(--ease-soft),
-        opacity 320ms var(--ease-soft);
-      overflow:hidden;
-      z-index:9998;
-      display:flex;
-      flex-direction:column;
-    }
-
-    .editorModal.show{
-      transform:translate3d(-50%, -50%, 0) scale(1);
-      opacity:1;
-      pointer-events:auto;
-    }
-
-    .editorModalHeader{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      padding:14px 14px 12px;
-      border-bottom:1px solid rgba(255,255,255,.45);
-      background:linear-gradient(180deg, rgba(255,255,255,.42), rgba(255,255,255,.18));
-    }
-
-    .editorModalTitle{
-      display:flex;
-      flex-direction:column;
-      gap:4px;
-      min-width:0;
-    }
-
-    .editorModalTitle h3{
-      margin:0;
-      font-size:16px;
-      letter-spacing:.2px;
-    }
-
-    .editorModalBody{
-      padding:14px;
-      overflow:auto;
-      animation: modalContentIn .46s var(--ease-soft);
-    }
-
-    .closeRound{
+    .iconBtn{
       width:40px;
-      height:36px;
-      border-radius:12px;
+      height:40px;
       padding:0;
+      border-radius:14px;
       display:inline-flex;
       align-items:center;
       justify-content:center;
       font-size:18px;
       line-height:1;
+      flex:0 0 40px;
+    }
+    .iconBtn.copy{
+      color:#fff;
+      border-color:rgba(47,109,246,.22);
+      background:linear-gradient(180deg, var(--primary-2), var(--primary));
+      box-shadow:var(--shadow-blue);
+    }
+    .iconBtn.delete{
+      color:var(--danger);
+      background:rgba(255,255,255,.90);
+      border-color:rgba(220,38,38,.16);
+    }
+    .itemActions .spacer{
+      flex:1 1 auto;
     }
 
-    .sheetOverlay{
-      position:fixed;
-      inset:0;
-      background:rgba(2,6,23,.30);
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
-      opacity:0;
-      pointer-events:none;
-      transition: opacity 220ms var(--ease);
-      z-index:9998;
+
+    .itemPreview{
+      padding:0 12px 8px; color:#111827; opacity:.94; font-size:13px; line-height:1.42;
+      white-space:pre-wrap; word-break:break-word;
+    }
+    mark.hl{
+      background:rgba(255,235,59,.45);
+      color:inherit;
+      border-radius:4px;
+      padding:0 .5px;
     }
 
-    .sheetOverlay.show{
-      opacity:1;
-      pointer-events:auto;
+    .clamp{ display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:4; overflow:hidden; }
+    .moreRow{ padding:0 12px 8px; margin-top:-2px; }
+    .moreBtn{
+      border:none; background:transparent; color:var(--primary); font-weight:900; cursor:pointer;
+      padding:0; font-size:13px; -webkit-tap-highlight-color:transparent;
     }
+    .itemActions{ display:flex; gap:8px; padding:0 12px 12px; }
+    .empty{ padding:28px 16px; text-align:center; color:var(--muted); font-weight:800; line-height:1.5; }
 
-    .sheet{
-      position:fixed;
-      left:50%;
-      bottom:calc(10px + env(safe-area-inset-bottom));
-      transform:translate3d(-50%, 26px, 0) scale(.985);
-      width:min(520px, calc(100% - 24px));
-      background:linear-gradient(180deg, rgba(255,255,255,.86), rgba(255,255,255,.74));
-      border:1px solid rgba(255,255,255,.72);
-      border-radius:20px;
-      box-shadow:var(--shadow-lg);
-      padding:12px;
-      opacity:0;
-      pointer-events:none;
-      transition: transform 280ms var(--ease-soft), opacity 240ms var(--ease-soft);
-      z-index:9999;
-      backdrop-filter: blur(18px) saturate(140%);
-      -webkit-backdrop-filter: blur(18px) saturate(140%);
+    .resetFilters{
+      margin-top:10px;
+      display:none;
     }
-
-    .sheet.show{
-      opacity:1;
-      transform:translate3d(-50%, 0, 0) scale(1);
-      pointer-events:auto;
-    }
-
-    .sheetTop{
+    .resetFilters.show{
       display:flex;
+      justify-content:center;
+    }
+
+
+
+    .fabCompose{
+      position:fixed;
+      right:16px;
+      bottom:calc(20px + env(safe-area-inset-bottom));
+      width:58px;
+      height:58px;
+      border-radius:20px;
+      padding:0;
+      display:inline-flex;
       align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      padding:6px 6px 10px;
+      justify-content:center;
+      font-size:30px;
+      line-height:1;
+      z-index:9996;
+      box-shadow:0 18px 38px rgba(47,109,246,.24);
     }
 
-    .sheetTitle{
-      font-weight:900;
-      font-size:14px;
-      letter-spacing:.2px;
+    @media (max-width: 720px){
+      .fabCompose{
+        right:14px;
+        bottom:calc(16px + env(safe-area-inset-bottom));
+        width:56px;
+        height:56px;
+        border-radius:19px;
+      }
     }
 
-    .sheetClose{
-      width:38px;
-      height:34px;
-      border-radius:12px;
-      border:1px solid var(--border);
-      background:rgba(255,255,255,.82);
-      cursor:pointer;
-      font-weight:900;
+    .modalOverlay{
+      position:fixed; inset:0; background:rgba(2,6,23,.30); backdrop-filter:blur(8px);
+      -webkit-backdrop-filter:blur(8px); opacity:0; pointer-events:none; transition:opacity 220ms var(--ease); z-index:9997;
+    }
+    .modalOverlay.show{ opacity:1; pointer-events:auto; }
+    .editorModal{
+      position:fixed; left:50%; bottom:6px; width:min(760px, calc(100% - 12px)); max-height:calc(88vh);
+      transform:translate3d(-50%, 26px, 0) scale(.985); opacity:0; pointer-events:none;
+      border-radius:24px 24px 20px 20px; border:1px solid rgba(255,255,255,.82);
+      background:linear-gradient(180deg, rgba(255,255,255,.90), rgba(255,255,255,.78));
+      box-shadow:var(--shadow-lg); backdrop-filter:blur(20px) saturate(145%); -webkit-backdrop-filter:blur(20px) saturate(145%);
+      transition:transform 380ms var(--ease-soft), opacity 280ms var(--ease-soft); overflow:hidden; z-index:9998; display:flex; flex-direction:column;
+    }
+    .editorModal.show{ transform:translate3d(-50%, 0, 0) scale(1); opacity:1; pointer-events:auto; }
+    .dragHandle{
+      width:46px; height:5px; border-radius:999px; background:rgba(100,116,139,.28);
+      margin:10px auto 2px;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.45);
+    }
+    .editorModalHeader{
+      display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px 15px 15px;
+      border-bottom:1px solid rgba(255,255,255,.56); background:linear-gradient(180deg, rgba(255,255,255,.44), rgba(255,255,255,.20));
+    }
+    .editorModalTitle{ display:flex; flex-direction:column; gap:5px; min-width:0; }
+    .editorModalTitle h3{ margin:0; font-size:16px; font-weight:900; letter-spacing:.2px; }
+    .closeRound{
+      width:42px; height:38px; border-radius:14px; padding:0; display:inline-flex;
+      align-items:center; justify-content:center; font-size:18px; line-height:1;
+    }
+    .editorModalBody{ padding:15px; overflow:auto; }
+    .sheetOverlay{
+      position:fixed; inset:0; background:rgba(2,6,23,.30); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+      opacity:0; pointer-events:none; transition:opacity 220ms var(--ease); z-index:9998;
+    }
+    .sheetOverlay.show{ opacity:1; pointer-events:auto; }
+    .sheet{
+      position:fixed; left:50%; bottom:calc(10px + env(safe-area-inset-bottom));
+      transform:translate3d(-50%, 26px, 0) scale(.985); width:min(520px, calc(100% - 24px));
+      background:linear-gradient(180deg, rgba(255,255,255,.88), rgba(255,255,255,.76));
+      border:1px solid rgba(255,255,255,.82); border-radius:22px; box-shadow:var(--shadow-lg); padding:12px;
+      opacity:0; pointer-events:none; transition:transform 280ms var(--ease-soft), opacity 240ms var(--ease-soft);
+      z-index:9999; backdrop-filter:blur(18px) saturate(140%); -webkit-backdrop-filter:blur(18px) saturate(140%);
+    }
+    .sheet.show{ opacity:1; transform:translate3d(-50%, 0, 0) scale(1); pointer-events:auto; }
+    .sheetTop{ display:flex; align-items:center; justify-content:space-between; gap:10px; padding:6px 6px 10px; }
+    .sheetTitle{ font-weight:900; font-size:14px; letter-spacing:.2px; }
+    .sheetActions{ display:grid; grid-template-columns:1fr 1fr; gap:10px; padding:0 6px 10px; }
+    .sheetHint{ padding:0 6px 6px; font-size:12px; color:var(--muted); font-weight:700; line-height:1.45; }
+
+    .backupMeta{
+      margin:0 6px 10px;
+      padding:12px;
+      border-radius:16px;
+      background:rgba(255,255,255,.62);
+      border:1px solid rgba(255,255,255,.82);
       box-shadow:var(--shadow-xs);
-    }
-
-    .sheetActions{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:10px;
-      padding:0 6px 10px;
-    }
-
-    .sheetHint{
-      padding:0 6px 6px;
       font-size:12px;
-      color:var(--muted);
-      font-weight:700;
-      line-height:1.4;
+      color:#475569;
+      font-weight:800;
+      line-height:1.45;
+    }
+
+
+    .confirmOverlay{
+      position:fixed; inset:0; background:rgba(2,6,23,.32);
+      backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+      opacity:0; pointer-events:none; transition:opacity 180ms var(--ease); z-index:10001;
+    }
+    .confirmOverlay.show{ opacity:1; pointer-events:auto; }
+
+    .confirmBox{
+      position:fixed; left:50%; bottom:calc(14px + env(safe-area-inset-bottom));
+      transform:translate3d(-50%, 20px, 0) scale(.98);
+      width:min(460px, calc(100% - 24px));
+      background:linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.82));
+      border:1px solid rgba(255,255,255,.86);
+      border-radius:22px; box-shadow:var(--shadow-lg);
+      padding:14px; opacity:0; pointer-events:none; z-index:10002;
+      transition:transform 220ms var(--ease-soft), opacity 180ms var(--ease-soft);
+      backdrop-filter:blur(18px) saturate(140%); -webkit-backdrop-filter:blur(18px) saturate(140%);
+    }
+    .confirmBox.show{ opacity:1; pointer-events:auto; transform:translate3d(-50%,0,0) scale(1); }
+    .confirmTitle{ font-size:15px; font-weight:900; margin:0 0 6px; }
+    .confirmText{ font-size:13px; color:var(--muted); font-weight:700; line-height:1.45; margin:0 0 12px; }
+    .confirmActions{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+
+    @media (max-width: 720px){
+      .confirmActions{ grid-template-columns:1fr; }
     }
 
     .toast{
-      position:fixed;
-      left:50%;
-      bottom:calc(18px + env(safe-area-inset-bottom));
-      transform:translate3d(-50%,10px,0) scale(.96);
-      background:rgba(15,23,42,.86);
-      color:#fff;
-      padding:11px 13px;
-      border-radius:14px;
-      font-size:13px;
-      font-weight:900;
-      border:1px solid rgba(255,255,255,.12);
-      box-shadow:0 22px 44px rgba(0,0,0,.24);
-      backdrop-filter: blur(12px);
-      opacity:0;
-      pointer-events:none;
-      transition: opacity 180ms var(--ease), transform 220ms var(--ease-soft);
-      z-index:10000;
+      position:fixed; left:50%; bottom:calc(18px + env(safe-area-inset-bottom));
+      transform:translate3d(-50%,10px,0) scale(.96); background:rgba(15,23,42,.86); color:#fff;
+      padding:11px 13px; border-radius:14px; font-size:13px; font-weight:900; border:1px solid rgba(255,255,255,.12);
+      box-shadow:0 22px 44px rgba(0,0,0,.24); backdrop-filter:blur(12px); opacity:0; pointer-events:none;
+      transition:opacity 180ms var(--ease), transform 220ms var(--ease-soft); z-index:10000;
     }
-
-    .toast.show{
-      opacity:1;
-      transform:translate3d(-50%,-2px,0) scale(1);
-      animation:valuePop .24s var(--ease-soft);
-    }
+    .toast.show{ opacity:1; transform:translate3d(-50%,-2px,0) scale(1); }
 
     @keyframes pageEnter{
       from{ opacity:0; transform:translateY(12px) scale(.995); filter:blur(8px); }
       to{ opacity:1; transform:translateY(0) scale(1); filter:blur(0); }
     }
-
     @keyframes itemEnter{
-      from{ opacity:0; transform:translateY(10px) scale(.986); filter:blur(4px); }
+      from{ opacity:0; transform:translateY(8px) scale(.99); filter:blur(3px); }
       to{ opacity:1; transform:translateY(0) scale(1); filter:blur(0); }
     }
 
-    @keyframes valuePop{
-      0%{ transform:scale(.92); opacity:.75; }
-      60%{ transform:scale(1.04); opacity:1; }
-      100%{ transform:scale(1); opacity:1; }
-    }
-
-    @keyframes modalContentIn{
-      from{ opacity:0; transform:translateY(10px); filter:blur(6px); }
-      to{ opacity:1; transform:translateY(0); filter:blur(0); }
-    }
-
     @media (max-width: 720px){
-      .editorLaunch{
-        align-items:flex-start;
-        flex-direction:column;
-      }
-
-      .editorLaunchRight{
-        width:100%;
-        justify-content:flex-end;
-      }
-
-      .sheetActions{
-        grid-template-columns:1fr;
-      }
-
-      .editorModal{
-        width:calc(100% - 12px);
-        max-height:calc(100vh - 18px);
-        top:auto;
-        left:50%;
-        bottom:6px;
-        transform:translate3d(-50%, 26px, 0) scale(.985);
-        border-radius:24px 24px 20px 20px;
-      }
-
-      .editorModal.show{
-        transform:translate3d(-50%, 0, 0) scale(1);
-      }
-
-      .editorModalBody{
-        padding-bottom:calc(18px + env(safe-area-inset-bottom));
-      }
+      .titleRow{ align-items:flex-start; }
+      .hero{ align-items:center; flex-direction:row; min-height:50px; }
+      .heroRight{ width:auto; justify-content:flex-end; }
+      .toolbar2{ grid-template-columns:1fr; }
+      .editorActions{ grid-template-columns:1fr; }
+      .editorMeta{ grid-template-columns:1fr; }
+      .itemActions{ gap:8px; }
+      .sheetActions{ grid-template-columns:1fr; }
+      .editorModalBody{ padding-bottom:calc(18px + env(safe-area-inset-bottom)); }
     }
 
     @media (prefers-reduced-motion: reduce){
-      *, *::before, *::after{
-        animation:none !important;
-        transition:none !important;
-      }
+      *, *::before, *::after{ animation:none !important; transition:none !important; }
     }
   </style>
 </head>
 
-<body>
+<body style="">
   <div class="pageEnter">
     <header>
-      <div class="wrap">
+      <div class="wrap headerWrap">
         <div class="titleRow">
-          <div>
-            <div class="brand">
-              <span class="dot"></span>
-              <div>
-                <div>GHI CHÚ • COPY NHANH</div>
-                <div class="sub">Tự lưu • Tìm kiếm • Ghim • Copy 1 chạm</div>
-                <div class="credit">made by An</div>
-              </div>
+          <div class="brand">
+            <span class="dot"></span>
+            <div>
+              <div class="brandTitle">GHI CHÚ • COPY NHANH</div>
+                            <div class="credit">made by An</div>
             </div>
           </div>
-          <button class="btn ghost" id="btnBackup" title="Sao lưu / Khôi phục">Backup</button>
+          <button class="btn ghost mini" id="btnBackup" title="Sao lưu / Khôi phục" style="padding:6px 10px;border-radius:13px;box-shadow:none;font-size:13px;">Backup</button>
         </div>
       </div>
     </header>
 
-    <main class="wrap">
+    <main class="wrap mainWrap">
       <div class="grid">
-        <section class="card">
-          <div class="cardBody">
-            <div class="editorLaunch">
-              <div class="editorLaunchLeft">
-                <h3>Soạn ghi chú</h3>
-              </div>
-
-              <div class="editorLaunchRight">
-                <div class="mutedSmall" id="status">—</div>
-                <button class="btn primary fabOpen" id="btnOpenEditor" title="Mở soạn ghi chú">+</button>
-              </div>
-            </div>
-          </div>
-        </section>
+        
 
         <section class="card">
           <div class="cardHeader">
-            <div class="listTop">
-              <h3 class="listTitle">Danh sách ghi chú</h3>
-
-              <div class="segmented" id="filterTabs" data-tab="all" aria-label="Lọc ghi chú">
-                <div class="segIndicator"></div>
-                <button class="segBtn active" type="button" data-tab="all">Tất cả</button>
-                <button class="segBtn" type="button" data-tab="pinned">Đã ghim</button>
+            <div class="listHeader">
+              <div>
+                <h3 class="sectionTitle">Danh sách ghi chú</h3>
+                <div class="sectionSub">Lọc, sắp xếp, phân loại và tìm nhanh</div>
               </div>
 
-              <div class="searchRow">
+              <div class="listStats" id="listStats">
+      <span class="statPill">📝 7 ghi chú</span>
+      <span class="statPill">📌 1 ghim</span>
+      <span class="statPill">👀 7 đang hiển thị</span>
+      
+    </div>
+
+              <div class="toolbar2">
+                <div class="segmented" id="filterTabs" data-tab="all" aria-label="Lọc ghi chú">
+                  <div class="segIndicator"></div>
+                  <button class="segBtn active" type="button" data-tab="all">Tất cả</button>
+                  <button class="segBtn" type="button" data-tab="pinned">Đã ghim</button>
+                </div>
+
+                <div class="row" style="justify-content:flex-end;">
+                  <select id="sortSelect" aria-label="Sắp xếp">
+                    <option value="updated_desc">Mới cập nhật</option>
+                    <option value="created_desc">Mới tạo</option>
+                    <option value="title_asc">A-Z</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="toolbar2">
                 <div class="searchWrap">
-                  <input id="search" type="text" placeholder="Tìm theo tiêu đề / nội dung..." />
+                  <span class="searchIcon">🔎</span>
+                  <input id="search" type="text" placeholder="Tìm theo tiêu đề / nội dung...">
+                </div>
+                <div class="row" style="justify-content:flex-end;">
+                  <select id="categoryFilter" aria-label="Lọc theo thẻ">
+                    <option value="all">Tất cả thẻ</option>
+                    <option value="default">Mặc định</option>
+                    <option value="work">Công việc</option>
+                    <option value="personal">Cá nhân</option>
+                    <option value="link">Link</option>
+                    <option value="code">Mã / tài khoản</option>
+                  </select>
                 </div>
               </div>
             </div>
           </div>
 
-          <div class="list" id="list"></div>
-          <div class="empty" id="empty" style="display:none">
-            Chưa có ghi chú nào.<br>Bấm <b>+</b> để mở popup tạo ghi chú.
+          <div class="list" id="list"><div class="item" style="--i: 0;"><div class="itemTop"><div class="itemMain"><div class="itemTitle">(Không tiêu đề)</div><div class="meta">01:45:32 19/3/2026 <span class="catBadge cat-all">Mặc định</span> <span class="badgePin">📌 Ghim</span></div></div></div><div class="itemPreview clamp">Test</div><div class="itemActions"><button class="btn iconBtn" type="button" title="Chỉnh sửa" aria-label="Chỉnh sửa">✏️</button><button class="btn iconBtn copy" type="button" title="Copy" aria-label="Copy">📋</button><button class="btn iconBtn" type="button" title="Bỏ ghim" aria-label="Bỏ ghim">📍</button><div class="spacer"></div><button class="btn iconBtn delete" type="button" title="Xóa" aria-label="Xóa">🗑</button></div></div><div class="item" style="--i: 1;"><div class="itemTop"><div class="itemMain"><div class="itemTitle">(Không tiêu đề)</div><div class="meta">01:55:22 19/3/2026 <span class="catBadge cat-all">Mặc định</span></div></div></div><div class="itemPreview clamp">_Hoàn tất tooll “ Công việc hàng ngày ST BHX “ báo cáo trước 22h<br>Lưu ý : Khi nào tool cập nhật hoàn tất hết 100% cv rồi báo cáo nha team. <br>_ Bc HT kiểm quỷ cuối ngày 19/03<br>@All <br>1. P1 <br>2. NT <br>3. PHT <br>4. 411 NT <br>5. NTH<br>6. 232 <br>7. 3/2 <br>8. P6 <br>9. TV <br>10. HND <br>11. UMI <br>12. KH <br>13. TP <br>14. TB <br>15. 3/2TB<br>16. KAN <br>17. BBA <br>18. TL <br>19. THĐ <br>20. SĐ1 <br>21. SĐ2 <br>22. ĐB <br>23. TVT1<br>24. TVT2 <br>25. C5  <br>26. TH <br>27. KHH<br>28. KLA <br>29. CH <br><br><br><br>Siêu thị nào hoàn tất thì điền vào sau tên siêu thị mình chữ “HT”  cho dễ kiểm soát nha. Cảm ơn mọi người.</div><div class="moreRow"><button class="moreBtn" type="button">… Xem thêm</button></div><div class="itemActions"><button class="btn iconBtn" type="button" title="Chỉnh sửa" aria-label="Chỉnh sửa">✏️</button><button class="btn iconBtn copy" type="button" title="Copy" aria-label="Copy">📋</button><button class="btn iconBtn" type="button" title="Ghim" aria-label="Ghim">📌</button><div class="spacer"></div><button class="btn iconBtn delete" type="button" title="Xóa" aria-label="Xóa">🗑</button></div></div><div class="item" style="--i: 2;"><div class="itemTop"><div class="itemMain"><div class="itemTitle">(Không tiêu đề)</div><div class="meta">01:54:13 19/3/2026 <span class="catBadge cat-personal">Cá nhân</span></div></div></div><div class="itemPreview clamp">Hôm nay là 19/03</div><div class="itemActions"><button class="btn iconBtn" type="button" title="Chỉnh sửa" aria-label="Chỉnh sửa">✏️</button><button class="btn iconBtn copy" type="button" title="Copy" aria-label="Copy">📋</button><button class="btn iconBtn" type="button" title="Ghim" aria-label="Ghim">📌</button><div class="spacer"></div><button class="btn iconBtn delete" type="button" title="Xóa" aria-label="Xóa">🗑</button></div></div><div class="item" style="--i: 3;"><div class="itemTop"><div class="itemMain"><div class="itemTitle">(Không tiêu đề)</div><div class="meta">01:46:13 19/3/2026 <span class="catBadge cat-code">Mã / tài khoản</span></div></div></div><div class="itemPreview clamp">Hshaj</div><div class="itemActions"><button class="btn iconBtn" type="button" title="Chỉnh sửa" aria-label="Chỉnh sửa">✏️</button><button class="btn iconBtn copy" type="button" title="Copy" aria-label="Copy">📋</button><button class="btn iconBtn" type="button" title="Ghim" aria-label="Ghim">📌</button><div class="spacer"></div><button class="btn iconBtn delete" type="button" title="Xóa" aria-label="Xóa">🗑</button></div></div><div class="item" style="--i: 4;"><div class="itemTop"><div class="itemMain"><div class="itemTitle">(Không tiêu đề)</div><div class="meta">01:37:22 19/3/2026 <span class="catBadge cat-all">Mặc định</span></div></div></div><div class="itemPreview clamp">Test</div><div class="itemActions"><button class="btn iconBtn" type="button" title="Chỉnh sửa" aria-label="Chỉnh sửa">✏️</button><button class="btn iconBtn copy" type="button" title="Copy" aria-label="Copy">📋</button><button class="btn iconBtn" type="button" title="Ghim" aria-label="Ghim">📌</button><div class="spacer"></div><button class="btn iconBtn delete" type="button" title="Xóa" aria-label="Xóa">🗑</button></div></div><div class="item" style="--i: 5;"><div class="itemTop"><div class="itemMain"><div class="itemTitle">(Không tiêu đề)</div><div class="meta">01:37:14 19/3/2026 <span class="catBadge cat-all">Mặc định</span></div></div></div><div class="itemPreview clamp">Test</div><div class="itemActions"><button class="btn iconBtn" type="button" title="Chỉnh sửa" aria-label="Chỉnh sửa">✏️</button><button class="btn iconBtn copy" type="button" title="Copy" aria-label="Copy">📋</button><button class="btn iconBtn" type="button" title="Ghim" aria-label="Ghim">📌</button><div class="spacer"></div><button class="btn iconBtn delete" type="button" title="Xóa" aria-label="Xóa">🗑</button></div></div><div class="item" style="--i: 6;"><div class="itemTop"><div class="itemMain"><div class="itemTitle">(Không tiêu đề)</div><div class="meta">01:30:40 19/3/2026 <span class="catBadge cat-personal">Cá nhân</span></div></div></div><div class="itemPreview clamp">Kêja</div><div class="itemActions"><button class="btn iconBtn" type="button" title="Chỉnh sửa" aria-label="Chỉnh sửa">✏️</button><button class="btn iconBtn copy" type="button" title="Copy" aria-label="Copy">📋</button><button class="btn iconBtn" type="button" title="Ghim" aria-label="Ghim">📌</button><div class="spacer"></div><button class="btn iconBtn delete" type="button" title="Xóa" aria-label="Xóa">🗑</button></div></div></div>
+          <div class="empty" id="empty" style="display:none">Không có ghi chú nào khớp bộ lọc hiện tại.</div>
+          <div class="resetFilters" id="resetFilters">
+            <button class="btn" id="btnResetFilters" type="button">Hiện tất cả ghi chú</button>
           </div>
         </section>
       </div>
     </main>
   </div>
 
+
+  <button class="btn primary fabCompose" id="btnOpenEditor" type="button" aria-label="Soạn ghi chú" title="Soạn ghi chú">+</button>
+
   <div class="modalOverlay" id="editorOverlay"></div>
-  <div class="editorModal" id="editorModal" role="dialog" aria-modal="true" aria-label="Soạn ghi chú">
+  <div class="editorModal" id="editorModal" role="dialog" aria-modal="true" aria-label="Soạn ghi chú" style="transform: translate3d(-50%, 0px, 0px) scale(1);">
+    <div class="dragHandle"></div>
     <div class="editorModalHeader">
       <div class="editorModalTitle">
         <h3>Soạn ghi chú</h3>
-        <div class="mutedSmall" id="modalStatus">Tạo mới</div>
+        <div class="statusPill" id="modalStatus">Tạo mới</div>
       </div>
       <button class="btn ghost closeRound" id="btnCloseEditor" type="button" aria-label="Đóng">✕</button>
     </div>
@@ -897,16 +551,27 @@
       <div class="field">
         <label for="title">Tiêu đề</label>
         <div class="inputWrap">
-          <input id="title" type="text" placeholder="VD: Mã WiFi, Nội dung cần copy, ..." />
+          <input id="title" type="text" placeholder="VD: Mã WiFi, Tin nhắn mẫu, Link cần dùng...">
           <button class="clearBtn" id="clearTitle" type="button" aria-label="Xoá tiêu đề">✕</button>
         </div>
+      </div>
+
+      <div class="field">
+        <label for="category">Phân loại</label>
+        <select id="category">
+          <option value="all">Mặc định</option>
+          <option value="work">Công việc</option>
+          <option value="personal">Cá nhân</option>
+          <option value="link">Link</option>
+          <option value="code">Mã / tài khoản</option>
+        </select>
       </div>
 
       <div class="field">
         <label for="content">Nội dung</label>
         <div class="inputWrap">
           <textarea id="content" placeholder="Nhập ghi chú ở đây...
-Gợi ý lệnh: gõ {{today}} để tự hiện dd/mm theo ngày hiện tại"></textarea>
+Gợi ý: dùng {{today}} để tự hiện ngày hiện tại theo dạng dd/mm"></textarea>
           <button class="clearBtn textarea" id="clearContent" type="button" aria-label="Xoá nội dung">✕</button>
         </div>
 
@@ -915,15 +580,26 @@ Gợi ý lệnh: gõ {{today}} để tự hiện dd/mm theo ngày hiện tại">
         </div>
       </div>
 
-      <div class="row">
-        <button class="btn primary" id="btnSave">Lưu / Cập nhật</button>
-        <button class="btn" id="btnCopy">Copy nội dung</button>
-        <button class="btn" id="btnNew">Tạo mới</button>
-        <button class="btn danger" id="btnDelete" disabled>Xóa</button>
+      <div class="editorActions">
+        <div class="row">
+          <button class="btn primary" id="btnSave">Lưu / Cập nhật</button>
+          <button class="btn" id="btnCopy">Copy nội dung</button>
+        </div>
+        <div class="row">
+          <button class="btn" id="btnNew">Tạo mới</button>
+          <button class="btn danger" id="btnDelete">Xóa</button>
+        </div>
       </div>
 
-      <div class="hint">
-        Dùng <b>{{today}}</b> để tự hiện <b>dd/mm</b> theo ngày hiện tại, tự đổi mỗi ngày.
+      <div class="editorMeta">
+        <div class="infoBox">
+          <div class="infoTitle">Nâng cấp đã thêm</div>
+          <div class="infoText">Sort, category, header gọn, bottom sheet chuẩn mobile, backup dễ hiểu hơn và chế độ copy siêu nhanh.</div>
+        </div>
+        <div class="infoBox">
+          <div class="infoTitle">Mẹo nhanh</div>
+          <div class="infoText">Bật copy siêu nhanh rồi chạm vào nội dung note là copy luôn. Ghim vẫn luôn nổi lên đầu.</div>
+        </div>
       </div>
     </div>
   </div>
@@ -932,19 +608,37 @@ Gợi ý lệnh: gõ {{today}} để tự hiện dd/mm theo ngày hiện tại">
   <div class="sheet" id="backupSheet" role="dialog" aria-modal="true" aria-label="Backup">
     <div class="sheetTop">
       <div class="sheetTitle">Backup</div>
-      <button class="sheetClose" id="sheetClose" type="button" aria-label="Đóng">✕</button>
+      <button class="btn ghost mini" id="sheetClose" type="button" aria-label="Đóng">✕</button>
     </div>
+
+    <div class="backupMeta" id="backupMeta">Hiện có <b>7</b> ghi chú, trong đó <b>1</b> ghi chú đã ghim.<br>Fast copy đang <b>tắt</b>.</div>
+
     <div class="sheetActions">
       <button class="btn primary" id="sheetExport" type="button">Xuất JSON</button>
       <button class="btn" id="sheetImport" type="button">Nhập JSON</button>
     </div>
+    <div class="sheetActions" style="padding-top:0;">
+      <button class="btn" id="sheetImportMerge" type="button">Nhập &amp; gộp</button>
+      <button class="btn" id="toggleFastCopy" type="button">Copy siêu nhanh: Tắt</button>
+    </div>
     <div class="sheetHint">
-      <b>Nhập JSON</b> sẽ <u>ghi đè toàn bộ</u> ghi chú hiện có, có hỏi lại trước khi nhập.
+      <b>Nhập JSON</b> sẽ ghi đè toàn bộ. <b>Nhập &amp; gộp</b> sẽ thêm note mới và giữ note cũ.
+    </div>
+  </div>
+
+
+  <div class="confirmOverlay" id="confirmOverlay"></div>
+  <div class="confirmBox" id="confirmBox" role="dialog" aria-modal="true" aria-label="Xác nhận xóa">
+    <div class="confirmTitle">Xóa ghi chú?</div>
+    <div class="confirmText" id="confirmText">Ghi chú này sẽ bị xóa khỏi danh sách.</div>
+    <div class="confirmActions">
+      <button class="btn" id="confirmCancel" type="button">Hủy</button>
+      <button class="btn danger" id="confirmDelete" type="button">Xóa</button>
     </div>
   </div>
 
   <div class="toast" id="toast">Đã copy</div>
-  <input id="fileImport" type="file" accept="application/json,.json" style="display:none" />
+  <input id="fileImport" type="file" accept="application/json,.json" style="display:none">
 
 <script>
 (() => {
@@ -953,48 +647,61 @@ Gợi ý lệnh: gõ {{today}} để tự hiện dd/mm theo ngày hiện tại">
   const els = {
     title: $("title"),
     content: $("content"),
+    category: $("category"),
     clearTitle: $("clearTitle"),
     clearContent: $("clearContent"),
-
     chipToday: $("chipToday"),
-
     btnSave: $("btnSave"),
     btnCopy: $("btnCopy"),
     btnNew: $("btnNew"),
     btnDelete: $("btnDelete"),
-
     status: $("status"),
     modalStatus: $("modalStatus"),
-
     list: $("list"),
     empty: $("empty"),
+    resetFilters: $("resetFilters"),
+    btnResetFilters: $("btnResetFilters"),
     search: $("search"),
+    categoryFilter: $("categoryFilter"),
     toast: $("toast"),
-
+    listStats: $("listStats"),
+    confirmOverlay: $("confirmOverlay"),
+    confirmBox: $("confirmBox"),
+    confirmText: $("confirmText"),
+    confirmCancel: $("confirmCancel"),
+    confirmDelete: $("confirmDelete"),
+    sortSelect: $("sortSelect"),
     btnOpenEditor: $("btnOpenEditor"),
     btnCloseEditor: $("btnCloseEditor"),
     editorOverlay: $("editorOverlay"),
     editorModal: $("editorModal"),
-
     btnBackup: $("btnBackup"),
     sheetOverlay: $("sheetOverlay"),
     backupSheet: $("backupSheet"),
     sheetClose: $("sheetClose"),
     sheetExport: $("sheetExport"),
     sheetImport: $("sheetImport"),
-
+    sheetImportMerge: $("sheetImportMerge"),
+    toggleFastCopy: $("toggleFastCopy"),
+    backupMeta: $("backupMeta"),
     fileImport: $("fileImport"),
     filterTabs: $("filterTabs"),
   };
 
-  const STORAGE_KEY = "quick_notes_v1";
+  const STORAGE_KEY = "quick_notes_v2";
   const EXPAND_KEY = "quick_notes_expanded_ids_v1";
-  const FILTER_KEY = "quick_notes_filter_tab_v1";
+  const SORT_KEY = "quick_notes_sort_v1";
+  const FAST_COPY_KEY = "quick_notes_fast_copy_v1";
 
   let notes = [];
   let selectedId = null;
   let toastTimer = null;
-  let activeFilter = localStorage.getItem(FILTER_KEY) || "all";
+  let activeFilter = "all";
+  let activeSort = localStorage.getItem(SORT_KEY) || "updated_desc";
+  let activeCategoryFilter = "all";
+  let fastCopy = localStorage.getItem(FAST_COPY_KEY) === "1";
+  let importMode = "replace";
+  let pendingDeleteId = null;
 
   let expanded = new Set();
   try {
@@ -1010,6 +717,14 @@ Gợi ý lệnh: gõ {{today}} để tự hiện dd/mm theo ngày hiện tại">
   const uid = () => (crypto?.randomUUID?.() || ("id_" + Math.random().toString(16).slice(2) + Date.now()));
   const normalize = (s) => (s || "").toString().toLowerCase();
 
+  const categoryMap = {
+    all: { label: "Mặc định", cls: "cat-all" },
+    work: { label: "Công việc", cls: "cat-work" },
+    personal: { label: "Cá nhân", cls: "cat-personal" },
+    link: { label: "Link", cls: "cat-link" },
+    code: { label: "Mã / tài khoản", cls: "cat-code" },
+  };
+
   const pad2 = (n) => String(n).padStart(2, "0");
   const fmtToday = (d) => `${pad2(d.getDate())}/${pad2(d.getMonth()+1)}`;
 
@@ -1024,6 +739,22 @@ Gợi ý lệnh: gõ {{today}} để tự hiện dd/mm theo ngày hiện tại">
       return d.toLocaleString("vi-VN", { hour12:false });
     } catch {
       return "";
+    }
+  };
+
+  const escapeHtml = (s) =>
+    (s || "").replace(/[&<>"]/g, (c) => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;" }[c]));
+
+  const highlightText = (text, q) => {
+    const rendered = renderDynamicTokens(text || "");
+    if (!q) return escapeHtml(rendered).replace(/\n/g, "<br>");
+    const safe = escapeHtml(rendered);
+    const escQ = q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    try {
+      const re = new RegExp(escQ, "gi");
+      return safe.replace(re, (m) => `<mark class="hl">${m}</mark>`).replace(/\n/g, "<br>");
+    } catch {
+      return safe.replace(/\n/g, "<br>");
     }
   };
 
@@ -1049,7 +780,7 @@ Gợi ý lệnh: gõ {{today}} để tự hiện dd/mm theo ngày hiện tại">
   };
 
   const setStatus = (msg) => {
-    const text = msg || "—";
+    const text = msg || "Tạo mới";
     els.status.textContent = text;
     els.modalStatus.textContent = text;
   };
@@ -1057,6 +788,16 @@ Gợi ý lệnh: gõ {{today}} để tự hiện dd/mm theo ngày hiện tại">
   const updateClearBtns = () => {
     els.clearTitle.classList.toggle("show", (els.title.value || "").length > 0);
     els.clearContent.classList.toggle("show", (els.content.value || "").length > 0);
+  };
+
+  const updateFastCopyBtn = () => {
+    els.toggleFastCopy.textContent = `Copy siêu nhanh: ${fastCopy ? "Bật" : "Tắt"}`;
+  };
+
+  const updateBackupMeta = () => {
+    const total = notes.length;
+    const pinned = notes.filter(n => n.pinned).length;
+    els.backupMeta.innerHTML = `Hiện có <b>${total}</b> ghi chú, trong đó <b>${pinned}</b> ghi chú đã ghim.<br>Fast copy đang <b>${fastCopy ? "bật" : "tắt"}</b>.`;
   };
 
   const openEditor = (focus = true) => {
@@ -1076,6 +817,36 @@ Gợi ý lệnh: gõ {{today}} để tự hiện dd/mm theo ngày hiện tại">
     document.body.style.overflow = "";
   };
 
+  let dragStartY = null;
+  let dragCurrentY = 0;
+  const handlePointerDown = (e) => {
+    dragStartY = e.clientY || (e.touches && e.touches[0].clientY);
+    dragCurrentY = 0;
+  };
+  const handlePointerMove = (e) => {
+    if (dragStartY == null) return;
+    const y = e.clientY || (e.touches && e.touches[0].clientY);
+    dragCurrentY = Math.max(0, y - dragStartY);
+    els.editorModal.style.transform = `translate3d(-50%, ${dragCurrentY}px, 0) scale(${1 - Math.min(dragCurrentY / 1200, .02)})`;
+  };
+  const handlePointerUp = () => {
+    if (dragStartY == null) return;
+    if (dragCurrentY > 90) closeEditor();
+    else els.editorModal.style.transform = "translate3d(-50%, 0, 0) scale(1)";
+    dragStartY = null;
+    dragCurrentY = 0;
+  };
+
+
+  const resetFilters = () => {
+    activeFilter = "all";
+    activeCategoryFilter = "all";
+    els.search.value = "";
+    els.categoryFilter.value = "all";
+    applyFilterTabsUI();
+    render();
+  };
+
   const applyFilterTabsUI = () => {
     els.filterTabs.dataset.tab = activeFilter;
     [...els.filterTabs.querySelectorAll(".segBtn")].forEach(btn => {
@@ -1092,17 +863,35 @@ Gợi ý lệnh: gõ {{today}} để tự hiện dd/mm theo ngày hiện tại">
       const bp = b.pinned ? 1 : 0;
       if (bp !== ap) return bp - ap;
 
-      const at = a.updatedAt || a.createdAt || "";
-      const bt = b.updatedAt || b.createdAt || "";
-      return bt.localeCompare(at);
+      if (activeSort === "created_desc") {
+        return (b.createdAt || "").localeCompare(a.createdAt || "");
+      }
+      if (activeSort === "title_asc") {
+        return (a.title || "").localeCompare((b.title || ""), "vi");
+      }
+      return (b.updatedAt || b.createdAt || "").localeCompare(a.updatedAt || a.createdAt || "");
     });
 
-    if (activeFilter === "pinned") {
-      arr = arr.filter(n => !!n.pinned);
+    if (activeFilter === "pinned") arr = arr.filter(n => !!n.pinned);
+    if (activeCategoryFilter !== "all") {
+      const target = activeCategoryFilter === "default" ? "all" : activeCategoryFilter;
+      arr = arr.filter(n => (n.category || "all") === target);
     }
-
     if (!q) return arr;
     return arr.filter(n => normalize(n.title).includes(q) || normalize(n.content).includes(q));
+  };
+
+  const updateStats = () => {
+    const total = notes.length;
+    const pinned = notes.filter(n => n.pinned).length;
+    const showing = filteredNotes().length;
+    els.listStats.innerHTML = `
+      <span class="statPill">📝 ${total} ghi chú</span>
+      <span class="statPill">📌 ${pinned} ghim</span>
+      <span class="statPill">👀 ${showing} đang hiển thị</span>
+      ${activeCategoryFilter !== "all" ? `<span class="statPill">🏷️ ${els.categoryFilter.options[els.categoryFilter.selectedIndex]?.text || ""}</span>` : ""}
+    `;
+    updateBackupMeta();
   };
 
   const shouldShowMore = (text) => {
@@ -1111,8 +900,16 @@ Gợi ý lệnh: gõ {{today}} để tự hiện dd/mm theo ngày hiện tại">
 
   const render = () => {
     const arr = filteredNotes();
+    const q = normalize(els.search.value).trim();
     els.list.innerHTML = "";
+    const hasAnyNotes = notes.length > 0;
+    const isFiltering = activeFilter !== "all" || activeCategoryFilter !== "all" || !!q;
     els.empty.style.display = arr.length ? "none" : "block";
+    els.resetFilters.classList.toggle("show", !arr.length && hasAnyNotes && isFiltering);
+    els.empty.innerHTML = !hasAnyNotes
+      ? 'Chưa có ghi chú nào.<br>Bấm <b>+</b> để tạo ghi chú đầu tiên.'
+      : 'Không có ghi chú nào khớp bộ lọc hiện tại.';
+    updateStats();
 
     arr.forEach((n, idx) => {
       const item = document.createElement("div");
@@ -1127,64 +924,35 @@ Gợi ý lệnh: gõ {{today}} để tự hiện dd/mm theo ngày hiện tại">
 
       const title = document.createElement("div");
       title.className = "itemTitle";
-      title.textContent = n.title || "(Không tiêu đề)";
+      title.innerHTML = highlightText(n.title || "(Không tiêu đề)", q);
 
       const meta = document.createElement("div");
       meta.className = "meta";
-      meta.innerHTML = `${fmtTime(n.updatedAt || n.createdAt)}${n.pinned ? ' <span class="badgePin">📌 Ghim</span>' : ""}`;
+      const cat = categoryMap[n.category || "all"] || categoryMap.all;
+      meta.innerHTML = `${fmtTime(n.updatedAt || n.createdAt)} <span class="catBadge ${cat.cls}">${cat.label}</span>${n.pinned ? ' <span class="badgePin">📌 Ghim</span>' : ""}`;
 
       main.appendChild(title);
       main.appendChild(meta);
-
-      const btns = document.createElement("div");
-      btns.className = "itemBtns";
-
-      const bOpen = document.createElement("button");
-      bOpen.className = "btn mini";
-      bOpen.textContent = "Mở";
-      bOpen.onclick = () => selectNote(n.id);
-
-      const bCopy = document.createElement("button");
-      bCopy.className = "btn mini primary";
-      bCopy.textContent = "Copy";
-      bCopy.onclick = async () => {
-        await copyText(renderDynamicTokens(n.content || ""));
-        showToast("Đã copy ghi chú");
-      };
-
-      const bPin = document.createElement("button");
-      bPin.className = "btn mini";
-      bPin.textContent = n.pinned ? "Bỏ ghim" : "Ghim";
-      bPin.onclick = () => {
-        n.pinned = !n.pinned;
-        n.updatedAt = nowISO();
-        saveStore();
-        render();
-        showToast(n.pinned ? "Đã ghim" : "Đã bỏ ghim");
-      };
-
-      const bDel = document.createElement("button");
-      bDel.className = "btn mini danger";
-      bDel.textContent = "Xóa";
-      bDel.onclick = () => deleteNote(n.id);
-
-      btns.appendChild(bOpen);
-      btns.appendChild(bCopy);
-      btns.appendChild(bPin);
-      btns.appendChild(bDel);
-
       top.appendChild(main);
-      top.appendChild(btns);
 
       const preview = document.createElement("div");
       preview.className = "itemPreview";
       const isExpanded = expanded.has(n.id);
       preview.classList.toggle("clamp", !isExpanded);
-      preview.textContent = renderDynamicTokens(n.content || "");
+      preview.innerHTML = highlightText(n.content || "", q);
+
+      if (fastCopy) {
+        preview.style.cursor = "pointer";
+        preview.title = "Chạm để copy nhanh";
+        preview.onclick = async () => {
+          await copyText(renderDynamicTokens(n.content || ""));
+          showToast("Đã copy ghi chú");
+        };
+      }
 
       if (n.id === selectedId){
-        item.style.borderColor = "rgba(25,118,210,.42)";
-        item.style.boxShadow = "0 16px 34px rgba(25,118,210,.12)";
+        item.style.borderColor = "rgba(47,109,246,.36)";
+        item.style.boxShadow = "0 18px 38px rgba(47,109,246,.14)";
       }
 
       item.appendChild(top);
@@ -1209,6 +977,59 @@ Gợi ý lệnh: gõ {{today}} để tự hiện dd/mm theo ngày hiện tại">
         item.appendChild(moreRow);
       }
 
+      const actionRow = document.createElement("div");
+      actionRow.className = "itemActions";
+
+      const bOpen = document.createElement("button");
+      bOpen.className = "btn iconBtn";
+      bOpen.type = "button";
+      bOpen.title = "Chỉnh sửa";
+      bOpen.setAttribute("aria-label", "Chỉnh sửa");
+      bOpen.textContent = "✏️";
+      bOpen.onclick = () => selectNote(n.id);
+
+      const bCopy = document.createElement("button");
+      bCopy.className = "btn iconBtn copy";
+      bCopy.type = "button";
+      bCopy.title = "Copy";
+      bCopy.setAttribute("aria-label", "Copy");
+      bCopy.textContent = "📋";
+      bCopy.onclick = async () => {
+        await copyText(renderDynamicTokens(n.content || ""));
+        showToast("Đã copy ghi chú");
+      };
+
+      const bPin = document.createElement("button");
+      bPin.className = "btn iconBtn";
+      bPin.type = "button";
+      bPin.title = n.pinned ? "Bỏ ghim" : "Ghim";
+      bPin.setAttribute("aria-label", n.pinned ? "Bỏ ghim" : "Ghim");
+      bPin.textContent = n.pinned ? "📍" : "📌";
+      bPin.onclick = () => {
+        n.pinned = !n.pinned;
+        n.updatedAt = nowISO();
+        saveStore();
+        render();
+        showToast(n.pinned ? "Đã ghim" : "Đã bỏ ghim");
+      };
+
+      const spacer = document.createElement("div");
+      spacer.className = "spacer";
+
+      const bDel = document.createElement("button");
+      bDel.className = "btn iconBtn delete";
+      bDel.type = "button";
+      bDel.title = "Xóa";
+      bDel.setAttribute("aria-label", "Xóa");
+      bDel.textContent = "🗑";
+      bDel.onclick = () => deleteNote(n.id);
+
+      actionRow.appendChild(bOpen);
+      actionRow.appendChild(bCopy);
+      actionRow.appendChild(bPin);
+      actionRow.appendChild(spacer);
+      actionRow.appendChild(bDel);
+      item.appendChild(actionRow);
       els.list.appendChild(item);
     });
   };
@@ -1217,6 +1038,7 @@ Gợi ý lệnh: gõ {{today}} để tự hiện dd/mm theo ngày hiện tại">
     selectedId = null;
     els.title.value = "";
     els.content.value = "";
+    els.category.value = "all";
     els.btnDelete.disabled = true;
     setStatus("Tạo mới");
     updateClearBtns();
@@ -1225,20 +1047,27 @@ Gợi ý lệnh: gõ {{today}} để tự hiện dd/mm theo ngày hiện tại">
   const selectNote = (id) => {
     const n = notes.find(x => x.id === id);
     if (!n) return;
-
     selectedId = id;
     els.title.value = n.title || "";
     els.content.value = n.content || "";
+    els.category.value = n.category || "all";
     els.btnDelete.disabled = false;
     setStatus("Đang sửa");
     updateClearBtns();
     render();
     openEditor(true);
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        els.title.focus();
+        els.title.setSelectionRange(els.title.value.length, els.title.value.length);
+      }, 120);
+    });
   };
 
   const upsert = () => {
     const title = (els.title.value || "").trim();
     const content = (els.content.value || "").trim();
+    const category = els.category.value || "all";
 
     if (!title && !content){
       showToast("Nhập tiêu đề hoặc nội dung trước nhé");
@@ -1248,11 +1077,10 @@ Gợi ý lệnh: gõ {{today}} để tự hiện dd/mm theo ngày hiện tại">
     if (selectedId){
       const n = notes.find(x => x.id === selectedId);
       if (!n) return;
-
       n.title = title;
       n.content = content;
+      n.category = category;
       n.updatedAt = nowISO();
-
       saveStore();
       showToast("Đã cập nhật");
       setStatus("Đã lưu");
@@ -1261,39 +1089,44 @@ Gợi ý lệnh: gõ {{today}} để tự hiện dd/mm theo ngày hiện tại">
         id: uid(),
         title,
         content,
+        category,
         pinned: false,
         createdAt: nowISO(),
         updatedAt: nowISO()
       };
       notes.push(n);
-      selectedId = n.id;
-      els.btnDelete.disabled = false;
-
       saveStore();
       showToast("Đã lưu");
-      setStatus("Đã lưu");
+      clearEditor();
     }
 
     render();
     updateClearBtns();
   };
 
-  const deleteNote = (id) => {
-    const n = notes.find(x => x.id === id);
-    if (!n) return;
+  const closeDeleteConfirm = () => {
+    pendingDeleteId = null;
+    els.confirmBox.classList.remove("show");
+    els.confirmOverlay.classList.remove("show");
+  };
 
-    const ok = confirm(`Xóa ghi chú: "${n.title || "(Không tiêu đề)"}" ?`);
-    if (!ok) return;
-
+  const reallyDeleteNote = (id) => {
     notes = notes.filter(x => x.id !== id);
     expanded.delete(id);
     persistExpanded();
-
     if (selectedId === id) clearEditor();
-
     saveStore();
     render();
     showToast("Đã xóa");
+  };
+
+  const deleteNote = (id) => {
+    const n = notes.find(x => x.id === id);
+    if (!n) return;
+    pendingDeleteId = id;
+    els.confirmText.textContent = `Ghi chú "${n.title || "(Không tiêu đề)"}" sẽ bị xóa khỏi danh sách.`;
+    els.confirmOverlay.classList.add("show");
+    els.confirmBox.classList.add("show");
   };
 
   const copyText = async (text) => {
@@ -1338,7 +1171,7 @@ Gợi ý lệnh: gõ {{today}} để tự hiện dd/mm theo ngày hiện tại">
     showToast("Đã xuất JSON");
   };
 
-  const importJSONText = async (text) => {
+  const importJSONText = async (text, mode = "replace") => {
     let incoming;
     try {
       incoming = JSON.parse(text);
@@ -1352,35 +1185,55 @@ Gợi ý lệnh: gõ {{today}} để tự hiện dd/mm theo ngày hiện tại">
       return;
     }
 
-    const ok = confirm("Nhập backup sẽ GHI ĐÈ toàn bộ ghi chú hiện có. Tiếp tục?");
-    if (!ok) return;
+    if (mode === "replace") {
+      const ok = confirm("Nhập backup sẽ GHI ĐÈ toàn bộ ghi chú hiện có. Tiếp tục?");
+      if (!ok) return;
+    }
 
     const cleaned = incoming.map(n => ({
       id: n.id || uid(),
       title: (n.title ?? "").toString(),
       content: (n.content ?? "").toString(),
+      category: (n.category ?? "all").toString(),
       pinned: !!n.pinned,
       createdAt: n.createdAt || nowISO(),
       updatedAt: n.updatedAt || n.createdAt || nowISO(),
     }));
 
-    notes = cleaned;
-    selectedId = null;
-    expanded = new Set();
-    persistExpanded();
+    if (mode === "replace") {
+      notes = cleaned;
+      expanded = new Set();
+      persistExpanded();
+      clearEditor();
+      showToast("Đã nhập backup");
+    } else {
+      const existing = new Set(notes.map(n => `${n.title}__${n.content}`));
+      let added = 0;
+      cleaned.forEach(n => {
+        const key = `${n.title}__${n.content}`;
+        if (!existing.has(key)) {
+          notes.push({ ...n, id: uid() });
+          existing.add(key);
+          added++;
+        }
+      });
+      showToast(`Đã gộp ${added} ghi chú mới`);
+    }
 
+    selectedId = null;
     saveStore();
-    clearEditor();
     render();
-    showToast("Đã nhập backup");
   };
 
-  const openImportPicker = () => {
+  const openImportPicker = (mode) => {
+    importMode = mode;
     els.fileImport.value = "";
     els.fileImport.click();
   };
 
   const openSheet = () => {
+    updateBackupMeta();
+    updateFastCopyBtn();
     els.sheetOverlay.classList.add("show");
     els.backupSheet.classList.add("show");
     document.body.style.overflow = "hidden";
@@ -1410,6 +1263,10 @@ Gợi ý lệnh: gõ {{today}} để tự hiện dd/mm theo ngày hiện tại">
   els.btnCloseEditor.addEventListener("click", closeEditor);
   els.editorOverlay.addEventListener("click", closeEditor);
 
+  els.editorModal.addEventListener("pointerdown", handlePointerDown);
+  window.addEventListener("pointermove", handlePointerMove);
+  window.addEventListener("pointerup", handlePointerUp);
+
   els.btnSave.addEventListener("click", upsert);
   els.btnCopy.addEventListener("click", copyCurrent);
   els.btnNew.addEventListener("click", () => {
@@ -1422,6 +1279,17 @@ Gợi ý lệnh: gõ {{today}} để tự hiện dd/mm theo ngày hiện tại">
   });
 
   els.search.addEventListener("input", render);
+  els.btnResetFilters.addEventListener("click", resetFilters);
+  els.categoryFilter.addEventListener("change", () => {
+    activeCategoryFilter = els.categoryFilter.value;
+    localStorage.setItem(CATEGORY_FILTER_KEY, activeCategoryFilter);
+    render();
+  });
+  els.sortSelect.addEventListener("change", () => {
+    activeSort = els.sortSelect.value;
+    localStorage.setItem(SORT_KEY, activeSort);
+    render();
+  });
 
   els.btnBackup.addEventListener("click", openSheet);
   els.sheetOverlay.addEventListener("click", closeSheet);
@@ -1431,10 +1299,19 @@ Gợi ý lệnh: gõ {{today}} để tự hiện dd/mm theo ngày hiện tại">
     closeSheet();
     exportJSON();
   });
-
   els.sheetImport.addEventListener("click", () => {
     closeSheet();
-    openImportPicker();
+    openImportPicker("replace");
+  });
+  els.sheetImportMerge.addEventListener("click", () => {
+    closeSheet();
+    openImportPicker("merge");
+  });
+  els.toggleFastCopy.addEventListener("click", () => {
+    fastCopy = !fastCopy;
+    localStorage.setItem(FAST_COPY_KEY, fastCopy ? "1" : "0");
+    updateFastCopyBtn();
+    render();
   });
 
   els.fileImport.addEventListener("change", async (e) => {
@@ -1442,10 +1319,18 @@ Gợi ý lệnh: gõ {{today}} để tự hiện dd/mm theo ngày hiện tại">
     if (!file) return;
     try {
       const text = await file.text();
-      await importJSONText(text);
+      await importJSONText(text, importMode);
     } catch {
       showToast("Không đọc được file");
     }
+  });
+
+
+  els.confirmOverlay.addEventListener("click", closeDeleteConfirm);
+  els.confirmCancel.addEventListener("click", closeDeleteConfirm);
+  els.confirmDelete.addEventListener("click", () => {
+    if (pendingDeleteId) reallyDeleteNote(pendingDeleteId);
+    closeDeleteConfirm();
   });
 
   els.title.addEventListener("input", updateClearBtns);
@@ -1457,14 +1342,12 @@ Gợi ý lệnh: gõ {{today}} để tự hiện dd/mm theo ngày hiện tại">
     updateClearBtns();
     els.title.focus();
   });
-
   els.clearContent.addEventListener("click", (e) => {
     e.stopPropagation();
     els.content.value = "";
     updateClearBtns();
     els.content.focus();
   });
-
   els.chipToday.addEventListener("click", (e) => {
     e.stopPropagation();
     insertAtCursor(els.content, "{{today}}");
@@ -1473,7 +1356,6 @@ Gợi ý lệnh: gõ {{today}} để tự hiện dd/mm theo ngày hiện tại">
   [...els.filterTabs.querySelectorAll(".segBtn")].forEach(btn => {
     btn.addEventListener("click", () => {
       activeFilter = btn.dataset.tab || "all";
-      localStorage.setItem(FILTER_KEY, activeFilter);
       applyFilterTabsUI();
       render();
     });
@@ -1481,21 +1363,23 @@ Gợi ý lệnh: gõ {{today}} để tự hiện dd/mm theo ngày hiện tại">
 
   window.addEventListener("keydown", (e) => {
     const key = (e.key || "").toLowerCase();
-
     if ((e.ctrlKey || e.metaKey) && key === "s"){
       e.preventDefault();
       upsert();
     }
-
     if (key === "escape"){
       closeSheet();
       closeEditor();
+      closeDeleteConfirm();
     }
   }, { passive:false });
 
   load();
   clearEditor();
   applyFilterTabsUI();
+  els.sortSelect.value = activeSort;
+  els.categoryFilter.value = "all";
+  updateFastCopyBtn();
   render();
   updateClearBtns();
 
@@ -1508,5 +1392,6 @@ Gợi ý lệnh: gõ {{today}} để tự hiện dd/mm theo ngày hiện tại">
   setInterval(render, 60000);
 })();
 </script>
-</body>
-</html>
+
+
+</body></html>
