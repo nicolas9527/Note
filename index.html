@@ -371,7 +371,6 @@
       opacity:.88;
     }
 
-    /* list header clean */
     .listTop{
       display:flex;
       flex-direction:column;
@@ -433,10 +432,7 @@
     .segBtn:active{ transform:scale(.97); }
 
     .searchRow{
-      display:grid;
-      grid-template-columns: 1fr auto;
-      gap:10px;
-      align-items:center;
+      display:block;
     }
 
     .searchWrap{
@@ -563,7 +559,6 @@
       font-weight:800;
     }
 
-    /* popup editor */
     .modalOverlay{
       position:fixed;
       inset:0;
@@ -651,7 +646,6 @@
       line-height:1;
     }
 
-    /* backup sheet */
     .sheetOverlay{
       position:fixed;
       inset:0;
@@ -782,10 +776,6 @@
     }
 
     @media (max-width: 720px){
-      .searchRow{
-        grid-template-columns:1fr;
-      }
-
       .editorLaunch{
         align-items:flex-start;
         flex-direction:column;
@@ -850,8 +840,6 @@
 
     <main class="wrap">
       <div class="grid">
-
-        <!-- launcher -->
         <section class="card">
           <div class="cardBody">
             <div class="editorLaunch">
@@ -867,7 +855,6 @@
           </div>
         </section>
 
-        <!-- list -->
         <section class="card">
           <div class="cardHeader">
             <div class="listTop">
@@ -883,7 +870,6 @@
                 <div class="searchWrap">
                   <input id="search" type="text" placeholder="Tìm theo tiêu đề / nội dung..." />
                 </div>
-                <button class="btn mini" id="btnCopyAll" title="Copy tất cả ghi chú">Copy all</button>
               </div>
             </div>
           </div>
@@ -897,7 +883,6 @@
     </main>
   </div>
 
-  <!-- popup soạn ghi chú -->
   <div class="modalOverlay" id="editorOverlay"></div>
   <div class="editorModal" id="editorModal" role="dialog" aria-modal="true" aria-label="Soạn ghi chú">
     <div class="editorModalHeader">
@@ -943,7 +928,6 @@ Gợi ý lệnh: gõ {{today}} để tự hiện dd/mm theo ngày hiện tại">
     </div>
   </div>
 
-  <!-- backup -->
   <div class="sheetOverlay" id="sheetOverlay"></div>
   <div class="sheet" id="backupSheet" role="dialog" aria-modal="true" aria-label="Backup">
     <div class="sheetTop">
@@ -985,7 +969,6 @@ Gợi ý lệnh: gõ {{today}} để tự hiện dd/mm theo ngày hiện tại">
     list: $("list"),
     empty: $("empty"),
     search: $("search"),
-    btnCopyAll: $("btnCopyAll"),
     toast: $("toast"),
 
     btnOpenEditor: $("btnOpenEditor"),
@@ -1341,23 +1324,6 @@ Gợi ý lệnh: gõ {{today}} để tự hiện dd/mm theo ngày hiện tại">
     showToast("Đã copy nội dung");
   };
 
-  const copyAll = async () => {
-    const arr = filteredNotes();
-    if (!arr.length){
-      showToast("Không có ghi chú nào");
-      return;
-    }
-
-    const joined = arr.map((n) => {
-      const t = n.title ? `# ${n.title}` : `# (Không tiêu đề)`;
-      const c = renderDynamicTokens(n.content || "");
-      return `${t}\n${c}\n`;
-    }).join("\n");
-
-    await copyText(joined.trim());
-    showToast("Đã copy tất cả");
-  };
-
   const exportJSON = () => {
     const data = JSON.stringify(notes, null, 2);
     const blob = new Blob([data], {type:"application/json"});
@@ -1456,7 +1422,6 @@ Gợi ý lệnh: gõ {{today}} để tự hiện dd/mm theo ngày hiện tại">
   });
 
   els.search.addEventListener("input", render);
-  els.btnCopyAll.addEventListener("click", copyAll);
 
   els.btnBackup.addEventListener("click", openSheet);
   els.sheetOverlay.addEventListener("click", closeSheet);
