@@ -285,7 +285,9 @@
       border:none; background:transparent; color:var(--primary); font-weight:900; cursor:pointer;
       padding:0; font-size:13px; -webkit-tap-highlight-color:transparent;
     }
-    .itemActions{ display:flex; gap:8px; padding:0 12px 12px; }
+    .itemActions{ display:flex; gap:8px; padding:0 12px 12px; position:relative; z-index:3; }
+    .itemActions .btn, .moreBtn{ position:relative; z-index:4; touch-action:manipulation; }
+    .itemTop, .itemActions .btn{ -webkit-tap-highlight-color: transparent; }
     .empty{ padding:28px 16px; text-align:center; color:var(--muted); font-weight:800; line-height:1.5; }
 
     .resetFilters{
@@ -523,7 +525,7 @@
             </div>
           </div>
 
-          <div class="list" id="list"><div class="item" style="--i: 0;"><div class="itemTop"><div class="itemMain"><div class="itemTitle">(Không tiêu đề)</div><div class="meta">01:45:32 19/3/2026 <span class="catBadge cat-all">Mặc định</span> <span class="badgePin">📌 Ghim</span></div></div></div><div class="itemPreview clamp">Test</div><div class="itemActions"><button class="btn iconBtn" type="button" title="Chỉnh sửa" aria-label="Chỉnh sửa">✏️</button><button class="btn iconBtn copy" type="button" title="Copy" aria-label="Copy">📋</button><button class="btn iconBtn" type="button" title="Bỏ ghim" aria-label="Bỏ ghim">📍</button><div class="spacer"></div><button class="btn iconBtn delete" type="button" title="Xóa" aria-label="Xóa">🗑</button></div></div><div class="item" style="--i: 1;"><div class="itemTop"><div class="itemMain"><div class="itemTitle">(Không tiêu đề)</div><div class="meta">01:55:22 19/3/2026 <span class="catBadge cat-all">Mặc định</span></div></div></div><div class="itemPreview clamp">_Hoàn tất tooll “ Công việc hàng ngày ST BHX “ báo cáo trước 22h<br>Lưu ý : Khi nào tool cập nhật hoàn tất hết 100% cv rồi báo cáo nha team. <br>_ Bc HT kiểm quỷ cuối ngày 19/03<br>@All <br>1. P1 <br>2. NT <br>3. PHT <br>4. 411 NT <br>5. NTH<br>6. 232 <br>7. 3/2 <br>8. P6 <br>9. TV <br>10. HND <br>11. UMI <br>12. KH <br>13. TP <br>14. TB <br>15. 3/2TB<br>16. KAN <br>17. BBA <br>18. TL <br>19. THĐ <br>20. SĐ1 <br>21. SĐ2 <br>22. ĐB <br>23. TVT1<br>24. TVT2 <br>25. C5  <br>26. TH <br>27. KHH<br>28. KLA <br>29. CH <br><br><br><br>Siêu thị nào hoàn tất thì điền vào sau tên siêu thị mình chữ “HT”  cho dễ kiểm soát nha. Cảm ơn mọi người.</div><div class="moreRow"><button class="moreBtn" type="button">… Xem thêm</button></div><div class="itemActions"><button class="btn iconBtn" type="button" title="Chỉnh sửa" aria-label="Chỉnh sửa">✏️</button><button class="btn iconBtn copy" type="button" title="Copy" aria-label="Copy">📋</button><button class="btn iconBtn" type="button" title="Ghim" aria-label="Ghim">📌</button><div class="spacer"></div><button class="btn iconBtn delete" type="button" title="Xóa" aria-label="Xóa">🗑</button></div></div><div class="item" style="--i: 2;"><div class="itemTop"><div class="itemMain"><div class="itemTitle">(Không tiêu đề)</div><div class="meta">01:54:13 19/3/2026 <span class="catBadge cat-personal">Cá nhân</span></div></div></div><div class="itemPreview clamp">Hôm nay là 19/03</div><div class="itemActions"><button class="btn iconBtn" type="button" title="Chỉnh sửa" aria-label="Chỉnh sửa">✏️</button><button class="btn iconBtn copy" type="button" title="Copy" aria-label="Copy">📋</button><button class="btn iconBtn" type="button" title="Ghim" aria-label="Ghim">📌</button><div class="spacer"></div><button class="btn iconBtn delete" type="button" title="Xóa" aria-label="Xóa">🗑</button></div></div><div class="item" style="--i: 3;"><div class="itemTop"><div class="itemMain"><div class="itemTitle">(Không tiêu đề)</div><div class="meta">01:46:13 19/3/2026 <span class="catBadge cat-code">Mã / tài khoản</span></div></div></div><div class="itemPreview clamp">Hshaj</div><div class="itemActions"><button class="btn iconBtn" type="button" title="Chỉnh sửa" aria-label="Chỉnh sửa">✏️</button><button class="btn iconBtn copy" type="button" title="Copy" aria-label="Copy">📋</button><button class="btn iconBtn" type="button" title="Ghim" aria-label="Ghim">📌</button><div class="spacer"></div><button class="btn iconBtn delete" type="button" title="Xóa" aria-label="Xóa">🗑</button></div></div><div class="item" style="--i: 4;"><div class="itemTop"><div class="itemMain"><div class="itemTitle">(Không tiêu đề)</div><div class="meta">01:37:22 19/3/2026 <span class="catBadge cat-all">Mặc định</span></div></div></div><div class="itemPreview clamp">Test</div><div class="itemActions"><button class="btn iconBtn" type="button" title="Chỉnh sửa" aria-label="Chỉnh sửa">✏️</button><button class="btn iconBtn copy" type="button" title="Copy" aria-label="Copy">📋</button><button class="btn iconBtn" type="button" title="Ghim" aria-label="Ghim">📌</button><div class="spacer"></div><button class="btn iconBtn delete" type="button" title="Xóa" aria-label="Xóa">🗑</button></div></div><div class="item" style="--i: 5;"><div class="itemTop"><div class="itemMain"><div class="itemTitle">(Không tiêu đề)</div><div class="meta">01:37:14 19/3/2026 <span class="catBadge cat-all">Mặc định</span></div></div></div><div class="itemPreview clamp">Test</div><div class="itemActions"><button class="btn iconBtn" type="button" title="Chỉnh sửa" aria-label="Chỉnh sửa">✏️</button><button class="btn iconBtn copy" type="button" title="Copy" aria-label="Copy">📋</button><button class="btn iconBtn" type="button" title="Ghim" aria-label="Ghim">📌</button><div class="spacer"></div><button class="btn iconBtn delete" type="button" title="Xóa" aria-label="Xóa">🗑</button></div></div><div class="item" style="--i: 6;"><div class="itemTop"><div class="itemMain"><div class="itemTitle">(Không tiêu đề)</div><div class="meta">01:30:40 19/3/2026 <span class="catBadge cat-personal">Cá nhân</span></div></div></div><div class="itemPreview clamp">Kêja</div><div class="itemActions"><button class="btn iconBtn" type="button" title="Chỉnh sửa" aria-label="Chỉnh sửa">✏️</button><button class="btn iconBtn copy" type="button" title="Copy" aria-label="Copy">📋</button><button class="btn iconBtn" type="button" title="Ghim" aria-label="Ghim">📌</button><div class="spacer"></div><button class="btn iconBtn delete" type="button" title="Xóa" aria-label="Xóa">🗑</button></div></div></div>
+          <div class="list" id="list"><div class="item" style="--i: 0;"><div class="itemTop" data-action="edit" data-id="e17b2d6b-2295-4f4e-bcb4-e61be3e314c4" style="cursor: pointer;"><div class="itemMain"><div class="itemTitle">(Không tiêu đề)</div><div class="meta">08:08:04 19/3/2026 <span class="catBadge cat-all">Mặc định</span> <span class="badgePin">📌 Ghim</span></div></div></div><div class="itemPreview clamp">Test</div><div class="itemActions"><button class="btn iconBtn" type="button" title="Chỉnh sửa" aria-label="Chỉnh sửa" data-action="edit" data-id="e17b2d6b-2295-4f4e-bcb4-e61be3e314c4">✏️</button><button class="btn iconBtn copy" type="button" title="Copy" aria-label="Copy" data-action="copy" data-id="e17b2d6b-2295-4f4e-bcb4-e61be3e314c4">📋</button><button class="btn iconBtn" type="button" title="Bỏ ghim" aria-label="Bỏ ghim" data-action="pin" data-id="e17b2d6b-2295-4f4e-bcb4-e61be3e314c4">📍</button><div class="spacer"></div><button class="btn iconBtn delete" type="button" title="Xóa" aria-label="Xóa" data-action="delete" data-id="e17b2d6b-2295-4f4e-bcb4-e61be3e314c4">🗑</button></div></div><div class="item" style="--i: 1;"><div class="itemTop" data-action="edit" data-id="253f4b92-572f-4a89-a82d-2f531e78c74f" style="cursor: pointer;"><div class="itemMain"><div class="itemTitle">(Không tiêu đề)</div><div class="meta">01:55:22 19/3/2026 <span class="catBadge cat-all">Mặc định</span></div></div></div><div class="itemPreview clamp">_Hoàn tất tooll “ Công việc hàng ngày ST BHX “ báo cáo trước 22h<br>Lưu ý : Khi nào tool cập nhật hoàn tất hết 100% cv rồi báo cáo nha team. <br>_ Bc HT kiểm quỷ cuối ngày 19/03<br>@All <br>1. P1 <br>2. NT <br>3. PHT <br>4. 411 NT <br>5. NTH<br>6. 232 <br>7. 3/2 <br>8. P6 <br>9. TV <br>10. HND <br>11. UMI <br>12. KH <br>13. TP <br>14. TB <br>15. 3/2TB<br>16. KAN <br>17. BBA <br>18. TL <br>19. THĐ <br>20. SĐ1 <br>21. SĐ2 <br>22. ĐB <br>23. TVT1<br>24. TVT2 <br>25. C5  <br>26. TH <br>27. KHH<br>28. KLA <br>29. CH <br><br><br><br>Siêu thị nào hoàn tất thì điền vào sau tên siêu thị mình chữ “HT”  cho dễ kiểm soát nha. Cảm ơn mọi người.</div><div class="moreRow"><button class="moreBtn" type="button">… Xem thêm</button></div><div class="itemActions"><button class="btn iconBtn" type="button" title="Chỉnh sửa" aria-label="Chỉnh sửa" data-action="edit" data-id="253f4b92-572f-4a89-a82d-2f531e78c74f">✏️</button><button class="btn iconBtn copy" type="button" title="Copy" aria-label="Copy" data-action="copy" data-id="253f4b92-572f-4a89-a82d-2f531e78c74f">📋</button><button class="btn iconBtn" type="button" title="Ghim" aria-label="Ghim" data-action="pin" data-id="253f4b92-572f-4a89-a82d-2f531e78c74f">📌</button><div class="spacer"></div><button class="btn iconBtn delete" type="button" title="Xóa" aria-label="Xóa" data-action="delete" data-id="253f4b92-572f-4a89-a82d-2f531e78c74f">🗑</button></div></div><div class="item" style="--i: 2;"><div class="itemTop" data-action="edit" data-id="f972d2aa-dad8-48bc-9fc3-04d0b0ff6653" style="cursor: pointer;"><div class="itemMain"><div class="itemTitle">(Không tiêu đề)</div><div class="meta">01:54:13 19/3/2026 <span class="catBadge cat-personal">Cá nhân</span></div></div></div><div class="itemPreview clamp">Hôm nay là 19/03</div><div class="itemActions"><button class="btn iconBtn" type="button" title="Chỉnh sửa" aria-label="Chỉnh sửa" data-action="edit" data-id="f972d2aa-dad8-48bc-9fc3-04d0b0ff6653">✏️</button><button class="btn iconBtn copy" type="button" title="Copy" aria-label="Copy" data-action="copy" data-id="f972d2aa-dad8-48bc-9fc3-04d0b0ff6653">📋</button><button class="btn iconBtn" type="button" title="Ghim" aria-label="Ghim" data-action="pin" data-id="f972d2aa-dad8-48bc-9fc3-04d0b0ff6653">📌</button><div class="spacer"></div><button class="btn iconBtn delete" type="button" title="Xóa" aria-label="Xóa" data-action="delete" data-id="f972d2aa-dad8-48bc-9fc3-04d0b0ff6653">🗑</button></div></div><div class="item" style="--i: 3;"><div class="itemTop" data-action="edit" data-id="2f2436e7-c61a-4eab-8b34-4e1cb7f7df7c" style="cursor: pointer;"><div class="itemMain"><div class="itemTitle">(Không tiêu đề)</div><div class="meta">01:46:13 19/3/2026 <span class="catBadge cat-code">Mã / tài khoản</span></div></div></div><div class="itemPreview clamp">Hshaj</div><div class="itemActions"><button class="btn iconBtn" type="button" title="Chỉnh sửa" aria-label="Chỉnh sửa" data-action="edit" data-id="2f2436e7-c61a-4eab-8b34-4e1cb7f7df7c">✏️</button><button class="btn iconBtn copy" type="button" title="Copy" aria-label="Copy" data-action="copy" data-id="2f2436e7-c61a-4eab-8b34-4e1cb7f7df7c">📋</button><button class="btn iconBtn" type="button" title="Ghim" aria-label="Ghim" data-action="pin" data-id="2f2436e7-c61a-4eab-8b34-4e1cb7f7df7c">📌</button><div class="spacer"></div><button class="btn iconBtn delete" type="button" title="Xóa" aria-label="Xóa" data-action="delete" data-id="2f2436e7-c61a-4eab-8b34-4e1cb7f7df7c">🗑</button></div></div><div class="item" style="--i: 4;"><div class="itemTop" data-action="edit" data-id="18b0ac1d-1c4b-4456-b1cd-18dde440e043" style="cursor: pointer;"><div class="itemMain"><div class="itemTitle">(Không tiêu đề)</div><div class="meta">01:37:22 19/3/2026 <span class="catBadge cat-all">Mặc định</span></div></div></div><div class="itemPreview clamp">Test</div><div class="itemActions"><button class="btn iconBtn" type="button" title="Chỉnh sửa" aria-label="Chỉnh sửa" data-action="edit" data-id="18b0ac1d-1c4b-4456-b1cd-18dde440e043">✏️</button><button class="btn iconBtn copy" type="button" title="Copy" aria-label="Copy" data-action="copy" data-id="18b0ac1d-1c4b-4456-b1cd-18dde440e043">📋</button><button class="btn iconBtn" type="button" title="Ghim" aria-label="Ghim" data-action="pin" data-id="18b0ac1d-1c4b-4456-b1cd-18dde440e043">📌</button><div class="spacer"></div><button class="btn iconBtn delete" type="button" title="Xóa" aria-label="Xóa" data-action="delete" data-id="18b0ac1d-1c4b-4456-b1cd-18dde440e043">🗑</button></div></div><div class="item" style="--i: 5;"><div class="itemTop" data-action="edit" data-id="6b141ceb-b7b3-4bb6-922e-2ed0813eca98" style="cursor: pointer;"><div class="itemMain"><div class="itemTitle">(Không tiêu đề)</div><div class="meta">01:37:14 19/3/2026 <span class="catBadge cat-all">Mặc định</span></div></div></div><div class="itemPreview clamp">Test</div><div class="itemActions"><button class="btn iconBtn" type="button" title="Chỉnh sửa" aria-label="Chỉnh sửa" data-action="edit" data-id="6b141ceb-b7b3-4bb6-922e-2ed0813eca98">✏️</button><button class="btn iconBtn copy" type="button" title="Copy" aria-label="Copy" data-action="copy" data-id="6b141ceb-b7b3-4bb6-922e-2ed0813eca98">📋</button><button class="btn iconBtn" type="button" title="Ghim" aria-label="Ghim" data-action="pin" data-id="6b141ceb-b7b3-4bb6-922e-2ed0813eca98">📌</button><div class="spacer"></div><button class="btn iconBtn delete" type="button" title="Xóa" aria-label="Xóa" data-action="delete" data-id="6b141ceb-b7b3-4bb6-922e-2ed0813eca98">🗑</button></div></div><div class="item" style="--i: 6;"><div class="itemTop" data-action="edit" data-id="75d6770d-f793-4a70-8a20-84e0423bc72d" style="cursor: pointer;"><div class="itemMain"><div class="itemTitle">(Không tiêu đề)</div><div class="meta">01:30:40 19/3/2026 <span class="catBadge cat-personal">Cá nhân</span></div></div></div><div class="itemPreview clamp">Kêja</div><div class="itemActions"><button class="btn iconBtn" type="button" title="Chỉnh sửa" aria-label="Chỉnh sửa" data-action="edit" data-id="75d6770d-f793-4a70-8a20-84e0423bc72d">✏️</button><button class="btn iconBtn copy" type="button" title="Copy" aria-label="Copy" data-action="copy" data-id="75d6770d-f793-4a70-8a20-84e0423bc72d">📋</button><button class="btn iconBtn" type="button" title="Ghim" aria-label="Ghim" data-action="pin" data-id="75d6770d-f793-4a70-8a20-84e0423bc72d">📌</button><div class="spacer"></div><button class="btn iconBtn delete" type="button" title="Xóa" aria-label="Xóa" data-action="delete" data-id="75d6770d-f793-4a70-8a20-84e0423bc72d">🗑</button></div></div></div>
           <div class="empty" id="empty" style="display:none">Không có ghi chú nào khớp bộ lọc hiện tại.</div>
           <div class="resetFilters" id="resetFilters">
             <button class="btn" id="btnResetFilters" type="button">Hiện tất cả ghi chú</button>
@@ -536,8 +538,8 @@
 
   <button class="btn primary fabCompose" id="btnOpenEditor" type="button" aria-label="Soạn ghi chú" title="Soạn ghi chú">+</button>
 
-  <div class="modalOverlay" id="editorOverlay"></div>
-  <div class="editorModal" id="editorModal" role="dialog" aria-modal="true" aria-label="Soạn ghi chú" style="transform: translate3d(-50%, 0px, 0px) scale(1);">
+  <div class="modalOverlay" id="editorOverlay" style=""></div>
+  <div class="editorModal" id="editorModal" role="dialog" aria-modal="true" aria-label="Soạn ghi chú" style="">
     <div class="dragHandle"></div>
     <div class="editorModalHeader">
       <div class="editorModalTitle">
@@ -803,6 +805,14 @@ Gợi ý: dùng {{today}} để tự hiện ngày hiện tại theo dạng dd/mm
   const openEditor = (focus = true) => {
     els.editorOverlay.classList.add("show");
     els.editorModal.classList.add("show");
+
+    // ép hiện để tránh webview mobile nuốt animation/state
+    els.editorOverlay.style.opacity = "1";
+    els.editorOverlay.style.pointerEvents = "auto";
+    els.editorModal.style.opacity = "1";
+    els.editorModal.style.pointerEvents = "auto";
+    els.editorModal.style.transform = "translate3d(-50%, 0, 0) scale(1)";
+
     document.body.style.overflow = "hidden";
     if (focus){
       requestAnimationFrame(() => {
@@ -814,6 +824,11 @@ Gợi ý: dùng {{today}} để tự hiện ngày hiện tại theo dạng dd/mm
   const closeEditor = () => {
     els.editorModal.classList.remove("show");
     els.editorOverlay.classList.remove("show");
+    els.editorOverlay.style.opacity = "";
+    els.editorOverlay.style.pointerEvents = "";
+    els.editorModal.style.opacity = "";
+    els.editorModal.style.pointerEvents = "";
+    els.editorModal.style.transform = "";
     document.body.style.overflow = "";
   };
 
@@ -918,6 +933,9 @@ Gợi ý: dùng {{today}} để tự hiện ngày hiện tại theo dạng dd/mm
 
       const top = document.createElement("div");
       top.className = "itemTop";
+      top.dataset.action = "edit";
+      top.dataset.id = n.id;
+      top.style.cursor = "pointer";
 
       const main = document.createElement("div");
       main.className = "itemMain";
@@ -986,7 +1004,8 @@ Gợi ý: dùng {{today}} để tự hiện ngày hiện tại theo dạng dd/mm
       bOpen.title = "Chỉnh sửa";
       bOpen.setAttribute("aria-label", "Chỉnh sửa");
       bOpen.textContent = "✏️";
-      bOpen.onclick = () => selectNote(n.id);
+      bOpen.dataset.action = "edit";
+      bOpen.dataset.id = n.id;
 
       const bCopy = document.createElement("button");
       bCopy.className = "btn iconBtn copy";
@@ -994,10 +1013,8 @@ Gợi ý: dùng {{today}} để tự hiện ngày hiện tại theo dạng dd/mm
       bCopy.title = "Copy";
       bCopy.setAttribute("aria-label", "Copy");
       bCopy.textContent = "📋";
-      bCopy.onclick = async () => {
-        await copyText(renderDynamicTokens(n.content || ""));
-        showToast("Đã copy ghi chú");
-      };
+      bCopy.dataset.action = "copy";
+      bCopy.dataset.id = n.id;
 
       const bPin = document.createElement("button");
       bPin.className = "btn iconBtn";
@@ -1005,13 +1022,8 @@ Gợi ý: dùng {{today}} để tự hiện ngày hiện tại theo dạng dd/mm
       bPin.title = n.pinned ? "Bỏ ghim" : "Ghim";
       bPin.setAttribute("aria-label", n.pinned ? "Bỏ ghim" : "Ghim");
       bPin.textContent = n.pinned ? "📍" : "📌";
-      bPin.onclick = () => {
-        n.pinned = !n.pinned;
-        n.updatedAt = nowISO();
-        saveStore();
-        render();
-        showToast(n.pinned ? "Đã ghim" : "Đã bỏ ghim");
-      };
+      bPin.dataset.action = "pin";
+      bPin.dataset.id = n.id;
 
       const spacer = document.createElement("div");
       spacer.className = "spacer";
@@ -1022,7 +1034,8 @@ Gợi ý: dùng {{today}} để tự hiện ngày hiện tại theo dạng dd/mm
       bDel.title = "Xóa";
       bDel.setAttribute("aria-label", "Xóa");
       bDel.textContent = "🗑";
-      bDel.onclick = () => deleteNote(n.id);
+      bDel.dataset.action = "delete";
+      bDel.dataset.id = n.id;
 
       actionRow.appendChild(bOpen);
       actionRow.appendChild(bCopy);
@@ -1047,6 +1060,10 @@ Gợi ý: dùng {{today}} để tự hiện ngày hiện tại theo dạng dd/mm
   const selectNote = (id) => {
     const n = notes.find(x => x.id === id);
     if (!n) return;
+
+    // mở popup trước để chắc chắn thấy phản hồi ngay khi bấm sửa
+    openEditor(false);
+
     selectedId = id;
     els.title.value = n.title || "";
     els.content.value = n.content || "";
@@ -1055,7 +1072,7 @@ Gợi ý: dùng {{today}} để tự hiện ngày hiện tại theo dạng dd/mm
     setStatus("Đang sửa");
     updateClearBtns();
     render();
-    openEditor(true);
+
     requestAnimationFrame(() => {
       setTimeout(() => {
         els.title.focus();
@@ -1263,9 +1280,7 @@ Gợi ý: dùng {{today}} để tự hiện ngày hiện tại theo dạng dd/mm
   els.btnCloseEditor.addEventListener("click", closeEditor);
   els.editorOverlay.addEventListener("click", closeEditor);
 
-  els.editorModal.addEventListener("pointerdown", handlePointerDown);
-  window.addEventListener("pointermove", handlePointerMove);
-  window.addEventListener("pointerup", handlePointerUp);
+  // tắt kéo-thả đóng để tránh webview mobile chặn mở popup khi bấm sửa
 
   els.btnSave.addEventListener("click", upsert);
   els.btnCopy.addEventListener("click", copyCurrent);
@@ -1278,11 +1293,66 @@ Gợi ý: dùng {{today}} để tự hiện ngày hiện tại theo dạng dd/mm
     if (selectedId) deleteNote(selectedId);
   });
 
+
+  let listTouchMoved = false;
+  let listTouchStartY = 0;
+  let listTouchStartX = 0;
+
+  els.list.addEventListener("touchstart", (e) => {
+    const t = e.touches && e.touches[0];
+    if (!t) return;
+    listTouchMoved = false;
+    listTouchStartX = t.clientX;
+    listTouchStartY = t.clientY;
+  }, { passive:true });
+
+  els.list.addEventListener("touchmove", (e) => {
+    const t = e.touches && e.touches[0];
+    if (!t) return;
+    if (Math.abs(t.clientY - listTouchStartY) > 10 || Math.abs(t.clientX - listTouchStartX) > 10) {
+      listTouchMoved = true;
+    }
+  }, { passive:true });
+
+  const handleListAction = async (e) => {
+    const target = e.target && e.target.closest ? e.target.closest("[data-action]") : null;
+    if (!target) return;
+
+    if (listTouchMoved) return;
+
+    const id = target.dataset.id;
+    const action = target.dataset.action;
+    const n = notes.find(x => x.id === id);
+    if (!n) return;
+
+    if (action === "edit") {
+      selectNote(id);
+      return;
+    }
+    if (action === "copy") {
+      await copyText(renderDynamicTokens(n.content || ""));
+      showToast("Đã copy ghi chú");
+      return;
+    }
+    if (action === "pin") {
+      n.pinned = !n.pinned;
+      n.updatedAt = nowISO();
+      saveStore();
+      render();
+      showToast(n.pinned ? "Đã ghim" : "Đã bỏ ghim");
+      return;
+    }
+    if (action === "delete") {
+      deleteNote(id);
+    }
+  };
+
+  els.list.addEventListener("click", handleListAction);
+
   els.search.addEventListener("input", render);
   els.btnResetFilters.addEventListener("click", resetFilters);
   els.categoryFilter.addEventListener("change", () => {
     activeCategoryFilter = els.categoryFilter.value;
-    localStorage.setItem(CATEGORY_FILTER_KEY, activeCategoryFilter);
     render();
   });
   els.sortSelect.addEventListener("change", () => {
