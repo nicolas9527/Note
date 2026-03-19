@@ -1,4 +1,4 @@
-<html lang="vi"><head>
+<html lang="vi" style="--kb-offset: 0px;"><head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -14,25 +14,22 @@
   <style>
     :root{
       --primary:#2f6df6;
-      --primary-2:#78b2ff;
-      --primary-3:#1f57e7;
-      --bg:#edf4ff;
-      --bg-2:#f9fbff;
+      --primary-2:#69a8ff;
+      --bg:#eef4ff;
+      --bg-2:#f8fbff;
       --text:#0f172a;
       --muted:#64748b;
       --line:#dbe5f3;
       --danger:#dc2626;
-      --card:rgba(255,255,255,.78);
-      --card-strong:rgba(255,255,255,.90);
-      --shadow-xs:0 8px 18px rgba(15,23,42,.05);
-      --shadow-sm:0 14px 30px rgba(15,23,42,.08);
-      --shadow-md:0 22px 48px rgba(15,23,42,.10);
-      --shadow-lg:0 36px 96px rgba(2,6,23,.18);
-      --shadow-blue:0 18px 40px rgba(47,109,246,.22);
-      --radius:20px;
+      --shadow-xs:0 6px 18px rgba(15,23,42,.05);
+      --shadow-sm:0 10px 24px rgba(15,23,42,.08);
+      --shadow-md:0 18px 42px rgba(15,23,42,.10);
+      --shadow-blue:0 16px 34px rgba(47,109,246,.20);
+      --radius:18px;
       --ease:cubic-bezier(.2,.8,.2,1);
       --ease-soft:cubic-bezier(.16,1,.3,1);
       --ease-silk:cubic-bezier(.12,.96,.22,1);
+      --kb-offset:0px;
     }
 
     *{ box-sizing:border-box; }
@@ -44,20 +41,16 @@
       font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
       color:var(--text);
       background:
-        radial-gradient(circle at 10% 12%, rgba(120,178,255,.22), transparent 22%),
-        radial-gradient(circle at 88% 14%, rgba(47,109,246,.12), transparent 24%),
-        radial-gradient(circle at 50% 100%, rgba(191,219,254,.22), transparent 30%),
-        linear-gradient(180deg, #eaf2ff 0%, var(--bg) 46%, var(--bg-2) 100%);
+        radial-gradient(circle at 12% 10%, rgba(105,168,255,.22), transparent 24%),
+        radial-gradient(circle at 88% 18%, rgba(47,109,246,.12), transparent 24%),
+        linear-gradient(180deg, #eaf2ff 0%, var(--bg) 48%, var(--bg-2) 100%);
     }
 
     header{
       position:relative;
       z-index:2;
-      background:linear-gradient(180deg, rgba(255,255,255,.88), rgba(255,255,255,.72));
-      border-bottom:1px solid rgba(255,255,255,.86);
-      backdrop-filter:blur(14px) saturate(140%);
-      -webkit-backdrop-filter:blur(14px) saturate(140%);
-      box-shadow:0 10px 28px rgba(15,23,42,.04);
+      background:rgba(255,255,255,.92);
+      border-bottom:1px solid rgba(255,255,255,.85);
     }
 
     .headerWrap{
@@ -83,12 +76,12 @@
     }
 
     .dot{
-      width:26px;
-      height:26px;
-      border-radius:10px;
+      width:24px;
+      height:24px;
+      border-radius:9px;
       flex:0 0 auto;
-      background:radial-gradient(circle at 30% 28%, #dbeafe 0%, #93c5fd 28%, #78b2ff 58%, #2f6df6 82%, #1d4ed8 100%);
-      box-shadow:0 10px 20px rgba(47,109,246,.24), 0 0 24px rgba(120,178,255,.18);
+      background:radial-gradient(circle at 30% 28%, #dbeafe 0%, #93c5fd 28%, #69a8ff 58%, #2f6df6 82%, #1d4ed8 100%);
+      box-shadow:0 8px 16px rgba(47,109,246,.22);
     }
 
     .brandTitle{
@@ -101,12 +94,11 @@
     .credit{
       display:inline-flex;
       align-items:center;
-      margin-top:2px;
-      padding:2px 7px;
+      margin-top:1px;
+      padding:1px 6px;
       border-radius:999px;
-      background:rgba(255,255,255,.76);
-      border:1px solid rgba(255,255,255,.88);
-      box-shadow:var(--shadow-xs);
+      background:rgba(255,255,255,.74);
+      border:1px solid rgba(255,255,255,.82);
       font-size:9px;
       font-weight:900;
       color:#475569;
@@ -126,12 +118,10 @@
     }
 
     .card{
-      border:1px solid rgba(255,255,255,.82);
-      background:linear-gradient(180deg, rgba(255,255,255,.84), rgba(255,255,255,.74));
+      border:1px solid rgba(255,255,255,.76);
+      background:linear-gradient(180deg, rgba(255,255,255,.84), rgba(255,255,255,.72));
       border-radius:var(--radius);
       box-shadow:var(--shadow-md);
-      backdrop-filter:blur(18px) saturate(135%);
-      -webkit-backdrop-filter:blur(18px) saturate(135%);
       overflow:hidden;
       margin-top:10px;
     }
@@ -179,12 +169,12 @@
     input[type="text"], textarea, select{
       width:100%;
       border:1px solid var(--line);
-      border-radius:16px;
+      border-radius:15px;
       padding:10px 12px;
       font-size:14px;
       outline:none;
       color:var(--text);
-      background:linear-gradient(180deg, rgba(255,255,255,.96), rgba(255,255,255,.84));
+      background:linear-gradient(180deg, rgba(255,255,255,.94), rgba(255,255,255,.82));
       box-shadow:inset 0 1px 0 rgba(255,255,255,.45), var(--shadow-xs);
       appearance:none;
     }
@@ -224,12 +214,11 @@
 
     .btn:hover{ box-shadow:0 12px 26px rgba(15,23,42,.08); }
     .btn:active{ transform:scale(.965); }
-    .btn.primary:hover{ box-shadow:0 22px 42px rgba(47,109,246,.24); }
 
     .btn.primary{
       color:#fff;
       border-color:rgba(47,109,246,.24);
-      background:linear-gradient(180deg, var(--primary-2), var(--primary-3) 58%, var(--primary));
+      background:linear-gradient(180deg, var(--primary-2), var(--primary));
       box-shadow:var(--shadow-blue);
     }
 
@@ -250,8 +239,8 @@
       gap:6px;
       padding:7px 10px;
       border-radius:999px;
-      background:rgba(255,255,255,.72);
-      border:1px solid rgba(255,255,255,.88);
+      background:rgba(255,255,255,.68);
+      border:1px solid rgba(255,255,255,.84);
       box-shadow:var(--shadow-xs);
       font-size:12px;
       font-weight:900;
@@ -266,9 +255,9 @@
     }
 
     .item{
-      border:1px solid rgba(255,255,255,.86);
-      border-radius:20px;
-      background:linear-gradient(180deg, rgba(255,255,255,.94), rgba(255,255,255,.80));
+      border:1px solid rgba(255,255,255,.82);
+      border-radius:18px;
+      background:linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.78));
       box-shadow:var(--shadow-sm);
       overflow:hidden;
       animation:itemIn .42s var(--ease-silk);
@@ -277,7 +266,7 @@
     }
 
     .itemTop{
-      padding:13px 13px 9px;
+      padding:12px 12px 8px;
     }
 
     .itemTitle{
@@ -323,11 +312,11 @@
     }
 
     .itemPreview{
-      padding:0 13px 9px;
+      padding:0 12px 8px;
       color:#111827;
       opacity:.94;
       font-size:13px;
-      line-height:1.44;
+      line-height:1.42;
       white-space:pre-wrap;
       word-break:break-word;
     }
@@ -353,7 +342,7 @@
     .itemActions{
       display:flex;
       gap:8px;
-      padding:0 13px 13px;
+      padding:0 12px 12px;
       align-items:center;
     }
 
@@ -441,7 +430,7 @@
     .sheet{
       position:fixed;
       left:50%;
-      bottom:8px;
+      bottom:calc(8px + var(--kb-offset));
       width:min(760px, calc(100% - 12px));
       max-height:88vh;
       transform:translate3d(-50%, 44px, 0) scale(.976);
@@ -451,10 +440,10 @@
       pointer-events:none;
       display:flex;
       flex-direction:column;
-      border-radius:26px 26px 22px 22px;
-      border:1px solid rgba(255,255,255,.88);
-      background:linear-gradient(180deg, rgba(255,255,255,.97), rgba(255,255,255,.88));
-      box-shadow:0 40px 110px rgba(2,6,23,.18);
+      border-radius:24px 24px 20px 20px;
+      border:1px solid rgba(255,255,255,.84);
+      background:linear-gradient(180deg, rgba(255,255,255,.96), rgba(255,255,255,.87));
+      box-shadow:0 36px 96px rgba(2,6,23,.18);
       z-index:1001;
       overflow:hidden;
       transition:
@@ -480,6 +469,17 @@
         box-shadow 560ms var(--ease-silk);
     }
 
+
+    body.keyboard-open .sheet{
+      max-height:calc(100vh - 12px - var(--kb-offset));
+    }
+
+    @supports (height: 100dvh){
+      body.keyboard-open .sheet{
+        max-height:calc(100dvh - 12px - var(--kb-offset));
+      }
+    }
+
     .dragHandle{
       width:46px;
       height:5px;
@@ -499,9 +499,9 @@
       align-items:center;
       justify-content:space-between;
       gap:10px;
-      padding:9px 14px 11px;
-      border-bottom:1px solid rgba(255,255,255,.72);
-      background:linear-gradient(180deg, rgba(255,255,255,.54), rgba(255,255,255,.24));
+      padding:8px 14px 10px;
+      border-bottom:1px solid rgba(255,255,255,.70);
+      background:linear-gradient(180deg, rgba(255,255,255,.48), rgba(255,255,255,.22));
     }
 
     .sheetTitleWrap{
@@ -522,10 +522,10 @@
       display:inline-flex;
       align-items:center;
       min-height:30px;
-      padding:4px 10px;
+      padding:4px 9px;
       border-radius:999px;
-      background:rgba(255,255,255,.74);
-      border:1px solid rgba(255,255,255,.88);
+      background:rgba(255,255,255,.70);
+      border:1px solid rgba(255,255,255,.84);
       box-shadow:var(--shadow-xs);
       color:var(--muted);
       font-size:10.5px;
@@ -720,10 +720,10 @@
         width:calc(100% - 10px);
         max-height:92vh;
         bottom:5px;
-        border-radius:24px 24px 20px 20px;
+        border-radius:22px 22px 18px 18px;
       }
       .sheetHeader{
-        padding:8px 12px 10px;
+        padding:7px 12px 9px;
       }
       .sheetBody{
         padding:10px 12px 12px;
@@ -738,18 +738,6 @@
       .sheetActions{
         gap:8px;
       }
-      .card{
-        border-radius:18px;
-      }
-    }
-
-    .pageIn{
-      animation:pageEnter .42s var(--ease-silk);
-    }
-
-    @keyframes pageEnter{
-      from{ opacity:0; transform:translateY(8px); }
-      to{ opacity:1; transform:translateY(0); }
     }
 
     @keyframes itemIn{
@@ -775,7 +763,7 @@
     }
   </style>
 </head>
-<body style="">
+<body class="" style="">
   <header>
     <div class="headerWrap">
       <div class="titleRow">
@@ -795,7 +783,7 @@
     </div>
   </header>
 
-  <main class="wrap pageIn">
+  <main class="wrap">
     <section class="card">
       <div class="cardHeader">
         <h3 class="sectionTitle">Danh sách ghi chú</h3>
@@ -901,7 +889,7 @@ Gợi ý: dùng {{today}} để tự hiện ngày hiện tại theo dạng dd/mm
   <div class="overlay" id="confirmOverlay"></div>
   <div class="confirmBox" id="confirmBox" role="dialog" aria-modal="true" aria-label="Xác nhận xóa">
     <div class="confirmTitle">Xóa ghi chú?</div>
-    <div class="confirmText" id="confirmText">Ghi chú này sẽ bị xóa khỏi danh sách.</div>
+    <div class="confirmText" id="confirmText">Ghi chú "Nnan" sẽ bị xóa khỏi danh sách.</div>
     <div class="confirmActions">
       <button class="btn" id="confirmCancel" type="button">Hủy</button>
       <button class="btn danger" id="confirmDelete" type="button">Xóa</button>
@@ -922,7 +910,7 @@ Gợi ý: dùng {{today}} để tự hiện ngày hiện tại theo dạng dd/mm
     </div>
   </div>
 
-  <div class="toast" id="toast">Đã lưu</div>
+  <div class="toast" id="toast">Đã xóa</div>
   <input id="fileImport" type="file" accept="application/json,.json" style="display:none">
 
   <script>
@@ -1657,6 +1645,28 @@ Gợi ý: dùng {{today}} để tự hiện ngày hiện tại theo dạng dd/mm
       }
     });
 
+
+    const syncKeyboardViewport = () => {
+      const vv = window.visualViewport;
+      let offset = 0;
+
+      if (vv) {
+        const keyboard = Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
+        offset = keyboard > 80 ? keyboard : 0;
+      }
+
+      document.documentElement.style.setProperty("--kb-offset", `${Math.round(offset)}px`);
+      document.body.classList.toggle("keyboard-open", offset > 0);
+    };
+
+    let keyboardSyncTimer = null;
+    const queueKeyboardSync = () => {
+      clearTimeout(keyboardSyncTimer);
+      syncKeyboardViewport();
+      keyboardSyncTimer = setTimeout(syncKeyboardSync, 120);
+      setTimeout(syncKeyboardSync, 260);
+    };
+
     window.addEventListener("keydown", (e) => {
       const key = (e.key || "").toLowerCase();
       if ((e.ctrlKey || e.metaKey) && key === "s"){
@@ -1670,11 +1680,25 @@ Gợi ý: dùng {{today}} để tự hiện ngày hiện tại theo dạng dd/mm
       }
     }, { passive:false });
 
+
+    ["focus", "blur", "input", "change"].forEach((evt) => {
+      els.title.addEventListener(evt, queueKeyboardSync);
+      els.content.addEventListener(evt, queueKeyboardSync);
+    });
+
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener("resize", queueKeyboardSync);
+      window.visualViewport.addEventListener("scroll", queueKeyboardSync);
+    }
+    window.addEventListener("orientationchange", queueKeyboardSync);
+    window.addEventListener("resize", queueKeyboardSync);
+
     load();
     clearEditor();
     els.sortSelect.value = activeSort;
     render();
     updateClearBtns();
+    queueKeyboardSync();
 
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", () => {
