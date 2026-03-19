@@ -14,231 +14,323 @@
   <style>
     :root{
       --primary:#2f6df6;
-      --primary-2:#6aa8ff;
+      --primary-2:#69a8ff;
       --bg:#eef4ff;
-      --bg-2:#f9fbff;
+      --bg-2:#f8fbff;
       --text:#0f172a;
       --muted:#64748b;
       --line:#dbe5f3;
       --danger:#dc2626;
-      --radius:20px;
-      --radius-lg:24px;
-      --ease:cubic-bezier(.2,.8,.2,1);
-      --ease-soft:cubic-bezier(.22,1,.36,1);
       --shadow-xs:0 6px 18px rgba(15,23,42,.05);
       --shadow-sm:0 10px 24px rgba(15,23,42,.08);
-      --shadow-md:0 18px 44px rgba(15,23,42,.10);
-      --shadow-lg:0 34px 90px rgba(2,6,23,.18);
+      --shadow-md:0 18px 42px rgba(15,23,42,.10);
       --shadow-blue:0 16px 34px rgba(47,109,246,.20);
+      --radius:18px;
+      --ease:cubic-bezier(.2,.8,.2,1);
+      --ease-soft:cubic-bezier(.22,1,.36,1);
     }
 
     *{ box-sizing:border-box; }
     html{ -webkit-text-size-adjust:100%; }
+
     body{
       margin:0;
       min-height:100vh;
       font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
       color:var(--text);
       background:
-        radial-gradient(circle at 12% 10%, rgba(106,168,255,.24), transparent 24%),
-        radial-gradient(circle at 88% 18%, rgba(47,109,246,.14), transparent 24%),
+        radial-gradient(circle at 12% 10%, rgba(105,168,255,.22), transparent 24%),
+        radial-gradient(circle at 88% 18%, rgba(47,109,246,.12), transparent 24%),
         linear-gradient(180deg, #eaf2ff 0%, var(--bg) 48%, var(--bg-2) 100%);
-      overflow-x:hidden;
     }
-
-    .pageEnter{ position:relative; z-index:1; animation:pageEnter .45s var(--ease-soft) both; }
 
     header{
       position:relative;
-      z-index:5;
-      backdrop-filter:none;
-      -webkit-backdrop-filter:none;
-      background:linear-gradient(180deg, rgba(255,255,255,.94), rgba(255,255,255,.88));
-      border-bottom:1px solid rgba(255,255,255,.78);
-      box-shadow:none;
+      z-index:2;
+      background:rgba(255,255,255,.92);
+      border-bottom:1px solid rgba(255,255,255,.85);
     }
 
-    .wrap{ max-width:980px; margin:0 auto; }
-    .headerWrap{ padding:4px 14px 4px; }
-    .mainWrap{ padding:6px 14px 86px; }
-    .titleRow{ display:flex; align-items:center; justify-content:space-between; gap:10px; padding:0; min-height:38px; }
-    .brand{ display:flex; align-items:center; gap:8px; min-width:0; flex:1 1 auto; }
+    .headerWrap{
+      max-width:980px;
+      margin:0 auto;
+      padding:4px 14px;
+    }
+
+    .titleRow{
+      min-height:38px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      min-width:0;
+      flex:1 1 auto;
+    }
+
     .dot{
-      width:24px; height:24px; border-radius:9px; flex:0 0 auto;
-      background:radial-gradient(circle at 30% 28%, #dbeafe 0%, #93c5fd 28%, #6aa8ff 58%, #2f6df6 82%, #1d4ed8 100%);
-      box-shadow:0 12px 22px rgba(47,109,246,.28), 0 0 26px rgba(106,168,255,.24);
-    }
-    .brandTitle{ font-size:12.5px; line-height:1; font-weight:900; letter-spacing:.02px; }
-    .sub{ margin-top:2px; font-size:11px; line-height:1.22; font-weight:700; color:var(--muted); max-width:240px; }
-    .credit{
-      display:inline-flex; align-items:center; margin-top:1px; padding:1px 6px;
-      border-radius:999px; background:rgba(255,255,255,.74); border:1px solid rgba(255,255,255,.82);
-      box-shadow:none; font-size:9px; font-weight:900; color:#475569;
+      width:24px;
+      height:24px;
+      border-radius:9px;
+      flex:0 0 auto;
+      background:radial-gradient(circle at 30% 28%, #dbeafe 0%, #93c5fd 28%, #69a8ff 58%, #2f6df6 82%, #1d4ed8 100%);
+      box-shadow:0 8px 16px rgba(47,109,246,.22);
     }
 
-    .grid{ display:grid; grid-template-columns:1fr; gap:12px; margin-top:6px; }
+    .brandTitle{
+      font-size:12.5px;
+      line-height:1;
+      font-weight:900;
+      letter-spacing:.03px;
+    }
+
+    .credit{
+      display:inline-flex;
+      align-items:center;
+      margin-top:1px;
+      padding:1px 6px;
+      border-radius:999px;
+      background:rgba(255,255,255,.74);
+      border:1px solid rgba(255,255,255,.82);
+      font-size:9px;
+      font-weight:900;
+      color:#475569;
+    }
+
+    .headerActions{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex:0 0 auto;
+    }
+
+    .wrap{
+      max-width:980px;
+      margin:0 auto;
+      padding:8px 14px 26px;
+    }
+
     .card{
-      position:relative; overflow:hidden; border-radius:var(--radius);
       border:1px solid rgba(255,255,255,.76);
-      background:linear-gradient(180deg, rgba(255,255,255,.82), rgba(255,255,255,.68));
-      backdrop-filter:blur(16px) saturate(150%); -webkit-backdrop-filter:blur(16px) saturate(150%);
+      background:linear-gradient(180deg, rgba(255,255,255,.84), rgba(255,255,255,.72));
+      border-radius:var(--radius);
       box-shadow:var(--shadow-md);
+      overflow:hidden;
+      margin-top:10px;
     }
+
     .cardHeader{
-      padding:15px; border-bottom:1px solid rgba(255,255,255,.58);
-      background:linear-gradient(180deg, rgba(255,255,255,.38), rgba(255,255,255,.18));
+      padding:12px 14px;
+      border-bottom:1px solid rgba(255,255,255,.72);
+      background:linear-gradient(180deg, rgba(255,255,255,.44), rgba(255,255,255,.20));
     }
-    .cardBody{ padding:12px 15px; }
-    .sectionTitle{ margin:0; font-size:15px; font-weight:900; letter-spacing:.1px; line-height:1.15; }
-    .sectionSub{ margin-top:4px; font-size:12px; color:var(--muted); font-weight:700; }
-    .row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+
+    .cardBody{ padding:12px 14px; }
+
+    .sectionTitle{
+      margin:0;
+      font-size:14px;
+      font-weight:900;
+    }
+
+    .sectionSub{
+      margin-top:4px;
+      font-size:12px;
+      color:var(--muted);
+      font-weight:700;
+    }
+
+    .toolbar{
+      display:grid;
+      grid-template-columns:1fr auto auto;
+      gap:10px;
+      align-items:center;
+      margin-top:10px;
+    }
+
+    .searchWrap{ position:relative; min-width:0; }
+    .searchIcon{
+      position:absolute;
+      left:14px;
+      top:50%;
+      transform:translateY(-50%);
+      font-size:14px;
+      opacity:.56;
+      pointer-events:none;
+    }
+
+    input[type="text"], textarea, select{
+      width:100%;
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:11px 13px;
+      font-size:14px;
+      outline:none;
+      color:var(--text);
+      background:linear-gradient(180deg, rgba(255,255,255,.94), rgba(255,255,255,.82));
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.45), var(--shadow-xs);
+      appearance:none;
+    }
+
+    .searchWrap input{ padding-left:42px; }
+
+    input:focus, textarea:focus, select:focus{
+      border-color:rgba(47,109,246,.34);
+      box-shadow:0 0 0 4px rgba(47,109,246,.10), 0 14px 30px rgba(47,109,246,.08);
+      background:#fff;
+    }
 
     .btn{
-      appearance:none; border:1px solid var(--line); background:rgba(255,255,255,.84); color:var(--text);
-      padding:9px 12px; border-radius:15px; font-weight:800; font-size:14px; cursor:pointer;
-      box-shadow:var(--shadow-xs); transition:transform 140ms var(--ease), box-shadow 180ms var(--ease), background 160ms var(--ease), border-color 160ms var(--ease), opacity 140ms var(--ease);
-      -webkit-tap-highlight-color:transparent; user-select:none; white-space:nowrap;
+      appearance:none;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.88);
+      color:var(--text);
+      padding:9px 12px;
+      border-radius:14px;
+      font-weight:800;
+      font-size:14px;
+      cursor:pointer;
+      box-shadow:var(--shadow-xs);
+      transition:transform 140ms var(--ease), box-shadow 180ms var(--ease), background 160ms var(--ease), border-color 160ms var(--ease);
+      -webkit-tap-highlight-color:transparent;
+      user-select:none;
+      text-decoration:none;
     }
-    .btn:hover{ box-shadow:var(--shadow-sm); border-color:rgba(106,168,255,.55); }
-    .btn:active{ transform:scale(.965); }
-    .btn:disabled{ opacity:.55; cursor:not-allowed; box-shadow:none; }
+
+    .btn:active{ transform:scale(.97); }
+
     .btn.primary{
-      color:#fff; border-color:rgba(47,109,246,.22);
+      color:#fff;
+      border-color:rgba(47,109,246,.24);
       background:linear-gradient(180deg, var(--primary-2), var(--primary));
       box-shadow:var(--shadow-blue);
     }
+
     .btn.ghost{ background:rgba(255,255,255,.62); }
-    .btn.danger{ color:var(--danger); background:rgba(255,255,255,.88); border-color:rgba(220,38,38,.16); }
-    .mini{ padding:8px 10px; border-radius:13px; font-size:12px; font-weight:900; }
+    .btn.danger{ color:var(--danger); border-color:rgba(220,38,38,.16); background:rgba(255,255,255,.92); }
+    .btn.mini{ padding:8px 10px; font-size:12px; border-radius:13px; }
 
-    .statusPill{
-      display:inline-flex; align-items:center; min-height:32px; padding:5px 10px;
-      border-radius:999px; background:rgba(255,255,255,.70); border:1px solid rgba(255,255,255,.84);
-      box-shadow:var(--shadow-xs); color:var(--muted); font-size:11px; font-weight:900;
-    }
-
-    .hero{ display:flex; align-items:center; justify-content:space-between; gap:12px; min-height:52px; }
-    .heroRight{ display:flex; align-items:center; gap:8px; justify-content:flex-end; }
-    .fabOpen{
-      width:46px; height:40px; padding:0; border-radius:15px; font-size:26px; line-height:1;
-      display:inline-flex; align-items:center; justify-content:center;
+    .stats{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-top:10px;
     }
 
-    .listHeader{ display:flex; flex-direction:column; gap:12px; }
-    .listStats{ display:flex; gap:8px; flex-wrap:wrap; }
-    .statPill{
-      display:inline-flex; align-items:center; gap:6px; padding:7px 10px; border-radius:999px;
-      background:rgba(255,255,255,.68); border:1px solid rgba(255,255,255,.84); box-shadow:var(--shadow-xs);
-      font-size:12px; font-weight:900; color:#475569;
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:7px 10px;
+      border-radius:999px;
+      background:rgba(255,255,255,.68);
+      border:1px solid rgba(255,255,255,.84);
+      box-shadow:var(--shadow-xs);
+      font-size:12px;
+      font-weight:900;
+      color:#475569;
     }
 
-    .toolbar2{
-      display:grid; grid-template-columns:1fr auto; gap:10px; align-items:stretch;
+    .list{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      padding:14px;
     }
 
-    .segmented{
-      position:relative; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:4px; width:100%;
-      padding:4px; border-radius:17px; background:rgba(255,255,255,.58);
-      border:1px solid rgba(255,255,255,.82); box-shadow:var(--shadow-xs); overflow:hidden;
-    }
-    .segIndicator{
-      position:absolute; top:4px; left:4px; width:calc((100% - 12px)/2); height:calc(100% - 8px);
-      border-radius:13px; background:linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,255,255,.82));
-      box-shadow:0 10px 22px rgba(15,23,42,.08); transition:transform 320ms var(--ease-soft); pointer-events:none;
-    }
-    .segmented[data-tab="all"] .segIndicator{ transform:translateX(0); }
-    .segmented[data-tab="pinned"] .segIndicator{ transform:translateX(calc(100% + 4px)); }
-    .segBtn{
-      position:relative; z-index:1; border:none; background:transparent; border-radius:13px;
-      min-height:46px; padding:10px 12px; font-weight:900; font-size:13px; color:var(--muted); cursor:pointer;
-      display:flex; align-items:center; justify-content:center; text-align:center;
-      transition:transform 140ms var(--ease), color 160ms var(--ease); -webkit-tap-highlight-color:transparent;
-    }
-    .segBtn.active{ color:var(--text); font-weight:950; }
-    .segBtn:active{ transform:scale(.97); }
-
-    .searchWrap{ position:relative; min-width:0; }
-    #categoryFilter{ min-width:150px; }
-    input[type="text"], textarea, select{
-      width:100%; border:1px solid var(--line); border-radius:16px; padding:11px 13px; font-size:14px;
-      outline:none; color:var(--text); background:linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.78));
-      box-shadow:inset 0 1px 0 rgba(255,255,255,.45), var(--shadow-xs);
-      transition:border-color 160ms var(--ease), box-shadow 180ms var(--ease), background 160ms var(--ease);
-      appearance:none;
-    }
-    .searchWrap input{ padding-left:42px; }
-    .searchIcon{
-      position:absolute; left:14px; top:50%; transform:translateY(-50%);
-      font-size:14px; opacity:.56; pointer-events:none;
-    }
-    input[type="text"]:focus, textarea:focus, select:focus{
-      border-color:rgba(47,109,246,.34);
-      box-shadow:0 0 0 4px rgba(47,109,246,.10), 0 14px 30px rgba(47,109,246,.08);
-      background:rgba(255,255,255,.97);
-    }
-
-    .field{ display:flex; flex-direction:column; gap:7px; margin-bottom:12px; }
-    label{ font-size:12px; font-weight:800; color:var(--muted); }
-    .inputWrap{ position:relative; }
-    textarea{ min-height:210px; resize:vertical; line-height:1.5; padding-right:42px; }
-    .clearBtn{
-      position:absolute; right:8px; top:50%; transform:translateY(-50%) scale(.94);
-      width:28px; height:28px; border-radius:999px; border:1px solid rgba(255,255,255,.85);
-      background:rgba(255,255,255,.96); display:flex; align-items:center; justify-content:center;
-      font-weight:900; color:#64748b; cursor:pointer; box-shadow:0 8px 18px rgba(2,6,23,.08);
-      opacity:0; pointer-events:none; transition:opacity 160ms var(--ease), transform 160ms var(--ease);
-    }
-    .clearBtn.show{ opacity:1; pointer-events:auto; transform:translateY(-50%) scale(1); }
-    .clearBtn.textarea{ top:12px; transform:scale(.94); }
-    .clearBtn.textarea.show{ transform:scale(1); }
-
-    .suggest{ display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
-    .chip{
-      border:1px solid rgba(47,109,246,.14); background:rgba(47,109,246,.08); color:#1d4ed8;
-      padding:8px 11px; border-radius:999px; font-weight:900; font-size:12px; cursor:pointer;
-      user-select:none; transition:transform 140ms var(--ease), opacity 140ms var(--ease); box-shadow:var(--shadow-xs);
-      -webkit-tap-highlight-color:transparent;
-    }
-    .chip:active{ transform:scale(.97); opacity:.88; }
-
-    .editorActions{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:4px; }
-    .editorMeta{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:12px; }
-    .infoBox{
-      padding:12px 13px; border-radius:16px; border:1px solid rgba(255,255,255,.78);
-      background:rgba(255,255,255,.58); box-shadow:var(--shadow-xs);
-    }
-    .infoTitle{ font-size:12px; font-weight:900; color:#334155; margin-bottom:4px; }
-    .infoText{ font-size:12px; line-height:1.4; color:var(--muted); font-weight:700; }
-
-    .list{ display:flex; flex-direction:column; gap:12px; padding:14px; }
     .item{
-      border:1px solid rgba(255,255,255,.82); border-radius:20px;
-      background:linear-gradient(180deg, rgba(255,255,255,.90), rgba(255,255,255,.74));
-      box-shadow:var(--shadow-sm); overflow:hidden; transition:transform 180ms var(--ease), box-shadow 220ms var(--ease), border-color 180ms var(--ease);
-      animation:itemEnter .30s var(--ease-soft) both; animation-delay:calc(var(--i, 0) * 18ms);
+      border:1px solid rgba(255,255,255,.82);
+      border-radius:18px;
+      background:linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.78));
+      box-shadow:var(--shadow-sm);
+      overflow:hidden;
     }
-    .item:active{ transform:scale(.992); }
-    .itemTop{ display:flex; flex-direction:column; gap:8px; padding:12px 12px 8px; }
-    .itemMain{ min-width:0; }
-    .itemTitle{ font-weight:900; font-size:14px; line-height:1.24; word-break:break-word; margin:0; }
+
+    .itemTop{
+      padding:12px 12px 8px;
+    }
+
+    .itemTitle{
+      font-weight:900;
+      font-size:14px;
+      line-height:1.24;
+      word-break:break-word;
+      margin:0;
+    }
+
     .meta{
-      display:flex; align-items:center; flex-wrap:wrap; gap:6px; margin-top:2px;
-      font-size:11px; font-weight:800; color:var(--muted);
+      display:flex;
+      align-items:center;
+      flex-wrap:wrap;
+      gap:6px;
+      margin-top:4px;
+      font-size:11px;
+      font-weight:800;
+      color:var(--muted);
     }
-    .badgePin{
-      display:inline-flex; align-items:center; gap:6px; padding:4px 8px; border-radius:999px;
-      background:rgba(106,168,255,.16); border:1px solid rgba(106,168,255,.32); color:#1d4ed8;
-      font-weight:900; box-shadow:0 6px 14px rgba(106,168,255,.10);
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:4px 8px;
+      border-radius:999px;
+      font-size:11px;
+      font-weight:900;
+      border:1px solid transparent;
     }
-    .catBadge{
-      display:inline-flex; align-items:center; gap:6px; padding:4px 8px; border-radius:999px;
-      font-weight:900; font-size:11px; border:1px solid transparent;
-    }
-    .cat-all{ background:#f1f5f9; color:#475569; border-color:#e2e8f0; }
+
+    .cat-default{ background:#f1f5f9; color:#475569; border-color:#e2e8f0; }
     .cat-work{ background:#dbeafe; color:#1d4ed8; border-color:#bfdbfe; }
     .cat-personal{ background:#fce7f3; color:#be185d; border-color:#fbcfe8; }
     .cat-link{ background:#dcfce7; color:#15803d; border-color:#bbf7d0; }
-    .cat-code{ background:#fef3c7; color:#b45309; border-color:#fde68a; }
+    .cat-account{ background:#fef3c7; color:#b45309; border-color:#fde68a; }
+
+    .pinBadge{
+      background:rgba(105,168,255,.16);
+      color:#1d4ed8;
+      border-color:rgba(105,168,255,.32);
+    }
+
+    .itemPreview{
+      padding:0 12px 8px;
+      color:#111827;
+      opacity:.94;
+      font-size:13px;
+      line-height:1.42;
+      white-space:pre-wrap;
+      word-break:break-word;
+    }
+
+    .clamp{
+      display:-webkit-box;
+      -webkit-box-orient:vertical;
+      -webkit-line-clamp:4;
+      overflow:hidden;
+    }
+
+    .moreRow{ padding:0 12px 8px; }
+    .moreBtn{
+      border:none;
+      background:transparent;
+      color:var(--primary);
+      font-weight:900;
+      cursor:pointer;
+      padding:0;
+      font-size:13px;
+    }
+
+    .itemActions{
+      display:flex;
+      gap:8px;
+      padding:0 12px 12px;
+      align-items:center;
+    }
 
     .iconBtn{
       width:40px;
@@ -252,320 +344,385 @@
       line-height:1;
       flex:0 0 40px;
     }
+
     .iconBtn.copy{
       color:#fff;
       border-color:rgba(47,109,246,.22);
       background:linear-gradient(180deg, var(--primary-2), var(--primary));
       box-shadow:var(--shadow-blue);
     }
+
     .iconBtn.delete{
       color:var(--danger);
       background:rgba(255,255,255,.90);
       border-color:rgba(220,38,38,.16);
     }
-    .itemActions .spacer{
-      flex:1 1 auto;
-    }
 
+    .spacer{ flex:1 1 auto; }
 
-    .itemPreview{
-      padding:0 12px 8px; color:#111827; opacity:.94; font-size:13px; line-height:1.42;
-      white-space:pre-wrap; word-break:break-word;
+    .empty{
+      padding:26px 14px;
+      text-align:center;
+      color:var(--muted);
+      font-weight:800;
+      line-height:1.5;
     }
-    mark.hl{
-      background:rgba(255,235,59,.45);
-      color:inherit;
-      border-radius:4px;
-      padding:0 .5px;
-    }
-
-    .clamp{ display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:4; overflow:hidden; }
-    .moreRow{ padding:0 12px 8px; margin-top:-2px; }
-    .moreBtn{
-      border:none; background:transparent; color:var(--primary); font-weight:900; cursor:pointer;
-      padding:0; font-size:13px; -webkit-tap-highlight-color:transparent;
-    }
-    .itemActions{ display:flex; gap:8px; padding:0 12px 12px; position:relative; z-index:3; }
-    .itemActions .btn, .moreBtn{ position:relative; z-index:4; touch-action:manipulation; }
-    .itemTop, .itemActions .btn{ -webkit-tap-highlight-color: transparent; }
-    .empty{ padding:28px 16px; text-align:center; color:var(--muted); font-weight:800; line-height:1.5; }
 
     .resetFilters{
-      margin-top:10px;
+      margin:0 14px 14px;
       display:none;
-    }
-    .resetFilters.show{
-      display:flex;
       justify-content:center;
     }
+    .resetFilters.show{ display:flex; }
 
-
-
-    .fabCompose{
+    .overlay{
       position:fixed;
-      right:16px;
-      bottom:calc(20px + env(safe-area-inset-bottom));
-      width:58px;
-      height:58px;
-      border-radius:20px;
-      padding:0;
+      inset:0;
+      background:rgba(2,6,23,.30);
+      opacity:0;
+      pointer-events:none;
+      transition:opacity 180ms var(--ease);
+      z-index:1000;
+    }
+    .overlay.show{
+      opacity:1;
+      pointer-events:auto;
+    }
+
+    .sheet{
+      position:fixed;
+      left:50%;
+      bottom:8px;
+      width:min(760px, calc(100% - 12px));
+      max-height:88vh;
+      transform:translate3d(-50%, 20px, 0);
+      opacity:0;
+      pointer-events:none;
+      display:none;
+      flex-direction:column;
+      border-radius:24px 24px 20px 20px;
+      border:1px solid rgba(255,255,255,.82);
+      background:linear-gradient(180deg, rgba(255,255,255,.94), rgba(255,255,255,.84));
+      box-shadow:0 34px 90px rgba(2,6,23,.18);
+      z-index:1001;
+      overflow:hidden;
+    }
+    .sheet.show{
+      display:flex;
+      opacity:1;
+      pointer-events:auto;
+      transform:translate3d(-50%, 0, 0);
+    }
+
+    .dragHandle{
+      width:46px;
+      height:5px;
+      border-radius:999px;
+      background:rgba(100,116,139,.28);
+      margin:10px auto 2px;
+    }
+
+    .sheetHeader{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding:10px 15px 14px;
+      border-bottom:1px solid rgba(255,255,255,.70);
+      background:linear-gradient(180deg, rgba(255,255,255,.44), rgba(255,255,255,.20));
+    }
+
+    .sheetTitleWrap{
+      display:flex;
+      flex-direction:column;
+      gap:5px;
+      min-width:0;
+    }
+
+    .sheetTitle{
+      margin:0;
+      font-size:16px;
+      font-weight:900;
+    }
+
+    .statusPill{
       display:inline-flex;
       align-items:center;
-      justify-content:center;
-      font-size:30px;
-      line-height:1;
-      z-index:9996;
-      box-shadow:0 18px 38px rgba(47,109,246,.24);
-    }
-
-    @media (max-width: 720px){
-      .fabCompose{
-        right:14px;
-        bottom:calc(16px + env(safe-area-inset-bottom));
-        width:56px;
-        height:56px;
-        border-radius:19px;
-      }
-    }
-
-    .modalOverlay{
-      position:fixed; inset:0; background:rgba(2,6,23,.30); backdrop-filter:blur(8px);
-      -webkit-backdrop-filter:blur(8px); opacity:0; pointer-events:none; transition:opacity 220ms var(--ease); z-index:9997;
-    }
-    .modalOverlay.show{ opacity:1; pointer-events:auto; }
-    .editorModal{
-      position:fixed; left:50%; bottom:6px; width:min(760px, calc(100% - 12px)); max-height:calc(88vh);
-      transform:translate3d(-50%, 26px, 0) scale(.985); opacity:0; pointer-events:none;
-      border-radius:24px 24px 20px 20px; border:1px solid rgba(255,255,255,.82);
-      background:linear-gradient(180deg, rgba(255,255,255,.90), rgba(255,255,255,.78));
-      box-shadow:var(--shadow-lg); backdrop-filter:blur(20px) saturate(145%); -webkit-backdrop-filter:blur(20px) saturate(145%);
-      transition:transform 380ms var(--ease-soft), opacity 280ms var(--ease-soft); overflow:hidden; z-index:9998; display:flex; flex-direction:column;
-    }
-    .editorModal.show{ transform:translate3d(-50%, 0, 0) scale(1); opacity:1; pointer-events:auto; }
-    .dragHandle{
-      width:46px; height:5px; border-radius:999px; background:rgba(100,116,139,.28);
-      margin:10px auto 2px;
-      box-shadow:inset 0 1px 0 rgba(255,255,255,.45);
-    }
-    .editorModalHeader{
-      display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px 15px 15px;
-      border-bottom:1px solid rgba(255,255,255,.56); background:linear-gradient(180deg, rgba(255,255,255,.44), rgba(255,255,255,.20));
-    }
-    .editorModalTitle{ display:flex; flex-direction:column; gap:5px; min-width:0; }
-    .editorModalTitle h3{ margin:0; font-size:16px; font-weight:900; letter-spacing:.2px; }
-    .closeRound{
-      width:42px; height:38px; border-radius:14px; padding:0; display:inline-flex;
-      align-items:center; justify-content:center; font-size:18px; line-height:1;
-    }
-    .editorModalBody{ padding:15px; overflow:auto; }
-    .sheetOverlay{
-      position:fixed; inset:0; background:rgba(2,6,23,.30); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
-      opacity:0; pointer-events:none; transition:opacity 220ms var(--ease); z-index:9998;
-    }
-    .sheetOverlay.show{ opacity:1; pointer-events:auto; }
-    .sheet{
-      position:fixed; left:50%; bottom:calc(10px + env(safe-area-inset-bottom));
-      transform:translate3d(-50%, 26px, 0) scale(.985); width:min(520px, calc(100% - 24px));
-      background:linear-gradient(180deg, rgba(255,255,255,.88), rgba(255,255,255,.76));
-      border:1px solid rgba(255,255,255,.82); border-radius:22px; box-shadow:var(--shadow-lg); padding:12px;
-      opacity:0; pointer-events:none; transition:transform 280ms var(--ease-soft), opacity 240ms var(--ease-soft);
-      z-index:9999; backdrop-filter:blur(18px) saturate(140%); -webkit-backdrop-filter:blur(18px) saturate(140%);
-    }
-    .sheet.show{ opacity:1; transform:translate3d(-50%, 0, 0) scale(1); pointer-events:auto; }
-    .sheetTop{ display:flex; align-items:center; justify-content:space-between; gap:10px; padding:6px 6px 10px; }
-    .sheetTitle{ font-weight:900; font-size:14px; letter-spacing:.2px; }
-    .sheetActions{ display:grid; grid-template-columns:1fr 1fr; gap:10px; padding:0 6px 10px; }
-    .sheetHint{ padding:0 6px 6px; font-size:12px; color:var(--muted); font-weight:700; line-height:1.45; }
-
-    .backupMeta{
-      margin:0 6px 10px;
-      padding:12px;
-      border-radius:16px;
-      background:rgba(255,255,255,.62);
-      border:1px solid rgba(255,255,255,.82);
+      min-height:32px;
+      padding:5px 10px;
+      border-radius:999px;
+      background:rgba(255,255,255,.70);
+      border:1px solid rgba(255,255,255,.84);
       box-shadow:var(--shadow-xs);
+      color:var(--muted);
+      font-size:11px;
+      font-weight:900;
+    }
+
+    .sheetBody{
+      padding:15px;
+      overflow:auto;
+    }
+
+    .field{
+      display:flex;
+      flex-direction:column;
+      gap:7px;
+      margin-bottom:12px;
+    }
+
+    label{
       font-size:12px;
-      color:#475569;
       font-weight:800;
-      line-height:1.45;
+      color:var(--muted);
     }
 
+    .inputWrap{ position:relative; }
 
-    .confirmOverlay{
-      position:fixed; inset:0; background:rgba(2,6,23,.32);
-      backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
-      opacity:0; pointer-events:none; transition:opacity 180ms var(--ease); z-index:10001;
+    textarea{
+      min-height:210px;
+      resize:vertical;
+      line-height:1.5;
+      padding-right:42px;
     }
-    .confirmOverlay.show{ opacity:1; pointer-events:auto; }
+
+    .clearBtn{
+      position:absolute;
+      right:8px;
+      top:50%;
+      transform:translateY(-50%) scale(.94);
+      width:28px;
+      height:28px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.85);
+      background:rgba(255,255,255,.96);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:900;
+      color:#64748b;
+      cursor:pointer;
+      opacity:0;
+      pointer-events:none;
+      transition:opacity 160ms var(--ease), transform 160ms var(--ease);
+    }
+    .clearBtn.show{
+      opacity:1;
+      pointer-events:auto;
+      transform:translateY(-50%) scale(1);
+    }
+    .clearBtn.textarea{ top:12px; transform:scale(.94); }
+    .clearBtn.textarea.show{ transform:scale(1); }
+
+    .suggest{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-top:10px;
+    }
+
+    .chip{
+      border:1px solid rgba(47,109,246,.14);
+      background:rgba(47,109,246,.08);
+      color:#1d4ed8;
+      padding:8px 11px;
+      border-radius:999px;
+      font-weight:900;
+      font-size:12px;
+      cursor:pointer;
+      box-shadow:var(--shadow-xs);
+    }
+
+    .sheetActions{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+      margin-top:4px;
+    }
+
+    .infoGrid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+      margin-top:12px;
+    }
+
+    .infoBox{
+      padding:12px 13px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.78);
+      background:rgba(255,255,255,.58);
+      box-shadow:var(--shadow-xs);
+    }
+
+    .infoTitle{
+      font-size:12px;
+      font-weight:900;
+      color:#334155;
+      margin-bottom:4px;
+    }
+
+    .infoText{
+      font-size:12px;
+      line-height:1.4;
+      color:var(--muted);
+      font-weight:700;
+    }
 
     .confirmBox{
-      position:fixed; left:50%; bottom:calc(14px + env(safe-area-inset-bottom));
-      transform:translate3d(-50%, 20px, 0) scale(.98);
+      position:fixed;
+      left:50%;
+      bottom:calc(14px + env(safe-area-inset-bottom));
+      transform:translate3d(-50%, 20px, 0);
       width:min(460px, calc(100% - 24px));
-      background:linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.82));
+      background:linear-gradient(180deg, rgba(255,255,255,.94), rgba(255,255,255,.84));
       border:1px solid rgba(255,255,255,.86);
-      border-radius:22px; box-shadow:var(--shadow-lg);
-      padding:14px; opacity:0; pointer-events:none; z-index:10002;
-      transition:transform 220ms var(--ease-soft), opacity 180ms var(--ease-soft);
-      backdrop-filter:blur(18px) saturate(140%); -webkit-backdrop-filter:blur(18px) saturate(140%);
+      border-radius:22px;
+      box-shadow:0 34px 90px rgba(2,6,23,.18);
+      padding:14px;
+      opacity:0;
+      pointer-events:none;
+      display:none;
+      z-index:1003;
     }
-    .confirmBox.show{ opacity:1; pointer-events:auto; transform:translate3d(-50%,0,0) scale(1); }
+    .confirmBox.show{
+      display:block;
+      opacity:1;
+      pointer-events:auto;
+      transform:translate3d(-50%,0,0);
+    }
     .confirmTitle{ font-size:15px; font-weight:900; margin:0 0 6px; }
     .confirmText{ font-size:13px; color:var(--muted); font-weight:700; line-height:1.45; margin:0 0 12px; }
     .confirmActions{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
 
-    @media (max-width: 720px){
-      .confirmActions{ grid-template-columns:1fr; }
-    }
-
     .toast{
-      position:fixed; left:50%; bottom:calc(18px + env(safe-area-inset-bottom));
-      transform:translate3d(-50%,10px,0) scale(.96); background:rgba(15,23,42,.86); color:#fff;
-      padding:11px 13px; border-radius:14px; font-size:13px; font-weight:900; border:1px solid rgba(255,255,255,.12);
-      box-shadow:0 22px 44px rgba(0,0,0,.24); backdrop-filter:blur(12px); opacity:0; pointer-events:none;
-      transition:opacity 180ms var(--ease), transform 220ms var(--ease-soft); z-index:10000;
+      position:fixed;
+      left:50%;
+      bottom:calc(18px + env(safe-area-inset-bottom));
+      transform:translate3d(-50%,10px,0) scale(.96);
+      background:rgba(15,23,42,.86);
+      color:#fff;
+      padding:11px 13px;
+      border-radius:14px;
+      font-size:13px;
+      font-weight:900;
+      box-shadow:0 22px 44px rgba(0,0,0,.24);
+      opacity:0;
+      pointer-events:none;
+      transition:opacity 180ms var(--ease), transform 220ms var(--ease-soft);
+      z-index:1100;
     }
-    .toast.show{ opacity:1; transform:translate3d(-50%,-2px,0) scale(1); }
-
-    @keyframes pageEnter{
-      from{ opacity:0; transform:translateY(12px) scale(.995); filter:blur(8px); }
-      to{ opacity:1; transform:translateY(0) scale(1); filter:blur(0); }
-    }
-    @keyframes itemEnter{
-      from{ opacity:0; transform:translateY(8px) scale(.99); filter:blur(3px); }
-      to{ opacity:1; transform:translateY(0) scale(1); filter:blur(0); }
+    .toast.show{
+      opacity:1;
+      transform:translate3d(-50%,-2px,0) scale(1);
     }
 
     @media (max-width: 720px){
-      .titleRow{ align-items:flex-start; }
-      .hero{ align-items:center; flex-direction:row; min-height:50px; }
-      .heroRight{ width:auto; justify-content:flex-end; }
-      .toolbar2{ grid-template-columns:1fr; }
-      .editorActions{ grid-template-columns:1fr; }
-      .editorMeta{ grid-template-columns:1fr; }
+      .toolbar{ grid-template-columns:1fr; }
+      .sheetActions, .infoGrid, .confirmActions{ grid-template-columns:1fr; }
       .itemActions{ gap:8px; }
-      .sheetActions{ grid-template-columns:1fr; }
-      .editorModalBody{ padding-bottom:calc(18px + env(safe-area-inset-bottom)); }
     }
 
     @media (prefers-reduced-motion: reduce){
-      *, *::before, *::after{ animation:none !important; transition:none !important; }
+      *, *::before, *::after{
+        transition:none !important;
+        animation:none !important;
+      }
     }
   </style>
 </head>
-
-<body style="">
-  <div class="pageEnter">
-    <header>
-      <div class="wrap headerWrap">
-        <div class="titleRow">
-          <div class="brand">
-            <span class="dot"></span>
-            <div>
-              <div class="brandTitle">GHI CHÚ • COPY NHANH</div>
-                            <div class="credit">made by An</div>
-            </div>
+<body>
+  <header>
+    <div class="headerWrap">
+      <div class="titleRow">
+        <div class="brand">
+          <span class="dot"></span>
+          <div>
+            <div class="brandTitle">GHI CHÚ • COPY NHANH</div>
+            <div class="credit">made by An</div>
           </div>
-          <button class="btn ghost mini" id="btnBackup" title="Sao lưu / Khôi phục" style="padding:6px 10px;border-radius:13px;box-shadow:none;font-size:13px;">Backup</button>
+        </div>
+
+        <div class="headerActions">
+          <button class="btn primary mini" id="btnComposeMain" type="button">＋</button>
+          <button class="btn ghost mini" id="btnBackup" type="button">Backup</button>
         </div>
       </div>
-    </header>
+    </div>
+  </header>
 
-    <main class="wrap mainWrap">
-      <div class="grid">
+  <main class="wrap">
+    <section class="card">
+      <div class="cardHeader">
+        <h3 class="sectionTitle">Danh sách ghi chú</h3>
+        <div class="sectionSub">Lọc, sắp xếp, phân loại và tìm nhanh</div>
+
+        <div class="stats" id="listStats">
+        <span class="pill">📝 1 ghi chú</span>
+        <span class="pill">📌 0 ghim</span>
+        <span class="pill">👀 1 đang hiển thị</span>
         
-
-        <section class="card">
-          <div class="cardHeader">
-            <div class="listHeader">
-              <div>
-                <h3 class="sectionTitle">Danh sách ghi chú</h3>
-                <div class="sectionSub">Lọc, sắp xếp, phân loại và tìm nhanh</div>
-              </div>
-
-              <div class="listStats" id="listStats">
-      <span class="statPill">📝 1 ghi chú</span>
-      <span class="statPill">📌 0 ghim</span>
-      <span class="statPill">👀 1 đang hiển thị</span>
-      
-    </div>
-
-              <div class="toolbar2">
-                <div class="segmented" id="filterTabs" data-tab="all" aria-label="Lọc ghi chú">
-                  <div class="segIndicator"></div>
-                  <button class="segBtn active" type="button" data-tab="all">Tất cả</button>
-                  <button class="segBtn" type="button" data-tab="pinned">Đã ghim</button>
-                </div>
-
-                <div class="row" style="justify-content:flex-end;">
-                  <select id="sortSelect" aria-label="Sắp xếp">
-                    <option value="updated_desc">Mới cập nhật</option>
-                    <option value="created_desc">Mới tạo</option>
-                    <option value="title_asc">A-Z</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="toolbar2">
-                <div class="searchWrap">
-                  <span class="searchIcon">🔎</span>
-                  <input id="search" type="text" placeholder="Tìm theo tiêu đề / nội dung...">
-                </div>
-                <div class="row" style="justify-content:flex-end;">
-                  <select id="categoryFilter" aria-label="Lọc theo thẻ">
-                    <option value="all">Tất cả thẻ</option>
-                    <option value="default">Mặc định</option>
-                    <option value="work">Công việc</option>
-                    <option value="personal">Cá nhân</option>
-                    <option value="link">Link</option>
-                    <option value="code">Mã / tài khoản</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="list" id="list"><div class="item" data-note-id="dd852400-c3ac-4c74-a7e1-065b0141ff9e" style="--i: 0;"><div class="itemTop" data-action="edit" data-id="dd852400-c3ac-4c74-a7e1-065b0141ff9e" style="cursor: pointer;"><div class="itemMain"><div class="itemTitle">Dkkaka</div><div class="meta">08:51:46 19/3/2026 <span class="catBadge cat-link">Link</span></div></div></div><div class="itemPreview clamp">Ieooakakka</div><div class="itemActions"><button class="btn iconBtn" type="button" title="Chỉnh sửa" aria-label="Chỉnh sửa" data-action="edit" data-id="dd852400-c3ac-4c74-a7e1-065b0141ff9e">✏️</button><button class="btn iconBtn copy" type="button" title="Copy" aria-label="Copy" data-action="copy" data-id="dd852400-c3ac-4c74-a7e1-065b0141ff9e">📋</button><button class="btn iconBtn" type="button" title="Ghim" aria-label="Ghim" data-action="pin" data-id="dd852400-c3ac-4c74-a7e1-065b0141ff9e">📌</button><div class="spacer"></div><button class="btn iconBtn delete" type="button" title="Xóa" aria-label="Xóa" data-action="delete" data-id="dd852400-c3ac-4c74-a7e1-065b0141ff9e">🗑</button></div></div></div>
-          <div class="empty" id="empty" style="display: none;">Không có ghi chú nào khớp bộ lọc hiện tại.</div>
-          <div class="resetFilters" id="resetFilters">
-            <button class="btn" id="btnResetFilters" type="button">Hiện tất cả ghi chú</button>
-          </div>
-        </section>
       </div>
-    </main>
-  </div>
 
+        <div class="toolbar">
+          <div class="searchWrap">
+            <span class="searchIcon">🔎</span>
+            <input id="search" type="text" placeholder="Tìm theo tiêu đề / nội dung...">
+          </div>
 
-  <button class="btn primary fabCompose" id="btnOpenEditor" type="button" aria-label="Soạn ghi chú" title="Soạn ghi chú">+</button>
+          <select id="categoryFilter" aria-label="Lọc theo thẻ">
+            <option value="all">Tất cả thẻ</option>
+            <option value="default">Mặc định</option>
+            <option value="work">Công việc</option>
+            <option value="personal">Cá nhân</option>
+            <option value="link">Link</option>
+            <option value="account">Mã / tài khoản</option>
+          </select>
 
-  <div class="modalOverlay" id="editorOverlay" style=""></div>
-  <div class="editorModal" id="editorModal" role="dialog" aria-modal="true" aria-label="Soạn ghi chú" style="">
+          <select id="sortSelect" aria-label="Sắp xếp">
+            <option value="updated_desc">Mới cập nhật</option>
+            <option value="created_desc">Mới tạo</option>
+            <option value="title_asc">A-Z</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="list" id="list"><div class="item" data-note-id="a68e1e99-e586-4e11-b769-f23dc0d62fd2"><div class="itemTop"><div class="itemTitle">Test</div><div class="meta">10:27:14 19/3/2026 <span class="badge cat-work">Công việc</span></div></div><div class="itemPreview clamp">Khkjk</div><div class="itemActions"><button class="btn iconBtn" type="button" data-action="edit" data-id="a68e1e99-e586-4e11-b769-f23dc0d62fd2" title="Chỉnh sửa">✏️</button><button class="btn iconBtn copy" type="button" data-action="copy" data-id="a68e1e99-e586-4e11-b769-f23dc0d62fd2" title="Copy">📋</button><button class="btn iconBtn" type="button" data-action="pin" data-id="a68e1e99-e586-4e11-b769-f23dc0d62fd2" title="Ghim">📌</button><div class="spacer"></div><button class="btn iconBtn delete" type="button" data-action="delete" data-id="a68e1e99-e586-4e11-b769-f23dc0d62fd2" title="Xóa">🗑</button></div></div></div>
+      <div class="empty" id="empty" style="display:none">Không có ghi chú nào khớp bộ lọc hiện tại.</div>
+      <div class="resetFilters" id="resetFilters">
+        <button class="btn" id="btnResetFilters" type="button">Hiện tất cả ghi chú</button>
+      </div>
+    </section>
+  </main>
+
+  <div class="overlay" id="editorOverlay"></div>
+  <div class="sheet" id="editorSheet" role="dialog" aria-modal="true" aria-label="Soạn ghi chú">
     <div class="dragHandle"></div>
-    <div class="editorModalHeader">
-      <div class="editorModalTitle">
-        <h3>Soạn ghi chú</h3>
-        <div class="statusPill" id="modalStatus">Tạo mới</div>
+    <div class="sheetHeader">
+      <div class="sheetTitleWrap">
+        <h3 class="sheetTitle">Soạn ghi chú</h3>
+        <div class="statusPill" id="status">Tạo mới</div>
       </div>
-      <button class="btn ghost closeRound" id="btnCloseEditor" type="button" aria-label="Đóng">✕</button>
+      <button class="btn ghost mini" id="btnCloseEditor" type="button">✕</button>
     </div>
 
-    <div class="editorModalBody">
+    <div class="sheetBody">
       <div class="field">
         <label for="title">Tiêu đề</label>
         <div class="inputWrap">
           <input id="title" type="text" placeholder="VD: Mã WiFi, Tin nhắn mẫu, Link cần dùng...">
-          <button class="clearBtn" id="clearTitle" type="button" aria-label="Xoá tiêu đề">✕</button>
+          <button class="clearBtn" id="clearTitle" type="button">✕</button>
         </div>
       </div>
 
       <div class="field">
         <label for="category">Phân loại</label>
         <select id="category">
-          <option value="all">Mặc định</option>
+          <option value="default">Mặc định</option>
           <option value="work">Công việc</option>
           <option value="personal">Cá nhân</option>
           <option value="link">Link</option>
-          <option value="code">Mã / tài khoản</option>
+          <option value="account">Mã / tài khoản</option>
         </select>
       </div>
 
@@ -574,7 +731,7 @@
         <div class="inputWrap">
           <textarea id="content" placeholder="Nhập ghi chú ở đây...
 Gợi ý: dùng {{today}} để tự hiện ngày hiện tại theo dạng dd/mm"></textarea>
-          <button class="clearBtn textarea" id="clearContent" type="button" aria-label="Xoá nội dung">✕</button>
+          <button class="clearBtn textarea" id="clearContent" type="button">✕</button>
         </div>
 
         <div class="suggest">
@@ -582,54 +739,31 @@ Gợi ý: dùng {{today}} để tự hiện ngày hiện tại theo dạng dd/mm
         </div>
       </div>
 
-      <div class="editorActions">
+      <div class="sheetActions">
         <div class="row">
-          <button class="btn primary" id="btnSave">Lưu / Cập nhật</button>
-          <button class="btn" id="btnCopy">Copy nội dung</button>
+          <button class="btn primary" id="btnSave" type="button">Lưu / Cập nhật</button>
+          <button class="btn" id="btnCopyCurrent" type="button">Copy nội dung</button>
         </div>
         <div class="row">
-          <button class="btn" id="btnNew">Tạo mới</button>
-          <button class="btn danger" id="btnDelete" disabled="">Xóa</button>
+          <button class="btn" id="btnNew" type="button">Tạo mới</button>
+          <button class="btn danger" id="btnDeleteCurrent" type="button" disabled="">Xóa</button>
         </div>
       </div>
 
-      <div class="editorMeta">
+      <div class="infoGrid">
         <div class="infoBox">
-          <div class="infoTitle">Nâng cấp đã thêm</div>
-          <div class="infoText">Sort, category, header gọn, bottom sheet chuẩn mobile, backup dễ hiểu hơn và chế độ copy siêu nhanh.</div>
+          <div class="infoTitle">Logic ổn định</div>
+          <div class="infoText">Nút ＋ luôn là tạo mới. Nút ✏️ luôn là sửa ghi chú đang chọn.</div>
         </div>
         <div class="infoBox">
           <div class="infoTitle">Mẹo nhanh</div>
-          <div class="infoText">Bật copy siêu nhanh rồi chạm vào nội dung note là copy luôn. Ghim vẫn luôn nổi lên đầu.</div>
+          <div class="infoText">Dùng <b>{{today}}</b> để tự hiện <b>dd/mm</b> theo ngày hiện tại.</div>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="sheetOverlay" id="sheetOverlay"></div>
-  <div class="sheet" id="backupSheet" role="dialog" aria-modal="true" aria-label="Backup">
-    <div class="sheetTop">
-      <div class="sheetTitle">Backup</div>
-      <button class="btn ghost mini" id="sheetClose" type="button" aria-label="Đóng">✕</button>
-    </div>
-
-    <div class="backupMeta" id="backupMeta">Hiện có <b>1</b> ghi chú, trong đó <b>0</b> ghi chú đã ghim.<br>Fast copy đang <b>tắt</b>.</div>
-
-    <div class="sheetActions">
-      <button class="btn primary" id="sheetExport" type="button">Xuất JSON</button>
-      <button class="btn" id="sheetImport" type="button">Nhập JSON</button>
-    </div>
-    <div class="sheetActions" style="padding-top:0;">
-      <button class="btn" id="sheetImportMerge" type="button">Nhập &amp; gộp</button>
-      <button class="btn" id="toggleFastCopy" type="button">Copy siêu nhanh: Tắt</button>
-    </div>
-    <div class="sheetHint">
-      <b>Nhập JSON</b> sẽ ghi đè toàn bộ. <b>Nhập &amp; gộp</b> sẽ thêm note mới và giữ note cũ.
-    </div>
-  </div>
-
-
-  <div class="confirmOverlay" id="confirmOverlay"></div>
+  <div class="overlay" id="confirmOverlay"></div>
   <div class="confirmBox" id="confirmBox" role="dialog" aria-modal="true" aria-label="Xác nhận xóa">
     <div class="confirmTitle">Xóa ghi chú?</div>
     <div class="confirmText" id="confirmText">Ghi chú này sẽ bị xóa khỏi danh sách.</div>
@@ -639,864 +773,737 @@ Gợi ý: dùng {{today}} để tự hiện ngày hiện tại theo dạng dd/mm
     </div>
   </div>
 
-  <div class="toast" id="toast">Đã copy</div>
+  <div class="overlay" id="backupOverlay"></div>
+  <div class="confirmBox" id="backupBox" role="dialog" aria-modal="true" aria-label="Backup">
+    <div class="confirmTitle">Backup</div>
+    <div class="confirmText" id="backupMeta">Hiện có <b>1</b> ghi chú, trong đó <b>0</b> ghi chú đã ghim.</div>
+    <div class="confirmActions">
+      <button class="btn primary" id="btnExport" type="button">Xuất JSON</button>
+      <button class="btn" id="btnImport" type="button">Nhập JSON</button>
+    </div>
+    <div class="confirmActions" style="margin-top:10px;">
+      <button class="btn" id="btnImportMerge" type="button">Nhập &amp; gộp</button>
+      <button class="btn" id="btnCloseBackup" type="button">Đóng</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">Đã lưu</div>
   <input id="fileImport" type="file" accept="application/json,.json" style="display:none">
 
-<script>
-(() => {
-  const $ = (id) => document.getElementById(id);
+  <script>
+  (() => {
+    const $ = (id) => document.getElementById(id);
 
-  const els = {
-    title: $("title"),
-    content: $("content"),
-    category: $("category"),
-    clearTitle: $("clearTitle"),
-    clearContent: $("clearContent"),
-    chipToday: $("chipToday"),
-    btnSave: $("btnSave"),
-    btnCopy: $("btnCopy"),
-    btnNew: $("btnNew"),
-    btnDelete: $("btnDelete"),
-    status: $("status"),
-    modalStatus: $("modalStatus"),
-    list: $("list"),
-    empty: $("empty"),
-    resetFilters: $("resetFilters"),
-    btnResetFilters: $("btnResetFilters"),
-    search: $("search"),
-    categoryFilter: $("categoryFilter"),
-    toast: $("toast"),
-    listStats: $("listStats"),
-    confirmOverlay: $("confirmOverlay"),
-    confirmBox: $("confirmBox"),
-    confirmText: $("confirmText"),
-    confirmCancel: $("confirmCancel"),
-    confirmDelete: $("confirmDelete"),
-    sortSelect: $("sortSelect"),
-    btnOpenEditor: $("btnOpenEditor"),
-    btnCloseEditor: $("btnCloseEditor"),
-    editorOverlay: $("editorOverlay"),
-    editorModal: $("editorModal"),
-    btnBackup: $("btnBackup"),
-    sheetOverlay: $("sheetOverlay"),
-    backupSheet: $("backupSheet"),
-    sheetClose: $("sheetClose"),
-    sheetExport: $("sheetExport"),
-    sheetImport: $("sheetImport"),
-    sheetImportMerge: $("sheetImportMerge"),
-    toggleFastCopy: $("toggleFastCopy"),
-    backupMeta: $("backupMeta"),
-    fileImport: $("fileImport"),
-    filterTabs: $("filterTabs"),
-  };
+    const els = {
+      title: $("title"),
+      content: $("content"),
+      category: $("category"),
+      clearTitle: $("clearTitle"),
+      clearContent: $("clearContent"),
+      chipToday: $("chipToday"),
+      btnSave: $("btnSave"),
+      btnCopyCurrent: $("btnCopyCurrent"),
+      btnNew: $("btnNew"),
+      btnDeleteCurrent: $("btnDeleteCurrent"),
+      status: $("status"),
 
-  const STORAGE_KEY = "quick_notes_v2";
-  const EXPAND_KEY = "quick_notes_expanded_ids_v1";
-  const SORT_KEY = "quick_notes_sort_v1";
-  const FAST_COPY_KEY = "quick_notes_fast_copy_v1";
+      list: $("list"),
+      empty: $("empty"),
+      resetFilters: $("resetFilters"),
+      btnResetFilters: $("btnResetFilters"),
+      search: $("search"),
+      categoryFilter: $("categoryFilter"),
+      sortSelect: $("sortSelect"),
+      listStats: $("listStats"),
 
-  let notes = [];
-  let selectedId = null;
-  let toastTimer = null;
-  let activeFilter = "all";
-  let activeSort = localStorage.getItem(SORT_KEY) || "updated_desc";
-  let activeCategoryFilter = "all";
-  let fastCopy = localStorage.getItem(FAST_COPY_KEY) === "1";
-  let importMode = "replace";
-  let pendingDeleteId = null;
-  let pendingRevealId = null;
+      btnComposeMain: $("btnComposeMain"),
+      btnCloseEditor: $("btnCloseEditor"),
+      editorOverlay: $("editorOverlay"),
+      editorSheet: $("editorSheet"),
 
-  let expanded = new Set();
-  try {
-    const raw = localStorage.getItem(EXPAND_KEY);
-    if (raw) expanded = new Set(JSON.parse(raw));
-  } catch {}
+      confirmOverlay: $("confirmOverlay"),
+      confirmBox: $("confirmBox"),
+      confirmText: $("confirmText"),
+      confirmCancel: $("confirmCancel"),
+      confirmDelete: $("confirmDelete"),
 
-  const persistExpanded = () => {
-    try { localStorage.setItem(EXPAND_KEY, JSON.stringify([...expanded])); } catch {}
-  };
+      btnBackup: $("btnBackup"),
+      backupOverlay: $("backupOverlay"),
+      backupBox: $("backupBox"),
+      backupMeta: $("backupMeta"),
+      btnExport: $("btnExport"),
+      btnImport: $("btnImport"),
+      btnImportMerge: $("btnImportMerge"),
+      btnCloseBackup: $("btnCloseBackup"),
 
-  const nowISO = () => new Date().toISOString();
-  const uid = () => (crypto?.randomUUID?.() || ("id_" + Math.random().toString(16).slice(2) + Date.now()));
-  const normalize = (s) => (s || "").toString().toLowerCase();
+      toast: $("toast"),
+      fileImport: $("fileImport"),
+    };
 
-  const categoryMap = {
-    all: { label: "Mặc định", cls: "cat-all" },
-    work: { label: "Công việc", cls: "cat-work" },
-    personal: { label: "Cá nhân", cls: "cat-personal" },
-    link: { label: "Link", cls: "cat-link" },
-    code: { label: "Mã / tài khoản", cls: "cat-code" },
-  };
+    const STORAGE_KEY = "quick_notes_clean_v1";
+    const EXPAND_KEY = "quick_notes_expanded_clean_v1";
+    const SORT_KEY = "quick_notes_sort_clean_v1";
 
-  const pad2 = (n) => String(n).padStart(2, "0");
-  const fmtToday = (d) => `${pad2(d.getDate())}/${pad2(d.getMonth()+1)}`;
+    let notes = [];
+    let selectedId = null;
+    let pendingDeleteId = null;
+    let importMode = "replace";
+    let toastTimer = null;
+    let activeCategoryFilter = "all";
+    let activeSort = localStorage.getItem(SORT_KEY) || "updated_desc";
 
-  const renderDynamicTokens = (text) => {
-    const d = new Date();
-    return (text || "").replace(/\{\{\s*today\s*\}\}/gi, fmtToday(d));
-  };
-
-  const fmtTime = (iso) => {
+    let expanded = new Set();
     try {
-      const d = new Date(iso);
-      return d.toLocaleString("vi-VN", { hour12:false });
-    } catch {
-      return "";
-    }
-  };
+      const raw = localStorage.getItem(EXPAND_KEY);
+      if (raw) expanded = new Set(JSON.parse(raw));
+    } catch {}
 
-  const escapeHtml = (s) =>
-    (s || "").replace(/[&<>"]/g, (c) => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;" }[c]));
+    const categoryMap = {
+      default: { label: "Mặc định", cls: "cat-default" },
+      work: { label: "Công việc", cls: "cat-work" },
+      personal: { label: "Cá nhân", cls: "cat-personal" },
+      link: { label: "Link", cls: "cat-link" },
+      account: { label: "Mã / tài khoản", cls: "cat-account" },
+    };
 
-  const highlightText = (text, q) => {
-    const rendered = renderDynamicTokens(text || "");
-    if (!q) return escapeHtml(rendered).replace(/\n/g, "<br>");
-    const safe = escapeHtml(rendered);
-    const escQ = q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    try {
-      const re = new RegExp(escQ, "gi");
-      return safe.replace(re, (m) => `<mark class="hl">${m}</mark>`).replace(/\n/g, "<br>");
-    } catch {
-      return safe.replace(/\n/g, "<br>");
-    }
-  };
+    const persistExpanded = () => {
+      try { localStorage.setItem(EXPAND_KEY, JSON.stringify([...expanded])); } catch {}
+    };
 
-  const load = () => {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      notes = raw ? JSON.parse(raw) : [];
-      if (!Array.isArray(notes)) notes = [];
-    } catch {
-      notes = [];
-    }
-  };
+    const nowISO = () => new Date().toISOString();
+    const uid = () => (crypto?.randomUUID?.() || ("id_" + Math.random().toString(16).slice(2) + Date.now()));
+    const normalize = (s) => (s || "").toString().toLowerCase();
 
-  const saveStore = () => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
-  };
+    const pad2 = (n) => String(n).padStart(2, "0");
+    const fmtToday = (d) => `${pad2(d.getDate())}/${pad2(d.getMonth()+1)}`;
 
-  const showToast = (msg) => {
-    els.toast.textContent = msg;
-    els.toast.classList.add("show");
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => els.toast.classList.remove("show"), 1300);
-  };
+    const renderDynamicTokens = (text) => {
+      const d = new Date();
+      return (text || "").replace(/\{\{\s*today\s*\}\}/gi, fmtToday(d));
+    };
 
-  const setStatus = (msg) => {
-    const text = msg || "Tạo mới";
-    els.status.textContent = text;
-    els.modalStatus.textContent = text;
-  };
+    const fmtTime = (iso) => {
+      try {
+        const d = new Date(iso);
+        return d.toLocaleString("vi-VN", { hour12:false });
+      } catch {
+        return "";
+      }
+    };
 
-  const updateClearBtns = () => {
-    els.clearTitle.classList.toggle("show", (els.title.value || "").length > 0);
-    els.clearContent.classList.toggle("show", (els.content.value || "").length > 0);
-  };
+    const escapeHtml = (s) =>
+      (s || "").replace(/[&<>"]/g, (c) => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;" }[c]));
 
-  const updateFastCopyBtn = () => {
-    els.toggleFastCopy.textContent = `Copy siêu nhanh: ${fastCopy ? "Bật" : "Tắt"}`;
-  };
+    const highlightText = (text, q) => {
+      const rendered = renderDynamicTokens(text || "");
+      if (!q) return escapeHtml(rendered).replace(/\n/g, "<br>");
+      const safe = escapeHtml(rendered);
+      const escQ = q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      try {
+        const re = new RegExp(escQ, "gi");
+        return safe.replace(re, (m) => `<mark style="background:rgba(255,235,59,.45);border-radius:4px;padding:0 .5px;">${m}</mark>`).replace(/\n/g, "<br>");
+      } catch {
+        return safe.replace(/\n/g, "<br>");
+      }
+    };
 
-  const updateBackupMeta = () => {
-    const total = notes.length;
-    const pinned = notes.filter(n => n.pinned).length;
-    els.backupMeta.innerHTML = `Hiện có <b>${total}</b> ghi chú, trong đó <b>${pinned}</b> ghi chú đã ghim.<br>Fast copy đang <b>${fastCopy ? "bật" : "tắt"}</b>.`;
-  };
+    const load = () => {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        notes = raw ? JSON.parse(raw) : [];
+        if (!Array.isArray(notes)) notes = [];
+      } catch {
+        notes = [];
+      }
+    };
 
-  const openEditor = (focus = true) => {
-    els.editorOverlay.classList.add("show");
-    els.editorModal.classList.add("show");
+    const saveStore = () => {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
+    };
 
-    // ép hiện để tránh webview mobile nuốt animation/state
-    els.editorOverlay.style.opacity = "1";
-    els.editorOverlay.style.pointerEvents = "auto";
-    els.editorModal.style.opacity = "1";
-    els.editorModal.style.pointerEvents = "auto";
-    els.editorModal.style.transform = "translate3d(-50%, 0, 0) scale(1)";
+    const showToast = (msg) => {
+      els.toast.textContent = msg;
+      els.toast.classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => els.toast.classList.remove("show"), 1200);
+    };
 
-    document.body.style.overflow = "hidden";
-    if (focus){
-      requestAnimationFrame(() => {
-        setTimeout(() => (els.title.value ? els.content.focus() : els.title.focus()), 120);
-      });
-    }
-  };
+    const setStatus = (msg) => {
+      els.status.textContent = msg || "Tạo mới";
+    };
 
-  const closeEditor = () => {
-    els.editorModal.classList.remove("show");
-    els.editorOverlay.classList.remove("show");
-    els.editorOverlay.style.opacity = "";
-    els.editorOverlay.style.pointerEvents = "";
-    els.editorModal.style.opacity = "";
-    els.editorModal.style.pointerEvents = "";
-    els.editorModal.style.transform = "";
-    document.body.style.overflow = "";
-  };
+    const updateClearBtns = () => {
+      els.clearTitle.classList.toggle("show", (els.title.value || "").length > 0);
+      els.clearContent.classList.toggle("show", (els.content.value || "").length > 0);
+    };
 
-  let dragStartY = null;
-  let dragCurrentY = 0;
-  const handlePointerDown = (e) => {
-    dragStartY = e.clientY || (e.touches && e.touches[0].clientY);
-    dragCurrentY = 0;
-  };
-  const handlePointerMove = (e) => {
-    if (dragStartY == null) return;
-    const y = e.clientY || (e.touches && e.touches[0].clientY);
-    dragCurrentY = Math.max(0, y - dragStartY);
-    els.editorModal.style.transform = `translate3d(-50%, ${dragCurrentY}px, 0) scale(${1 - Math.min(dragCurrentY / 1200, .02)})`;
-  };
-  const handlePointerUp = () => {
-    if (dragStartY == null) return;
-    if (dragCurrentY > 90) closeEditor();
-    else els.editorModal.style.transform = "translate3d(-50%, 0, 0) scale(1)";
-    dragStartY = null;
-    dragCurrentY = 0;
-  };
+    const openEditor = (focus = true) => {
+      els.editorOverlay.classList.add("show");
+      els.editorSheet.classList.add("show");
+      document.body.style.overflow = "hidden";
 
+      if (focus){
+        requestAnimationFrame(() => {
+          setTimeout(() => (els.title.value ? els.content.focus() : els.title.focus()), 80);
+        });
+      }
+    };
 
-  const resetFilters = () => {
-    activeFilter = "all";
-    activeCategoryFilter = "all";
-    els.search.value = "";
-    els.categoryFilter.value = "all";
-    applyFilterTabsUI();
-    render();
-  };
+    const closeEditor = () => {
+      els.editorSheet.classList.remove("show");
+      els.editorOverlay.classList.remove("show");
+      document.body.style.overflow = "";
+    };
 
+    const openNewNote = (e) => {
+      if (e) {
+        if (e.preventDefault) e.preventDefault();
+        if (e.stopPropagation) e.stopPropagation();
+      }
+      selectedId = null;
+      clearEditor();
+      setStatus("Tạo mới");
+      openEditor(true);
+      return false;
+    };
 
-  const revealNote = (id) => {
-    if (!id) return;
-    requestAnimationFrame(() => {
-      setTimeout(() => {
-        const el = document.querySelector(`[data-note-id="${id}"]`);
-        if (el) {
-          el.scrollIntoView({ behavior: "smooth", block: "nearest" });
-          el.style.boxShadow = "0 0 0 2px rgba(47,109,246,.18), 0 18px 38px rgba(47,109,246,.14)";
-          setTimeout(() => { el.style.boxShadow = ""; render(); }, 900);
+    const clearEditor = () => {
+      selectedId = null;
+      els.title.value = "";
+      els.content.value = "";
+      els.category.value = "default";
+      els.btnDeleteCurrent.disabled = true;
+      setStatus("Tạo mới");
+      updateClearBtns();
+    };
+
+    const filteredNotes = () => {
+      const q = normalize(els.search.value).trim();
+      let arr = [...notes];
+
+      arr.sort((a, b) => {
+        const ap = a.pinned ? 1 : 0;
+        const bp = b.pinned ? 1 : 0;
+        if (bp !== ap) return bp - ap;
+
+        if (activeSort === "created_desc") {
+          return (b.createdAt || "").localeCompare(a.createdAt || "");
         }
-      }, 120);
-    });
-  };
+        if (activeSort === "title_asc") {
+          return (a.title || "").localeCompare((b.title || ""), "vi");
+        }
+        return (b.updatedAt || b.createdAt || "").localeCompare(a.updatedAt || a.createdAt || "");
+      });
 
-  const applyFilterTabsUI = () => {
-    els.filterTabs.dataset.tab = activeFilter;
-    [...els.filterTabs.querySelectorAll(".segBtn")].forEach(btn => {
-      btn.classList.toggle("active", btn.dataset.tab === activeFilter);
-    });
-  };
-
-  const filteredNotes = () => {
-    const q = normalize(els.search.value).trim();
-    let arr = [...notes];
-
-    arr.sort((a, b) => {
-      const ap = a.pinned ? 1 : 0;
-      const bp = b.pinned ? 1 : 0;
-      if (bp !== ap) return bp - ap;
-
-      if (activeSort === "created_desc") {
-        return (b.createdAt || "").localeCompare(a.createdAt || "");
-      }
-      if (activeSort === "title_asc") {
-        return (a.title || "").localeCompare((b.title || ""), "vi");
-      }
-      return (b.updatedAt || b.createdAt || "").localeCompare(a.updatedAt || a.createdAt || "");
-    });
-
-    if (activeFilter === "pinned") arr = arr.filter(n => !!n.pinned);
-    if (activeCategoryFilter !== "all") {
-      const target = activeCategoryFilter === "default" ? "all" : activeCategoryFilter;
-      arr = arr.filter(n => (n.category || "all") === target);
-    }
-    if (!q) return arr;
-    return arr.filter(n => normalize(n.title).includes(q) || normalize(n.content).includes(q));
-  };
-
-  const updateStats = () => {
-    const total = notes.length;
-    const pinned = notes.filter(n => n.pinned).length;
-    const showing = filteredNotes().length;
-    els.listStats.innerHTML = `
-      <span class="statPill">📝 ${total} ghi chú</span>
-      <span class="statPill">📌 ${pinned} ghim</span>
-      <span class="statPill">👀 ${showing} đang hiển thị</span>
-      ${activeCategoryFilter !== "all" ? `<span class="statPill">🏷️ ${els.categoryFilter.options[els.categoryFilter.selectedIndex]?.text || ""}</span>` : ""}
-    `;
-    updateBackupMeta();
-  };
-
-  const shouldShowMore = (text) => {
-    return (text || "").length > 260 || (text || "").split("\n").length > 6;
-  };
-
-  const render = () => {
-    const arr = filteredNotes();
-    const q = normalize(els.search.value).trim();
-    els.list.innerHTML = "";
-    const hasAnyNotes = notes.length > 0;
-    const isFiltering = activeFilter !== "all" || activeCategoryFilter !== "all" || !!q;
-    els.empty.style.display = arr.length ? "none" : "block";
-    els.resetFilters.classList.toggle("show", !arr.length && hasAnyNotes && isFiltering);
-    els.empty.innerHTML = !hasAnyNotes
-      ? 'Chưa có ghi chú nào.<br>Bấm <b>+</b> để tạo ghi chú đầu tiên.'
-      : 'Không có ghi chú nào khớp bộ lọc hiện tại.';
-    updateStats();
-
-    arr.forEach((n, idx) => {
-      const item = document.createElement("div");
-      item.className = "item";
-      item.dataset.noteId = n.id;
-      item.style.setProperty("--i", idx);
-
-      const top = document.createElement("div");
-      top.className = "itemTop";
-      top.dataset.action = "edit";
-      top.dataset.id = n.id;
-      top.style.cursor = "pointer";
-
-      const main = document.createElement("div");
-      main.className = "itemMain";
-
-      const title = document.createElement("div");
-      title.className = "itemTitle";
-      title.innerHTML = highlightText(n.title || "(Không tiêu đề)", q);
-
-      const meta = document.createElement("div");
-      meta.className = "meta";
-      const cat = categoryMap[n.category || "all"] || categoryMap.all;
-      meta.innerHTML = `${fmtTime(n.updatedAt || n.createdAt)} <span class="catBadge ${cat.cls}">${cat.label}</span>${n.pinned ? ' <span class="badgePin">📌 Ghim</span>' : ""}`;
-
-      main.appendChild(title);
-      main.appendChild(meta);
-      top.appendChild(main);
-
-      const preview = document.createElement("div");
-      preview.className = "itemPreview";
-      const isExpanded = expanded.has(n.id);
-      preview.classList.toggle("clamp", !isExpanded);
-      preview.innerHTML = highlightText(n.content || "", q);
-
-      if (fastCopy) {
-        preview.style.cursor = "pointer";
-        preview.title = "Chạm để copy nhanh";
-        preview.onclick = async () => {
-          await copyText(renderDynamicTokens(n.content || ""));
-          showToast("Đã copy ghi chú");
-        };
+      if (activeCategoryFilter !== "all") {
+        arr = arr.filter(n => (n.category || "default") === activeCategoryFilter);
       }
 
-      if (n.id === selectedId){
-        item.style.borderColor = "rgba(47,109,246,.36)";
-        item.style.boxShadow = "0 18px 38px rgba(47,109,246,.14)";
-      }
+      if (!q) return arr;
+      return arr.filter(n => normalize(n.title).includes(q) || normalize(n.content).includes(q));
+    };
 
-      item.appendChild(top);
-      item.appendChild(preview);
+    const shouldShowMore = (text) => {
+      return (text || "").length > 260 || (text || "").split("\n").length > 6;
+    };
 
-      if (shouldShowMore(n.content || "")){
-        const moreRow = document.createElement("div");
-        moreRow.className = "moreRow";
+    const updateStats = () => {
+      const total = notes.length;
+      const pinned = notes.filter(n => n.pinned).length;
+      const showing = filteredNotes().length;
+      els.listStats.innerHTML = `
+        <span class="pill">📝 ${total} ghi chú</span>
+        <span class="pill">📌 ${pinned} ghim</span>
+        <span class="pill">👀 ${showing} đang hiển thị</span>
+        ${activeCategoryFilter !== "all" ? `<span class="pill">🏷️ ${els.categoryFilter.options[els.categoryFilter.selectedIndex]?.text || ""}</span>` : ""}
+      `;
+      els.backupMeta.innerHTML = `Hiện có <b>${total}</b> ghi chú, trong đó <b>${pinned}</b> ghi chú đã ghim.`;
+    };
 
-        const moreBtn = document.createElement("button");
-        moreBtn.className = "moreBtn";
-        moreBtn.type = "button";
-        moreBtn.textContent = isExpanded ? "Thu gọn" : "… Xem thêm";
-        moreBtn.onclick = () => {
-          if (expanded.has(n.id)) expanded.delete(n.id);
-          else expanded.add(n.id);
-          persistExpanded();
-          render();
-        };
+    const render = () => {
+      const arr = filteredNotes();
+      const q = normalize(els.search.value).trim();
 
-        moreRow.appendChild(moreBtn);
-        item.appendChild(moreRow);
-      }
+      els.list.innerHTML = "";
 
-      const actionRow = document.createElement("div");
-      actionRow.className = "itemActions";
+      const hasAnyNotes = notes.length > 0;
+      const isFiltering = activeCategoryFilter !== "all" || !!q;
+      els.empty.style.display = arr.length ? "none" : "block";
+      els.resetFilters.classList.toggle("show", !arr.length && hasAnyNotes && isFiltering);
+      els.empty.innerHTML = !hasAnyNotes
+        ? 'Chưa có ghi chú nào.<br>Bấm <b>＋</b> để tạo ghi chú đầu tiên.'
+        : 'Không có ghi chú nào khớp bộ lọc hiện tại.';
 
-      const bOpen = document.createElement("button");
-      bOpen.className = "btn iconBtn";
-      bOpen.type = "button";
-      bOpen.title = "Chỉnh sửa";
-      bOpen.setAttribute("aria-label", "Chỉnh sửa");
-      bOpen.textContent = "✏️";
-      bOpen.dataset.action = "edit";
-      bOpen.dataset.id = n.id;
+      updateStats();
 
-      const bCopy = document.createElement("button");
-      bCopy.className = "btn iconBtn copy";
-      bCopy.type = "button";
-      bCopy.title = "Copy";
-      bCopy.setAttribute("aria-label", "Copy");
-      bCopy.textContent = "📋";
-      bCopy.dataset.action = "copy";
-      bCopy.dataset.id = n.id;
+      arr.forEach((n, idx) => {
+        const item = document.createElement("div");
+        item.className = "item";
+        item.dataset.noteId = n.id;
 
-      const bPin = document.createElement("button");
-      bPin.className = "btn iconBtn";
-      bPin.type = "button";
-      bPin.title = n.pinned ? "Bỏ ghim" : "Ghim";
-      bPin.setAttribute("aria-label", n.pinned ? "Bỏ ghim" : "Ghim");
-      bPin.textContent = n.pinned ? "📍" : "📌";
-      bPin.dataset.action = "pin";
-      bPin.dataset.id = n.id;
+        const top = document.createElement("div");
+        top.className = "itemTop";
 
-      const spacer = document.createElement("div");
-      spacer.className = "spacer";
+        const title = document.createElement("div");
+        title.className = "itemTitle";
+        title.innerHTML = highlightText(n.title || "(Không tiêu đề)", q);
 
-      const bDel = document.createElement("button");
-      bDel.className = "btn iconBtn delete";
-      bDel.type = "button";
-      bDel.title = "Xóa";
-      bDel.setAttribute("aria-label", "Xóa");
-      bDel.textContent = "🗑";
-      bDel.dataset.action = "delete";
-      bDel.dataset.id = n.id;
+        const meta = document.createElement("div");
+        meta.className = "meta";
+        const cat = categoryMap[n.category || "default"] || categoryMap.default;
+        meta.innerHTML = `${fmtTime(n.updatedAt || n.createdAt)} <span class="badge ${cat.cls}">${cat.label}</span>${n.pinned ? ' <span class="badge pinBadge">📌 Ghim</span>' : ''}`;
 
-      actionRow.appendChild(bOpen);
-      actionRow.appendChild(bCopy);
-      actionRow.appendChild(bPin);
-      actionRow.appendChild(spacer);
-      actionRow.appendChild(bDel);
-      item.appendChild(actionRow);
-      els.list.appendChild(item);
-    });
-  };
+        top.appendChild(title);
+        top.appendChild(meta);
 
-  const clearEditor = () => {
-    selectedId = null;
-    els.title.value = "";
-    els.content.value = "";
-    els.category.value = "all";
-    els.btnDelete.disabled = true;
-    setStatus("Tạo mới");
-    updateClearBtns();
-  };
+        const preview = document.createElement("div");
+        preview.className = "itemPreview";
+        const isExpanded = expanded.has(n.id);
+        preview.classList.toggle("clamp", !isExpanded);
+        preview.innerHTML = highlightText(n.content || "", q);
 
-  const selectNote = (id) => {
-    const n = notes.find(x => x.id === id);
-    if (!n) return;
+        const actionRow = document.createElement("div");
+        actionRow.className = "itemActions";
 
-    // mở popup trước để chắc chắn thấy phản hồi ngay khi bấm sửa
-    openEditor(false);
+        const bEdit = document.createElement("button");
+        bEdit.className = "btn iconBtn";
+        bEdit.type = "button";
+        bEdit.dataset.action = "edit";
+        bEdit.dataset.id = n.id;
+        bEdit.title = "Chỉnh sửa";
+        bEdit.textContent = "✏️";
 
-    selectedId = id;
-    els.title.value = n.title || "";
-    els.content.value = n.content || "";
-    els.category.value = n.category || "all";
-    els.btnDelete.disabled = false;
-    setStatus("Đang sửa");
-    updateClearBtns();
-    render();
+        const bCopy = document.createElement("button");
+        bCopy.className = "btn iconBtn copy";
+        bCopy.type = "button";
+        bCopy.dataset.action = "copy";
+        bCopy.dataset.id = n.id;
+        bCopy.title = "Copy";
+        bCopy.textContent = "📋";
 
-    requestAnimationFrame(() => {
-      setTimeout(() => {
-        els.title.focus();
-        els.title.setSelectionRange(els.title.value.length, els.title.value.length);
-      }, 120);
-    });
-  };
+        const bPin = document.createElement("button");
+        bPin.className = "btn iconBtn";
+        bPin.type = "button";
+        bPin.dataset.action = "pin";
+        bPin.dataset.id = n.id;
+        bPin.title = n.pinned ? "Bỏ ghim" : "Ghim";
+        bPin.textContent = n.pinned ? "📍" : "📌";
 
-  const upsert = () => {
-    const title = (els.title.value || "").trim();
-    const content = (els.content.value || "").trim();
-    const category = els.category.value || "all";
+        const spacer = document.createElement("div");
+        spacer.className = "spacer";
 
-    if (!title && !content){
-      showToast("Nhập tiêu đề hoặc nội dung trước nhé");
-      return;
-    }
+        const bDelete = document.createElement("button");
+        bDelete.className = "btn iconBtn delete";
+        bDelete.type = "button";
+        bDelete.dataset.action = "delete";
+        bDelete.dataset.id = n.id;
+        bDelete.title = "Xóa";
+        bDelete.textContent = "🗑";
 
-    if (selectedId){
-      const n = notes.find(x => x.id === selectedId);
+        actionRow.appendChild(bEdit);
+        actionRow.appendChild(bCopy);
+        actionRow.appendChild(bPin);
+        actionRow.appendChild(spacer);
+        actionRow.appendChild(bDelete);
+
+        item.appendChild(top);
+        item.appendChild(preview);
+
+        if (shouldShowMore(n.content || "")){
+          const moreRow = document.createElement("div");
+          moreRow.className = "moreRow";
+
+          const moreBtn = document.createElement("button");
+          moreBtn.className = "moreBtn";
+          moreBtn.type = "button";
+          moreBtn.textContent = isExpanded ? "Thu gọn" : "… Xem thêm";
+          moreBtn.addEventListener("click", () => {
+            if (expanded.has(n.id)) expanded.delete(n.id);
+            else expanded.add(n.id);
+            persistExpanded();
+            render();
+          });
+
+          moreRow.appendChild(moreBtn);
+          item.appendChild(moreRow);
+        }
+
+        item.appendChild(actionRow);
+        els.list.appendChild(item);
+      });
+    };
+
+    const selectNote = (id) => {
+      const n = notes.find(x => x.id === id);
       if (!n) return;
-      n.title = title;
-      n.content = content;
-      n.category = category;
-      n.updatedAt = nowISO();
+
+      selectedId = id;
+      els.title.value = n.title || "";
+      els.content.value = n.content || "";
+      els.category.value = n.category || "default";
+      els.btnDeleteCurrent.disabled = false;
+      setStatus("Đang sửa");
+      updateClearBtns();
+      openEditor(false);
+
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          els.title.focus();
+          els.title.setSelectionRange(els.title.value.length, els.title.value.length);
+        }, 80);
+      });
+    };
+
+    const revealNote = (id) => {
+      if (!id) return;
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          const el = document.querySelector(`[data-note-id="${id}"]`);
+          if (el) {
+            el.scrollIntoView({ behavior: "smooth", block: "nearest" });
+            el.style.boxShadow = "0 0 0 2px rgba(47,109,246,.18), 0 18px 38px rgba(47,109,246,.14)";
+            setTimeout(() => { el.style.boxShadow = ""; }, 900);
+          }
+        }, 120);
+      });
+    };
+
+    const upsert = () => {
+      const title = (els.title.value || "").trim();
+      const content = (els.content.value || "").trim();
+      const category = els.category.value || "default";
+
+      if (!title && !content){
+        showToast("Nhập tiêu đề hoặc nội dung trước nhé");
+        return;
+      }
+
+      if (selectedId){
+        const n = notes.find(x => x.id === selectedId);
+        if (!n) return;
+        n.title = title;
+        n.content = content;
+        n.category = category;
+        n.updatedAt = nowISO();
+        saveStore();
+        render();
+        closeEditor();
+        clearEditor();
+        showToast("Đã cập nhật");
+      } else {
+        const n = {
+          id: uid(),
+          title,
+          content,
+          category,
+          pinned: false,
+          createdAt: nowISO(),
+          updatedAt: nowISO()
+        };
+        notes.push(n);
+
+        activeCategoryFilter = "all";
+        els.categoryFilter.value = "all";
+        els.search.value = "";
+
+        saveStore();
+        render();
+        closeEditor();
+        clearEditor();
+        showToast("Đã lưu");
+        revealNote(n.id);
+      }
+
+      updateClearBtns();
+    };
+
+    const openDeleteConfirm = (id) => {
+      const n = notes.find(x => x.id === id);
+      if (!n) return;
+      pendingDeleteId = id;
+      els.confirmText.textContent = `Ghi chú "${n.title || "(Không tiêu đề)"}" sẽ bị xóa khỏi danh sách.`;
+      els.confirmOverlay.classList.add("show");
+      els.confirmBox.classList.add("show");
+    };
+
+    const closeDeleteConfirm = () => {
+      pendingDeleteId = null;
+      els.confirmBox.classList.remove("show");
+      els.confirmOverlay.classList.remove("show");
+    };
+
+    const reallyDeleteNote = (id) => {
+      notes = notes.filter(x => x.id !== id);
+      expanded.delete(id);
+      persistExpanded();
+      if (selectedId === id) clearEditor();
       saveStore();
       render();
-      showToast("Đã cập nhật");
-      setStatus("Đã lưu");
-    } else {
-      const n = {
-        id: uid(),
-        title,
-        content,
-        category,
-        pinned: false,
-        createdAt: nowISO(),
-        updatedAt: nowISO()
-      };
-      notes.push(n);
-      pendingRevealId = n.id;
+      showToast("Đã xóa");
+    };
 
-      // reset bộ lọc để ghi chú mới hiện ra ngay, không bị ẩn oan
-      activeFilter = "all";
+    const copyText = async (text) => {
+      try {
+        await navigator.clipboard.writeText(text);
+      } catch {
+        const ta = document.createElement("textarea");
+        ta.value = text;
+        ta.setAttribute("readonly", "");
+        ta.style.position = "fixed";
+        ta.style.left = "-9999px";
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand("copy"); } catch {}
+        document.body.removeChild(ta);
+      }
+    };
+
+    const copyCurrent = async () => {
+      const text = (els.content.value || "").trim();
+      if (!text){
+        showToast("Chưa có nội dung để copy");
+        return;
+      }
+      await copyText(text);
+      showToast("Đã copy nội dung");
+    };
+
+    const exportJSON = () => {
+      const data = JSON.stringify(notes, null, 2);
+      const blob = new Blob([data], {type:"application/json"});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "ghi-chu-backup.json";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 1500);
+      showToast("Đã xuất JSON");
+    };
+
+    const importJSONText = async (text, mode = "replace") => {
+      let incoming;
+      try {
+        incoming = JSON.parse(text);
+      } catch {
+        showToast("File JSON lỗi");
+        return;
+      }
+
+      if (!Array.isArray(incoming)) {
+        showToast("Backup không đúng định dạng");
+        return;
+      }
+
+      if (mode === "replace") {
+        const ok = confirm("Nhập backup sẽ GHI ĐÈ toàn bộ ghi chú hiện có. Tiếp tục?");
+        if (!ok) return;
+      }
+
+      const cleaned = incoming.map(n => ({
+        id: n.id || uid(),
+        title: (n.title ?? "").toString(),
+        content: (n.content ?? "").toString(),
+        category: (n.category ?? "default").toString(),
+        pinned: !!n.pinned,
+        createdAt: n.createdAt || nowISO(),
+        updatedAt: n.updatedAt || n.createdAt || nowISO(),
+      }));
+
+      if (mode === "replace") {
+        notes = cleaned;
+        expanded = new Set();
+        persistExpanded();
+        clearEditor();
+        showToast("Đã nhập backup");
+      } else {
+        const existing = new Set(notes.map(n => `${n.title}__${n.content}`));
+        let added = 0;
+        cleaned.forEach(n => {
+          const key = `${n.title}__${n.content}`;
+          if (!existing.has(key)) {
+            notes.push({ ...n, id: uid() });
+            existing.add(key);
+            added++;
+          }
+        });
+        showToast(`Đã gộp ${added} ghi chú mới`);
+      }
+
+      saveStore();
+      render();
+    };
+
+    const resetFilters = () => {
       activeCategoryFilter = "all";
       els.search.value = "";
       els.categoryFilter.value = "all";
-      applyFilterTabsUI();
-
-      saveStore();
       render();
-      closeEditor();
-      clearEditor();
-      showToast("Đã lưu");
-      revealNote(pendingRevealId);
-      pendingRevealId = null;
-    }
+    };
 
-    updateClearBtns();
-  };
+    const openBackup = () => {
+      updateStats();
+      els.backupOverlay.classList.add("show");
+      els.backupBox.classList.add("show");
+    };
 
-  const closeDeleteConfirm = () => {
-    pendingDeleteId = null;
-    els.confirmBox.classList.remove("show");
-    els.confirmOverlay.classList.remove("show");
-  };
+    const closeBackup = () => {
+      els.backupBox.classList.remove("show");
+      els.backupOverlay.classList.remove("show");
+    };
 
-  const reallyDeleteNote = (id) => {
-    notes = notes.filter(x => x.id !== id);
-    expanded.delete(id);
-    persistExpanded();
-    if (selectedId === id) clearEditor();
-    saveStore();
-    render();
-    showToast("Đã xóa");
-  };
+    const openImportPicker = (mode) => {
+      importMode = mode;
+      els.fileImport.value = "";
+      els.fileImport.click();
+    };
 
-  const deleteNote = (id) => {
-    const n = notes.find(x => x.id === id);
-    if (!n) return;
-    pendingDeleteId = id;
-    els.confirmText.textContent = `Ghi chú "${n.title || "(Không tiêu đề)"}" sẽ bị xóa khỏi danh sách.`;
-    els.confirmOverlay.classList.add("show");
-    els.confirmBox.classList.add("show");
-  };
+    els.btnComposeMain.addEventListener("click", openNewNote);
+    els.btnCloseEditor.addEventListener("click", closeEditor);
+    els.editorOverlay.addEventListener("click", closeEditor);
 
-  const copyText = async (text) => {
-    try {
-      await navigator.clipboard.writeText(text);
-      return true;
-    } catch {
-      const ta = document.createElement("textarea");
-      ta.value = text;
-      ta.setAttribute("readonly", "");
-      ta.style.position = "fixed";
-      ta.style.left = "-9999px";
-      document.body.appendChild(ta);
-      ta.select();
-      try { document.execCommand("copy"); } catch {}
-      document.body.removeChild(ta);
-      return true;
-    }
-  };
+    els.btnSave.addEventListener("click", upsert);
+    els.btnCopyCurrent.addEventListener("click", copyCurrent);
+    els.btnNew.addEventListener("click", openNewNote);
+    els.btnDeleteCurrent.addEventListener("click", () => {
+      if (selectedId) openDeleteConfirm(selectedId);
+    });
 
-  const copyCurrent = async () => {
-    const text = (els.content.value || "").trim();
-    if (!text){
-      showToast("Chưa có nội dung để copy");
-      return;
-    }
-    await copyText(text);
-    showToast("Đã copy nội dung");
-  };
+    els.title.addEventListener("input", updateClearBtns);
+    els.content.addEventListener("input", updateClearBtns);
 
-  const exportJSON = () => {
-    const data = JSON.stringify(notes, null, 2);
-    const blob = new Blob([data], {type:"application/json"});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "ghi-chu-backup.json";
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    setTimeout(() => URL.revokeObjectURL(url), 1500);
-    showToast("Đã xuất JSON");
-  };
+    els.clearTitle.addEventListener("click", (e) => {
+      e.stopPropagation();
+      els.title.value = "";
+      updateClearBtns();
+      els.title.focus();
+    });
 
-  const importJSONText = async (text, mode = "replace") => {
-    let incoming;
-    try {
-      incoming = JSON.parse(text);
-    } catch {
-      showToast("File JSON lỗi");
-      return;
-    }
+    els.clearContent.addEventListener("click", (e) => {
+      e.stopPropagation();
+      els.content.value = "";
+      updateClearBtns();
+      els.content.focus();
+    });
 
-    if (!Array.isArray(incoming)) {
-      showToast("Backup không đúng định dạng");
-      return;
-    }
+    els.chipToday.addEventListener("click", () => {
+      const text = "{{today}}";
+      els.content.focus();
+      const start = els.content.selectionStart ?? els.content.value.length;
+      const end = els.content.selectionEnd ?? els.content.value.length;
+      const before = els.content.value.slice(0, start);
+      const after = els.content.value.slice(end);
+      els.content.value = before + text + after;
+      const pos = start + text.length;
+      els.content.setSelectionRange(pos, pos);
+      updateClearBtns();
+    });
 
-    if (mode === "replace") {
-      const ok = confirm("Nhập backup sẽ GHI ĐÈ toàn bộ ghi chú hiện có. Tiếp tục?");
-      if (!ok) return;
-    }
-
-    const cleaned = incoming.map(n => ({
-      id: n.id || uid(),
-      title: (n.title ?? "").toString(),
-      content: (n.content ?? "").toString(),
-      category: (n.category ?? "all").toString(),
-      pinned: !!n.pinned,
-      createdAt: n.createdAt || nowISO(),
-      updatedAt: n.updatedAt || n.createdAt || nowISO(),
-    }));
-
-    if (mode === "replace") {
-      notes = cleaned;
-      expanded = new Set();
-      persistExpanded();
-      clearEditor();
-      showToast("Đã nhập backup");
-    } else {
-      const existing = new Set(notes.map(n => `${n.title}__${n.content}`));
-      let added = 0;
-      cleaned.forEach(n => {
-        const key = `${n.title}__${n.content}`;
-        if (!existing.has(key)) {
-          notes.push({ ...n, id: uid() });
-          existing.add(key);
-          added++;
-        }
-      });
-      showToast(`Đã gộp ${added} ghi chú mới`);
-    }
-
-    selectedId = null;
-    saveStore();
-    render();
-  };
-
-  const openImportPicker = (mode) => {
-    importMode = mode;
-    els.fileImport.value = "";
-    els.fileImport.click();
-  };
-
-  const openSheet = () => {
-    updateBackupMeta();
-    updateFastCopyBtn();
-    els.sheetOverlay.classList.add("show");
-    els.backupSheet.classList.add("show");
-    document.body.style.overflow = "hidden";
-  };
-
-  const closeSheet = () => {
-    els.backupSheet.classList.remove("show");
-    els.sheetOverlay.classList.remove("show");
-    if (!els.editorModal.classList.contains("show")) {
-      document.body.style.overflow = "";
-    }
-  };
-
-  const insertAtCursor = (textarea, text) => {
-    textarea.focus();
-    const start = textarea.selectionStart ?? textarea.value.length;
-    const end = textarea.selectionEnd ?? textarea.value.length;
-    const before = textarea.value.slice(0, start);
-    const after = textarea.value.slice(end);
-    textarea.value = before + text + after;
-    const pos = start + text.length;
-    textarea.setSelectionRange(pos, pos);
-    updateClearBtns();
-  };
-
-  els.btnOpenEditor.addEventListener("click", () => {
-    selectedId = null;
-    clearEditor();
-    setStatus("Tạo mới");
-    openEditor(true);
-  });
-  els.btnCloseEditor.addEventListener("click", closeEditor);
-  els.editorOverlay.addEventListener("click", closeEditor);
-
-  // tắt kéo-thả đóng để tránh webview mobile chặn mở popup khi bấm sửa
-
-  els.btnSave.addEventListener("click", upsert);
-  els.btnCopy.addEventListener("click", copyCurrent);
-  els.btnNew.addEventListener("click", () => {
-    clearEditor();
-    openEditor(true);
-    render();
-  });
-  els.btnDelete.addEventListener("click", () => {
-    if (selectedId) deleteNote(selectedId);
-  });
-
-
-  let listTouchMoved = false;
-  let listTouchStartY = 0;
-  let listTouchStartX = 0;
-
-  els.list.addEventListener("touchstart", (e) => {
-    const t = e.touches && e.touches[0];
-    if (!t) return;
-    listTouchMoved = false;
-    listTouchStartX = t.clientX;
-    listTouchStartY = t.clientY;
-  }, { passive:true });
-
-  els.list.addEventListener("touchmove", (e) => {
-    const t = e.touches && e.touches[0];
-    if (!t) return;
-    if (Math.abs(t.clientY - listTouchStartY) > 10 || Math.abs(t.clientX - listTouchStartX) > 10) {
-      listTouchMoved = true;
-    }
-  }, { passive:true });
-
-  const handleListAction = async (e) => {
-    const target = e.target && e.target.closest ? e.target.closest("[data-action]") : null;
-    if (!target) return;
-
-    if (listTouchMoved) return;
-
-    const id = target.dataset.id;
-    const action = target.dataset.action;
-    const n = notes.find(x => x.id === id);
-    if (!n) return;
-
-    if (action === "edit") {
-      selectNote(id);
-      return;
-    }
-    if (action === "copy") {
-      await copyText(renderDynamicTokens(n.content || ""));
-      showToast("Đã copy ghi chú");
-      return;
-    }
-    if (action === "pin") {
-      n.pinned = !n.pinned;
-      n.updatedAt = nowISO();
-      saveStore();
-      render();
-      showToast(n.pinned ? "Đã ghim" : "Đã bỏ ghim");
-      return;
-    }
-    if (action === "delete") {
-      deleteNote(id);
-    }
-  };
-
-  els.list.addEventListener("click", handleListAction);
-
-  els.search.addEventListener("input", render);
-  els.btnResetFilters.addEventListener("click", resetFilters);
-  els.categoryFilter.addEventListener("change", () => {
-    activeCategoryFilter = els.categoryFilter.value;
-    render();
-  });
-  els.sortSelect.addEventListener("change", () => {
-    activeSort = els.sortSelect.value;
-    localStorage.setItem(SORT_KEY, activeSort);
-    render();
-  });
-
-  els.btnBackup.addEventListener("click", openSheet);
-  els.sheetOverlay.addEventListener("click", closeSheet);
-  els.sheetClose.addEventListener("click", closeSheet);
-
-  els.sheetExport.addEventListener("click", () => {
-    closeSheet();
-    exportJSON();
-  });
-  els.sheetImport.addEventListener("click", () => {
-    closeSheet();
-    openImportPicker("replace");
-  });
-  els.sheetImportMerge.addEventListener("click", () => {
-    closeSheet();
-    openImportPicker("merge");
-  });
-  els.toggleFastCopy.addEventListener("click", () => {
-    fastCopy = !fastCopy;
-    localStorage.setItem(FAST_COPY_KEY, fastCopy ? "1" : "0");
-    updateFastCopyBtn();
-    render();
-  });
-
-  els.fileImport.addEventListener("change", async (e) => {
-    const file = e.target.files && e.target.files[0];
-    if (!file) return;
-    try {
-      const text = await file.text();
-      await importJSONText(text, importMode);
-    } catch {
-      showToast("Không đọc được file");
-    }
-  });
-
-
-  els.confirmOverlay.addEventListener("click", closeDeleteConfirm);
-  els.confirmCancel.addEventListener("click", closeDeleteConfirm);
-  els.confirmDelete.addEventListener("click", () => {
-    if (pendingDeleteId) reallyDeleteNote(pendingDeleteId);
-    closeDeleteConfirm();
-  });
-
-  els.title.addEventListener("input", updateClearBtns);
-  els.content.addEventListener("input", updateClearBtns);
-
-  els.clearTitle.addEventListener("click", (e) => {
-    e.stopPropagation();
-    els.title.value = "";
-    updateClearBtns();
-    els.title.focus();
-  });
-  els.clearContent.addEventListener("click", (e) => {
-    e.stopPropagation();
-    els.content.value = "";
-    updateClearBtns();
-    els.content.focus();
-  });
-  els.chipToday.addEventListener("click", (e) => {
-    e.stopPropagation();
-    insertAtCursor(els.content, "{{today}}");
-  });
-
-  [...els.filterTabs.querySelectorAll(".segBtn")].forEach(btn => {
-    btn.addEventListener("click", () => {
-      activeFilter = btn.dataset.tab || "all";
-      applyFilterTabsUI();
+    els.search.addEventListener("input", render);
+    els.categoryFilter.addEventListener("change", () => {
+      activeCategoryFilter = els.categoryFilter.value;
       render();
     });
-  });
+    els.sortSelect.addEventListener("change", () => {
+      activeSort = els.sortSelect.value;
+      localStorage.setItem(SORT_KEY, activeSort);
+      render();
+    });
+    els.btnResetFilters.addEventListener("click", resetFilters);
 
-  window.addEventListener("keydown", (e) => {
-    const key = (e.key || "").toLowerCase();
-    if ((e.ctrlKey || e.metaKey) && key === "s"){
-      e.preventDefault();
-      upsert();
-    }
-    if (key === "escape"){
-      closeSheet();
-      closeEditor();
+    els.list.addEventListener("click", async (e) => {
+      const btn = e.target.closest("[data-action]");
+      if (!btn) return;
+      const id = btn.dataset.id;
+      const action = btn.dataset.action;
+      const n = notes.find(x => x.id === id);
+      if (!n) return;
+
+      if (action === "edit") {
+        selectNote(id);
+        return;
+      }
+      if (action === "copy") {
+        await copyText(renderDynamicTokens(n.content || ""));
+        showToast("Đã copy ghi chú");
+        return;
+      }
+      if (action === "pin") {
+        n.pinned = !n.pinned;
+        n.updatedAt = nowISO();
+        saveStore();
+        render();
+        showToast(n.pinned ? "Đã ghim" : "Đã bỏ ghim");
+        return;
+      }
+      if (action === "delete") {
+        openDeleteConfirm(id);
+      }
+    });
+
+    els.confirmOverlay.addEventListener("click", closeDeleteConfirm);
+    els.confirmCancel.addEventListener("click", closeDeleteConfirm);
+    els.confirmDelete.addEventListener("click", () => {
+      if (pendingDeleteId) reallyDeleteNote(pendingDeleteId);
       closeDeleteConfirm();
-    }
-  }, { passive:false });
-
-  load();
-  clearEditor();
-  applyFilterTabsUI();
-  els.sortSelect.value = activeSort;
-  els.categoryFilter.value = "all";
-  updateFastCopyBtn();
-  render();
-  updateClearBtns();
-
-  if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => {
-      navigator.serviceWorker.register("./sw.js?v=36").catch(() => {});
     });
-  }
 
-  setInterval(render, 60000);
-})();
-</script>
+    els.btnBackup.addEventListener("click", openBackup);
+    els.backupOverlay.addEventListener("click", closeBackup);
+    els.btnCloseBackup.addEventListener("click", closeBackup);
+    els.btnExport.addEventListener("click", () => {
+      closeBackup();
+      exportJSON();
+    });
+    els.btnImport.addEventListener("click", () => {
+      closeBackup();
+      openImportPicker("replace");
+    });
+    els.btnImportMerge.addEventListener("click", () => {
+      closeBackup();
+      openImportPicker("merge");
+    });
+
+    els.fileImport.addEventListener("change", async (e) => {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      try {
+        const text = await file.text();
+        await importJSONText(text, importMode);
+      } catch {
+        showToast("Không đọc được file");
+      }
+    });
+
+    window.addEventListener("keydown", (e) => {
+      const key = (e.key || "").toLowerCase();
+      if ((e.ctrlKey || e.metaKey) && key === "s"){
+        e.preventDefault();
+        upsert();
+      }
+      if (key === "escape"){
+        closeBackup();
+        closeDeleteConfirm();
+        closeEditor();
+      }
+    }, { passive:false });
+
+    load();
+    clearEditor();
+    els.sortSelect.value = activeSort;
+    render();
+    updateClearBtns();
+
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./sw.js?v=99").catch(() => {});
+      });
+    }
+
+    setInterval(render, 60000);
+  })();
+  </script>
 
 
 </body></html>
